@@ -1,0 +1,8 @@
+*.log
+*.pyc
+*.py~
+venv/*
+build/
+dist/
+elifearticle.egg-info
+.coverage
