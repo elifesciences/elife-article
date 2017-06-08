@@ -6,7 +6,7 @@ class Article():
     contributors = []
 
     def __init__(self, doi=None, title=None):
-        self.articleType = "research-article"
+        self.article_type = "research-article"
         self.display_channel = None
         self.doi = doi
         self.contributors = []
@@ -82,3 +82,101 @@ class Article():
 
     def add_funding_award(self, funding_award):
         self.funding_awards.append(funding_award)
+
+
+class ArticleDate():
+    """
+    A struct_time date and a date_type
+    """
+
+    def __init__(self, date_type, date):
+        self.date_type = date_type
+        # Date as a time.struct_time
+        self.date = date
+
+
+class Contributor():
+    """
+    Currently we are not sure that we can get an auth_id for
+    all contributors, so this attribute remains an optional attribute.
+    """
+
+    corresp = False
+    equal_contrib = False
+
+    auth_id = None
+    orcid = None
+    collab = None
+    conflict = None
+    group_author_key = None
+
+    def __init__(self, contrib_type, surname, given_name, collab=None):
+        self.contrib_type = contrib_type
+        self.surname = surname
+        self.given_name = given_name
+        self.affiliations = []
+        self.collab = collab
+
+    def set_affiliation(self, affiliation):
+        self.affiliations.append(affiliation)
+
+    def set_conflict(self, conflict):
+        self.conflict = conflict
+
+
+class Affiliation():
+    phone = None
+    fax = None
+    email = None
+
+    department = None
+    institution = None
+    city = None
+    country = None
+
+    text = None
+
+
+class Dataset():
+    """
+    Article component representing a dataset
+    """
+    def __init__(self):
+        self.dataset_type = None
+        self.authors = []
+        self.source_id = None
+        self.year = None
+        self.title = None
+        self.license_info = None
+
+    def add_author(self, author):
+        self.authors.append(author)
+
+
+class FundingAward():
+    """
+    An award group as part of a funding group
+    """
+    def __init__(self):
+        self.award_ids = []
+        self.institution_name = None
+        self.institution_id = None
+        self.principal_award_recipients = []
+
+    def add_award_id(self, award_id):
+        self.award_ids.append(award_id)
+
+    def add_principal_award_recipient(self, contributor):
+        # Accepts an instance of Contributor
+        self.principal_award_recipients.append(contributor)
+
+    def get_funder_identifier(self):
+        # Funder identifier is the unique id found in the institution_id DOI
+        try:
+            return self.institution_id.split('/')[-1]
+        except:
+            return None
+
+    def get_funder_name(self):
+        # Alias for institution_name parsed from the XML
+        return self.institution_name
