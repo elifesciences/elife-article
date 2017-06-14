@@ -180,6 +180,62 @@ class TestFundingAward(unittest.TestCase):
         self.assertEqual(self.funding_award.get_funder_name(), institution_name)
 
 
+class TestLicense(unittest.TestCase):
+
+    def setUp(self):
+        self.license = ea.License()
+
+    def test_license_init(self):
+        self.assertIsNotNone(self.license)
+
+    def test_license_1(self):
+        license = ea.License(1)
+        self.assertIsNotNone(license)
+
+    def test_license_2(self):
+        license = ea.License(2)
+        self.assertIsNotNone(license)
+
+class TestCitation(unittest.TestCase):
+
+    def setUp(self):
+        self.citation = ea.Citation()
+
+    def test_citation_init(self):
+        self.assertIsNotNone(self.citation)
+
+    def test_add_author(self):
+        author = None
+        self.citation.add_author(author)
+        self.assertEqual(len(self.citation.authors), 1)
+
+    def test_get_journal_title(self):
+        source = "source_name"
+        self.citation.source = source
+        self.assertEqual(self.citation.get_journal_title(), source)
+
+
+class TestComponent(unittest.TestCase):
+
+    def setUp(self):
+        self.component = ea.Component()
+
+    def test_component_init(self):
+        self.assertIsNotNone(self.component)
+
+class TestRelatedArticle(unittest.TestCase):
+
+    def setUp(self):
+        self.related_article = ea.RelatedArticle()
+
+    def test_related_article_init(self):
+        self.assertIsNotNone(self.related_article)
+
+
+
+
+
+
 
 if __name__ == '__main__':
     unittest.main()

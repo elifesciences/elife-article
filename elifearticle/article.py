@@ -1,7 +1,7 @@
 
 class Article():
     """
-    We include some boiler plate in the init, namely articleType
+    We include some boiler plate in the init, namely article_type
     """
     contributors = []
 
@@ -180,3 +180,97 @@ class FundingAward():
     def get_funder_name(self):
         # Alias for institution_name parsed from the XML
         return self.institution_name
+
+
+class License():
+    """
+    License with some preset values by license_id
+    """
+
+    license_id = None
+    license_type = None
+    copyright = False
+    href = None
+    name = None
+    p1 = None
+    p2 = None
+
+    def __init__(self, license_id=None):
+        if license_id:
+            self.init_by_license_id(license_id)
+
+    def init_by_license_id(self, license_id):
+        """
+        For license_id value, set the license properties
+        """
+        if int(license_id) == 1:
+            self.license_id = license_id
+            self.license_type = "open-access"
+            self.copyright = True
+            self.href = "http://creativecommons.org/licenses/by/4.0/"
+            self.name = "Creative Commons Attribution License"
+            self.p1 = "This article is distributed under the terms of the "
+            self.p2 = (" permitting unrestricted use and redistribution provided that the " +
+                       "original author and source are credited.")
+        elif int(license_id) == 2:
+            self.license_id = license_id
+            self.license_type = "open-access"
+            self.copyright = False
+            self.href = "http://creativecommons.org/publicdomain/zero/1.0/"
+            self.name = "Creative Commons CC0"
+            self.p1 = ("This is an open-access article, free of all copyright, and may be " +
+                       "freely reproduced, distributed, transmitted, modified, built upon, or " +
+                       "otherwise used by anyone for any lawful purpose. The work is made " +
+                       "available under the ")
+            self.p2 = " public domain dedication."
+
+
+class Citation():
+    """
+    A ref or citation in the article to support crossref VOR deposits initially
+    """
+    def __init__(self):
+        self.publication_type = None
+        self.authors = []
+        # For journals
+        self.article_title = None
+        self.source = None
+        self.volume = None
+        self.fpage = None
+        self.lpage = None
+        self.elocation_id = None
+        self.doi = None
+        self.year = None
+        # For books
+        self.volume_title = None
+
+    def add_author(self, author):
+        # Author is a dict of values
+        self.authors.append(author)
+
+    def get_journal_title(self):
+        # Alias for source
+        return self.source
+
+
+class Component():
+    """
+    An article component with a component DOI, primarily for crossref VOR deposits
+    """
+    def __init__(self):
+        self.title = None
+        self.subtitle = None
+        self.mime_type = None
+        self.doi = None
+        self.doi_resource = None
+        self.permissions = None
+
+
+class RelatedArticle():
+    """
+    Related article tag data as an object
+    """
+    def __init__(self):
+        self.xlink_href = None
+        self.related_article_type = None
+        self.ext_link_type = None
