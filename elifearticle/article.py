@@ -81,7 +81,7 @@ class Article(object):
 
     def get_datasets(self, dataset_type=None):
         if dataset_type:
-            return filter(lambda d: str(d.dataset_type) == dataset_type, self.datasets)
+            return [d for d in self.datasets if d.dataset_type == dataset_type]
         else:
             return self.datasets
 
