@@ -1,11 +1,16 @@
 
-class Article():
+class Article(object):
     """
     We include some boiler plate in the init, namely article_type
     """
     contributors = []
 
-    def __init__(self, doi=None, title=None):
+    def __new__(cls, doi=None, title=None):
+        new_instance = object.__new__(cls)
+        new_instance.init(doi, title)
+        return new_instance
+
+    def init(self, doi=None, title=None):
         self.article_type = "research-article"
         self.display_channel = None
         self.doi = doi
@@ -84,18 +89,22 @@ class Article():
         self.funding_awards.append(funding_award)
 
 
-class ArticleDate():
+class ArticleDate(object):
     """
     A struct_time date and a date_type
     """
+    def __new__(cls, date_type, date):
+        new_instance = object.__new__(cls)
+        new_instance.init(date_type, date)
+        return new_instance
 
-    def __init__(self, date_type, date):
+    def init(self, date_type, date):
         self.date_type = date_type
         # Date as a time.struct_time
         self.date = date
 
 
-class Contributor():
+class Contributor(object):
     """
     Currently we are not sure that we can get an auth_id for
     all contributors, so this attribute remains an optional attribute.
@@ -110,7 +119,12 @@ class Contributor():
     conflict = None
     group_author_key = None
 
-    def __init__(self, contrib_type, surname, given_name, collab=None):
+    def __new__(cls, contrib_type, surname, given_name, collab=None):
+        new_instance = object.__new__(cls)
+        new_instance.init(contrib_type, surname, given_name, collab)
+        return new_instance
+
+    def init(self, contrib_type, surname, given_name, collab=None):
         self.contrib_type = contrib_type
         self.surname = surname
         self.given_name = given_name
@@ -124,24 +138,35 @@ class Contributor():
         self.conflict = conflict
 
 
-class Affiliation():
+class Affiliation(object):
     phone = None
     fax = None
     email = None
-
     department = None
     institution = None
     city = None
     country = None
-
     text = None
 
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
 
-class Dataset():
+    def init(self):
+        pass
+
+
+class Dataset(object):
     """
     Article component representing a dataset
     """
-    def __init__(self):
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
+
+    def init(self):
         self.dataset_type = None
         self.authors = []
         self.source_id = None
@@ -153,11 +178,16 @@ class Dataset():
         self.authors.append(author)
 
 
-class FundingAward():
+class FundingAward(object):
     """
     An award group as part of a funding group
     """
-    def __init__(self):
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
+
+    def init(self):
         self.award_ids = []
         self.institution_name = None
         self.institution_id = None
@@ -182,7 +212,7 @@ class FundingAward():
         return self.institution_name
 
 
-class License():
+class License(object):
     """
     License with some preset values by license_id
     """
@@ -195,7 +225,12 @@ class License():
     p1 = None
     p2 = None
 
-    def __init__(self, license_id=None):
+    def __new__(cls, license_id=None):
+        new_instance = object.__new__(cls)
+        new_instance.init(license_id)
+        return new_instance
+
+    def init(self, license_id):
         if license_id:
             self.init_by_license_id(license_id)
 
@@ -225,11 +260,16 @@ class License():
             self.p2 = " public domain dedication."
 
 
-class Citation():
+class Citation(object):
     """
     A ref or citation in the article to support crossref VOR deposits initially
     """
-    def __init__(self):
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
+
+    def init(self):
         self.publication_type = None
         self.authors = []
         # For journals
@@ -253,11 +293,16 @@ class Citation():
         return self.source
 
 
-class Component():
+class Component(object):
     """
     An article component with a component DOI, primarily for crossref VOR deposits
     """
-    def __init__(self):
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
+
+    def init(self):
         self.title = None
         self.subtitle = None
         self.mime_type = None
@@ -266,11 +311,16 @@ class Component():
         self.permissions = None
 
 
-class RelatedArticle():
+class RelatedArticle(object):
     """
     Related article tag data as an object
     """
-    def __init__(self):
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
+
+    def init(self):
         self.xlink_href = None
         self.related_article_type = None
         self.ext_link_type = None
