@@ -1,5 +1,23 @@
 
-class Article(object):
+class BaseObject(object):
+    "base object for shared functions"
+    def __unicode__(self):
+        """
+        Return unicode representation of the simple object properties,
+        if there is a list or dict just return an empty representation
+        for easier viewing and test case scenario writing
+        """
+        unicode_dict = {}
+        for k in self.__dict__:
+            if type(self.__dict__.get(k)) == list:
+                unicode_dict[k] = []
+            elif type(self.__dict__.get(k)) == dict:
+                unicode_dict[k] = {}
+            else:
+                unicode_dict[k] = unicode(self.__dict__.get(k))
+        return unicode(unicode_dict)
+
+class Article(BaseObject):
     """
     We include some boiler plate in the init, namely article_type
     """
@@ -89,7 +107,7 @@ class Article(object):
         self.funding_awards.append(funding_award)
 
 
-class ArticleDate(object):
+class ArticleDate(BaseObject):
     """
     A struct_time date and a date_type
     """
@@ -104,7 +122,7 @@ class ArticleDate(object):
         self.date = date
 
 
-class Contributor(object):
+class Contributor(BaseObject):
     """
     Currently we are not sure that we can get an auth_id for
     all contributors, so this attribute remains an optional attribute.
@@ -138,7 +156,7 @@ class Contributor(object):
         self.conflict = conflict
 
 
-class Affiliation(object):
+class Affiliation(BaseObject):
     phone = None
     fax = None
     email = None
@@ -157,7 +175,7 @@ class Affiliation(object):
         pass
 
 
-class Dataset(object):
+class Dataset(BaseObject):
     """
     Article component representing a dataset
     """
@@ -178,7 +196,7 @@ class Dataset(object):
         self.authors.append(author)
 
 
-class FundingAward(object):
+class FundingAward(BaseObject):
     """
     An award group as part of a funding group
     """
@@ -212,7 +230,7 @@ class FundingAward(object):
         return self.institution_name
 
 
-class License(object):
+class License(BaseObject):
     """
     License with some preset values by license_id
     """
@@ -260,7 +278,7 @@ class License(object):
             self.p2 = " public domain dedication."
 
 
-class Citation(object):
+class Citation(BaseObject):
     """
     A ref or citation in the article to support crossref VOR deposits initially
     """
@@ -293,7 +311,7 @@ class Citation(object):
         return self.source
 
 
-class Component(object):
+class Component(BaseObject):
     """
     An article component with a component DOI, primarily for crossref VOR deposits
     """
@@ -311,7 +329,7 @@ class Component(object):
         self.permissions = None
 
 
-class RelatedArticle(object):
+class RelatedArticle(BaseObject):
     """
     Related article tag data as an object
     """
