@@ -56,3 +56,45 @@ class TestParseDeep(unittest.TestCase):
             article_unicode = fp.read()
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-02935-v2.xml')
         self.assertEqual(unicode(article_object), article_unicode)
+
+
+    def test_parse_article_00666_simple(self):
+        "some simple comparisons and count list items"
+        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-00666.xml')
+        # list of individual comparisons of interest
+        self.assertIsNotNone(article_object.doi)
+        # count contributors
+        self.assertEqual(len(article_object.contributors), 14)
+        self.assertEqual(len([c for c in article_object.contributors
+                              if c.contrib_type == 'author']), 4)
+        self.assertEqual(len([c for c in article_object.contributors
+                              if c.contrib_type == 'on-behalf-of']), 1)
+        self.assertEqual(len([c for c in article_object.contributors
+                              if c.contrib_type == 'author non-byline']), 9)
+        self.assertEqual(len([c for c in article_object.contributors
+                              if c.collab is not None]), 3)
+        # ethics - not parsed yet
+        self.assertEqual(len(article_object.ethics), 0)
+        # compare dates
+        self.assertEqual(unicode(article_object.dates.get('received')),
+                         "{'date': u'time.struct_time(tm_year=2016, tm_mon=3, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=61, tm_isdst=0)', 'date_type': u'received'}")
+        self.assertEqual(unicode(article_object.dates.get('accepted')),
+                         "{'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=92, tm_isdst=0)', 'date_type': u'accepted'}")
+        self.assertEqual(unicode(article_object.dates.get('pub')),
+                         "{'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=25, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=116, tm_isdst=0)', 'date_type': u'pub'}")
+        # datasets - not parsed yet
+        self.assertEqual(len(article_object.datasets), 0)
+        # related_articles
+        self.assertEqual(len(article_object.related_articles), 0)
+        # funding
+        self.assertEqual(len(article_object.funding_awards), 2)
+        # keywords
+        self.assertEqual(len(article_object.author_keywords), 4)
+        # categories
+        self.assertEqual(len(article_object.article_categories), 2)
+        # research organism
+        self.assertEqual(len(article_object.research_organisms), 2)
+        # components
+        self.assertEqual(len(article_object.component_list), 39)
+        # refs
+        self.assertEqual(len(article_object.ref_list), 54)
