@@ -15,7 +15,8 @@ class TestParseDeep(unittest.TestCase):
         "some simple comparisons and count list items"
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-02935-v2.xml')
         # list of individual comparisons of interest
-        self.assertIsNotNone(article_object.doi)
+        self.assertEqual(article_object.doi, '10.7554/eLife.02935')
+        self.assertEqual(article_object.journal_issn, '2050-084X')
         # count contributors
         self.assertEqual(len(article_object.contributors), 180)
         self.assertEqual(len([c for c in article_object.contributors
@@ -63,7 +64,8 @@ class TestParseDeep(unittest.TestCase):
         "some simple comparisons and count list items"
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-00666.xml')
         # list of individual comparisons of interest
-        self.assertIsNotNone(article_object.doi)
+        self.assertEqual(article_object.doi, '10.7554/eLife.00666')
+        self.assertEqual(article_object.journal_issn, '2050-084X')
         # count contributors
         self.assertEqual(len(article_object.contributors), 14)
         self.assertEqual(len([c for c in article_object.contributors
@@ -105,6 +107,7 @@ class TestParseDeep(unittest.TestCase):
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'cstp77-jats.xml')
         # list of individual comparisons of interest
         self.assertEqual(article_object.doi, "10.5334/cstp.77")
+        self.assertEqual(article_object.journal_issn, '2057-4991')
         self.assertEqual(article_object.journal_title, "Citizen Science: Theory and Practice")
         # count contributors
         self.assertEqual(len(article_object.contributors), 4)
@@ -122,3 +125,10 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.author_keywords), 4)
         # refs
         self.assertEqual(len(article_object.ref_list), 36)
+
+    def test_parse_article_cstp77_compare_fixtures(self):
+        "test by comparing data with test fixtures"
+        with open(os.path.join(XLS_PATH, 'fixtures', 'cstp77', 'cstp77_article_json.txt'), 'rb') as fp:
+            article_json = json.loads(fp.read())
+        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'cstp77-jats.xml')
+        self.assertEqual(article_object.pretty(), article_json)

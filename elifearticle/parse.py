@@ -321,6 +321,8 @@ def build_article_from_xml(article_xml_filename, detail="brief"):
 
     # issn
     article.journal_issn = parser.journal_issn(soup, "electronic")
+    if article.journal_issn is None:
+        article.journal_issn = parser.journal_issn(soup)
 
     # Related articles
     article.related_articles = build_related_articles(parser.related_article(soup))
