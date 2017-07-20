@@ -5,16 +5,15 @@ import elifearticle
 with open('README.rst') as fp:
     readme = fp.read()
 
-with open('requirements.txt') as f:
-    install_requires = f.read().splitlines()
-
 setup(name='elifearticle',
     version=elifearticle.__version__,
     description='eLife article object.',
     long_description=readme,
     packages=['elifearticle'],
     license = 'MIT',
-    install_requires=install_requires,
+    install_requires=[
+        "elifetools"
+    ],
     url='https://github.com/elifesciences/elife-article',
     maintainer='eLife Sciences Publications Ltd.',
     maintainer_email='py@elifesciences.org',
