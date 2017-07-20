@@ -1,6 +1,7 @@
 import unittest
 import os
 import re
+import json
 
 from elifearticle import parse
 
@@ -52,10 +53,10 @@ class TestParseDeep(unittest.TestCase):
 
     def test_parse_article_02935_compare_fixtures(self):
         "test by comparing data with test fixtures"
-        with open(os.path.join(XLS_PATH, 'fixtures', '02935', 'article_unicode.txt'), 'rb') as fp:
-            article_unicode = fp.read()
+        with open(os.path.join(XLS_PATH, 'fixtures', '02935', 'article_json.txt'), 'rb') as fp:
+            article_json = json.loads(fp.read())
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-02935-v2.xml')
-        self.assertEqual(unicode(article_object), article_unicode)
+        self.assertEqual(article_object.pretty(), article_json)
 
 
     def test_parse_article_00666_simple(self):
@@ -98,3 +99,26 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.component_list), 39)
         # refs
         self.assertEqual(len(article_object.ref_list), 54)
+
+    def test_parse_article_cstp77_simple(self):
+        "some simple comparisons and count list items"
+        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'cstp77-jats.xml')
+        # list of individual comparisons of interest
+        self.assertEqual(article_object.doi, "10.5334/cstp.77")
+        self.assertEqual(article_object.journal_title, "Citizen Science: Theory and Practice")
+        # count contributors
+        self.assertEqual(len(article_object.contributors), 4)
+        self.assertEqual(len([c for c in article_object.contributors
+                              if c.contrib_type == 'author']), 4)
+
+        # compare dates
+        self.assertEqual(unicode(article_object.dates.get('received')),
+                         "{'date': u'time.struct_time(tm_year=2016, tm_mon=8, tm_mday=11, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=224, tm_isdst=0)', 'date_type': u'received'}")
+        self.assertEqual(unicode(article_object.dates.get('accepted')),
+                         "{'date': u'time.struct_time(tm_year=2017, tm_mon=3, tm_mday=28, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=87, tm_isdst=0)', 'date_type': u'accepted'}")
+        self.assertEqual(unicode(article_object.dates.get('pub')),
+                         "{'date': u'time.struct_time(tm_year=2017, tm_mon=7, tm_mday=4, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=185, tm_isdst=0)', 'date_type': u'pub'}")
+        # keywords
+        self.assertEqual(len(article_object.author_keywords), 4)
+        # refs
+        self.assertEqual(len(article_object.ref_list), 36)

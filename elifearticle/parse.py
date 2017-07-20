@@ -316,6 +316,12 @@ def build_article_from_xml(article_xml_filename, detail="brief"):
     # Create the article object
     article = ea.Article(doi, title=None)
 
+    # journal title
+    article.journal_title = parser.journal_title(soup)
+
+    # issn
+    article.journal_issn = parser.journal_issn(soup, "electronic")
+
     # Related articles
     article.related_articles = build_related_articles(parser.related_article(soup))
 

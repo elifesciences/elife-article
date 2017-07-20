@@ -90,6 +90,11 @@ class TestArticle(unittest.TestCase):
         self.article.add_funding_award(funding_award)
         self.assertEqual(len(self.article.funding_awards), 1)
 
+    def test_unicode(self):
+        "for test coverage of lists and dict"
+        self.article.datasets = []
+        self.article.license = {}
+        self.assertIsNotNone(unicode(self.article))
 
 class TestArticleDate(unittest.TestCase):
 

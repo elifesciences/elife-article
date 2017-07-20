@@ -1,3 +1,4 @@
+from collections import OrderedDict
 
 class BaseObject(object):
     "base object for shared functions"
@@ -56,6 +57,8 @@ class Article(BaseObject):
         self.datasets = []
         self.funding_awards = []
         self.funding_note = None
+        self.journal_issn = None
+        self.journal_title = None
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
@@ -106,6 +109,21 @@ class Article(BaseObject):
     def add_funding_award(self, funding_award):
         self.funding_awards.append(funding_award)
 
+    def pretty(self):
+        "sort values and format output for viewing and comparing in test scenarios"
+        pretty_obj = OrderedDict()
+        for k,v in sorted(self.__dict__.iteritems()):
+            if v is None:
+                pretty_obj[k] = None
+            elif type(v) in [str, unicode]:
+                pretty_obj[k] = self.__dict__.get(k)
+            elif type(v) in [list]:
+                pretty_obj[k] = []
+            elif type(v) in [dict]:
+                pretty_obj[k] = {}
+            else:
+                pretty_obj[k] = unicode(v)
+        return pretty_obj
 
 class ArticleDate(BaseObject):
     """

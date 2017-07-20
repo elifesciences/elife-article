@@ -18,7 +18,8 @@ class TestParseXml(unittest.TestCase):
         self.passes.append(os.path.join(XLS_PATH, 'elife-02043-v2.xml'))
         self.passes.append(os.path.join(XLS_PATH, 'elife-14003.xml'))
         self.passes.append(os.path.join(XLS_PATH, 'elife-00666.xml'))
+        self.passes.append(os.path.join(XLS_PATH, 'cstp77-jats.xml'))
 
     def test_parse(self):
         articles = parse.build_articles_from_article_xmls(self.passes)
-        self.assertEqual(len(articles), 6)
+        self.assertEqual(len(articles), 7)
