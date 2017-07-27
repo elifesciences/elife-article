@@ -58,6 +58,13 @@ class TestUtils(unittest.TestCase):
         Test some additional examples of unmatched angle brackets specifically
         """
         self.passes = []
+        self.passes.append(('''<p><i><italic><b><bold><sup><sub><sc><u><underline><b>
+                            <bold>superstyling</bold>
+                            </b></underline></u></sc></sub></sup></bold></b></italic></i></p>''',
+                            '''<p><i><italic><b><bold><sup><sub><sc><u><underline><b>
+                            <bold>superstyling</bold>
+                            </b></underline></u></sc></sub></sup></bold></b></italic></i></p>'''))
+
         self.passes.append(('<',
                            '&lt;'))
 

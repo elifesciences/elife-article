@@ -62,6 +62,7 @@ def escape_unmatched_angle_brackets(s):
                     '<bold>', '</bold>',
                     '<sup>', '</sup>',
                     '<sub>', '</sub>',
+                    '<sc>', '</sc>',
                     '<u>', '</u>',
                     '<underline>', '</underline>',
                     '<b>', '</b>',
