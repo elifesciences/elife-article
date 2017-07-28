@@ -316,6 +316,9 @@ def build_article_from_xml(article_xml_filename, detail="brief"):
 
     # Get publisher_id and set object manuscript value
     publisher_id = parser.publisher_id(soup)
+    if not publisher_id and doi:
+        # try to get it from the DOI
+        publisher_id = doi.split('.')[-1]
     article.manuscript = publisher_id
 
     # Set the articleType
