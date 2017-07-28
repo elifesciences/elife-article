@@ -1,11 +1,11 @@
 import re
 
-def repl(m):
-    # Convert hex to int to unicode character
-    chr_code = int(m.group(1), 16)
+def repl(match):
+    "Convert hex to int to unicode character"
+    chr_code = int(match.group(1), 16)
     return unichr(chr_code)
 
-def entity_to_unicode(s):
+def entity_to_unicode(string):
     """
     Quick convert unicode HTML entities to unicode characters
     using a regular expression replacement
@@ -23,31 +23,31 @@ def entity_to_unicode(s):
     replacements.append((r"&rdquo;", '"'))
 
     # First, replace numeric entities with unicode
-    s = re.sub(r"&#x(....);", repl, s)
+    string = re.sub(r"&#x(....);", repl, string)
     # Second, replace some specific entities specified in the list
     for entity, replacement in replacements:
-        s = re.sub(entity, replacement, s)
-    return s
+        string = re.sub(entity, replacement, string)
+    return string
 
-def xml_escape_ampersand(s):
+def xml_escape_ampersand(string):
     """
     Quick convert unicode ampersand characters not associated with
     a numbered entity or not starting with allowed characters to a plain &amp;
     """
-    start_with_match = "(\#x(....);|lt;|gt;|amp;)"
+    start_with_match = r"(\#x(....);|lt;|gt;|amp;)"
     # The pattern below is match & that is not immediately followed by #
-    s = re.sub(r"&(?!" + start_with_match + ")", '&amp;', s)
-    return s
+    string = re.sub(r"&(?!" + start_with_match + ")", '&amp;', string)
+    return string
 
-def replace_tags(s, from_tag='i', to_tag='italic'):
+def replace_tags(string, from_tag='i', to_tag='italic'):
     """
     Replace tags such as <i> to <italic>
     <sup> and <sub> are allowed and do not need to be replaced
     This does not validate markup
     """
-    s = s.replace('<' + from_tag + '>', '<' + to_tag + '>')
-    s = s.replace('</' + from_tag + '>', '</' + to_tag + '>')
-    return s
+    string = string.replace('<' + from_tag + '>', '<' + to_tag + '>')
+    string = string.replace('</' + from_tag + '>', '</' + to_tag + '>')
+    return string
 
 def allowed_tags():
     "list of whitelisted tags"
@@ -65,7 +65,7 @@ def allowed_tags():
         '<bold>', '</bold>',
         '<p>', '</p>']
 
-def escape_unmatched_angle_brackets(s):
+def escape_unmatched_angle_brackets(string):
     """
     In order to make an XML string less malformed, escape
     unmatched less than tags that are not part of an allowed tag
@@ -74,12 +74,10 @@ def escape_unmatched_angle_brackets(s):
     """
 
     # Split string on tags
-    tags = re.split('(<.*?>)', s)
+    tags = re.split('(<.*?>)', string)
     #print tags
 
-    for i in range(len(tags)):
-        val = tags[i]
-
+    for i, val in enumerate(tags):
         # Use angle bracket character counts to find unmatched tags
         #  as well as our allowed_tags list to ignore good tags
 
