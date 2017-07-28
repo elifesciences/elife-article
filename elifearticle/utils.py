@@ -39,6 +39,17 @@ def xml_escape_ampersand(string):
     string = re.sub(r"&(?!" + start_with_match + ")", '&amp;', string)
     return string
 
+def remove_tag(tag_name, string):
+    """
+    Remove open and close tags - the tags themselves only - using
+    a non-greedy angle bracket pattern match
+    """
+    if not string:
+        return string
+    p = re.compile('</?' + tag_name + '.*?>')
+    string = p.sub('', string)
+    return string
+
 def replace_tags(string, from_tag='i', to_tag='italic'):
     """
     Replace tags such as <i> to <italic>

@@ -1,6 +1,6 @@
-import re
 from elifetools import parseJATS as parser
 from elifearticle import article as ea
+from elifearticle import utils
 
 
 def text_from_affiliation_elements(department, institution, city, country):
@@ -271,19 +271,6 @@ def build_related_articles(related_articles):
 
     return article_list
 
-
-def remove_tag(tag_name, string):
-    """
-    Remove open and close tags - the tags themselves only - using
-    a non-greedy angle bracket pattern match
-    """
-    if not string:
-        return string
-    p = re.compile('</?' + tag_name + '.*?>')
-    string = p.sub('', string)
-    return string
-
-
 def clean_abstract(abstract):
     """
     Remove unwanted tags from abstract string,
@@ -292,7 +279,7 @@ def clean_abstract(abstract):
 
     remove_tags = ['xref', 'ext-link', 'inline-formula', 'mml:*']
     for tag_name in remove_tags:
-        abstract = remove_tag(tag_name, abstract)
+        abstract = utils.remove_tag(tag_name, abstract)
 
     return abstract
 
