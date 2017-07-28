@@ -128,8 +128,8 @@ def build_ref_list(refs):
             ref.publication_type = reference.get('publication-type')
 
         # Article title
-        if reference.get('article_title'):
-            ref.article_title = reference.get('article_title')
+        if reference.get('full_article_title'):
+            ref.article_title = reference.get('full_article_title')
 
         # Article title
         if reference.get('source'):
