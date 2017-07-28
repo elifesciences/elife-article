@@ -49,6 +49,22 @@ def replace_tags(s, from_tag='i', to_tag='italic'):
     s = s.replace('</' + from_tag + '>', '</' + to_tag + '>')
     return s
 
+def allowed_tags():
+    "list of whitelisted tags"
+    return [
+        '<i>', '</i>',
+        '<italic>', '</italic>',
+        '<b>', '</b>',
+        '<bold>', '</bold>',
+        '<sup>', '</sup>',
+        '<sub>', '</sub>',
+        '<sc>', '</sc>',
+        '<u>', '</u>',
+        '<underline>', '</underline>',
+        '<b>', '</b>',
+        '<bold>', '</bold>',
+        '<p>', '</p>']
+
 def escape_unmatched_angle_brackets(s):
     """
     In order to make an XML string less malformed, escape
@@ -56,18 +72,6 @@ def escape_unmatched_angle_brackets(s):
     Note: Very, very basic, and do not try regex \1 style replacements
       on unicode ever again! Instead this uses string replace
     """
-    allowed_tags = ['<i>', '</i>',
-                    '<italic>', '</italic>',
-                    '<b>', '</b>',
-                    '<bold>', '</bold>',
-                    '<sup>', '</sup>',
-                    '<sub>', '</sub>',
-                    '<sc>', '</sc>',
-                    '<u>', '</u>',
-                    '<underline>', '</underline>',
-                    '<b>', '</b>',
-                    '<bold>', '</bold>',
-                    '<p>', '</p>']
 
     # Split string on tags
     tags = re.split('(<.*?>)', s)
@@ -79,7 +83,7 @@ def escape_unmatched_angle_brackets(s):
         # Use angle bracket character counts to find unmatched tags
         #  as well as our allowed_tags list to ignore good tags
 
-        if val.count('<') == val.count('>') and val not in allowed_tags:
+        if val.count('<') == val.count('>') and val not in allowed_tags():
             val = val.replace('<', '&lt;')
             val = val.replace('>', '&gt;')
         else:
@@ -89,7 +93,7 @@ def escape_unmatched_angle_brackets(s):
                     val = val.replace('<', '&lt;', 1)
                 elif val.count('<') != val.count('>') and val.count('>') > 0:
                     val = val.replace('>', '&gt;', 1)
-            if val.count('<') == val.count('>') and val not in allowed_tags:
+            if val.count('<') == val.count('>') and val not in allowed_tags():
                 # Send it through again in case there are nested unmatched tags
                 val = escape_unmatched_angle_brackets(val)
 
