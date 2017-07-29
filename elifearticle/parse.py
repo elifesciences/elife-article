@@ -139,6 +139,10 @@ def build_ref_list(refs):
         if reference.get('volume'):
             ref.volume = reference.get('volume')
 
+        # Issue
+        if reference.get('issue'):
+            ref.issue = reference.get('issue')
+
         # First page
         if reference.get('fpage'):
             ref.fpage = reference.get('fpage')

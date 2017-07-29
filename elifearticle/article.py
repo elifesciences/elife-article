@@ -312,6 +312,7 @@ class Citation(BaseObject):
         self.article_title = None
         self.source = None
         self.volume = None
+        self.issue = None
         self.fpage = None
         self.lpage = None
         self.elocation_id = None
