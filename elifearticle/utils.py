@@ -109,3 +109,8 @@ def escape_unmatched_angle_brackets(string):
         tags[i] = val
 
     return ''.join(tags)
+
+def set_attr_if_value(obj, attr_name, value):
+    "shorthand method to set object values if the value is not none"
+    if value is not None:
+        setattr(obj, attr_name, value)

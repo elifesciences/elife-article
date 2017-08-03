@@ -276,6 +276,26 @@ def build_related_articles(related_articles):
 
     return article_list
 
+
+def build_pub_dates(article, pub_dates):
+    for pub_date in pub_dates:
+        # always want a date type, take it from pub-type if must
+        if pub_date.get('date-type'):
+            date_instance = ea.ArticleDate(pub_date.get('date-type'),
+                                           pub_date.get('date'))
+        elif pub_date.get('pub-type'):
+            date_instance = ea.ArticleDate(pub_date.get('pub-type'),
+                                           pub_date.get('date'))
+        # Set more values
+        utils.set_attr_if_value(date_instance, 'pub_type', pub_date.get('pub-type'))
+        utils.set_attr_if_value(date_instance, 'publication_format',
+                                pub_date.get('publication-format'))
+        utils.set_attr_if_value(date_instance, 'day', pub_date.get('day'))
+        utils.set_attr_if_value(date_instance, 'month', pub_date.get('month'))
+        utils.set_attr_if_value(date_instance, 'year', pub_date.get('year'))
+        article.add_date(date_instance)
+
+
 def clean_abstract(abstract):
     """
     Remove unwanted tags from abstract string,
@@ -388,10 +408,7 @@ def build_article_from_xml(article_xml_filename, detail="brief"):
             article.add_date(date_instance)
 
     # Pub date
-    pub_date = parser.pub_date(soup)
-    if pub_date:
-        date_instance = ea.ArticleDate("pub", pub_date)
-        article.add_date(date_instance)
+    build_pub_dates(article, parser.pub_dates(soup))
 
     # Set the volume if present
     volume = parser.volume(soup)
