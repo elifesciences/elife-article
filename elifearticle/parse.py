@@ -1,4 +1,5 @@
 from elifetools import parseJATS as parser
+from elifetools import utils as eautils
 from elifearticle import article as ea
 from elifearticle import utils
 
@@ -166,13 +167,13 @@ def build_ref_list(refs):
         # Authors
         if reference.get('authors'):
             for author in reference.get('authors'):
-                # TODO - Need to parse surname and given-names
                 ref_author = {}
-                if 'surname' in author:
-                    ref_author['surname'] = author['surname']
-                    ref.add_author(ref_author)
-                elif 'collab' in author:
-                    ref_author['collab'] = author['collab']
+                eautils.set_if_value(ref_author, 'group-type', author.get('group-type'))
+                eautils.set_if_value(ref_author, 'surname', author.get('surname'))
+                eautils.set_if_value(ref_author, 'given-names', author.get('given-names'))
+                eautils.set_if_value(ref_author, 'collab', author.get('collab'))
+
+                if len(ref_author) > 0:
                     ref.add_author(ref_author)
 
         ref_list.append(ref)
