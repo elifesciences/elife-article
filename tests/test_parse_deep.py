@@ -33,7 +33,7 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(unicode(article_object.dates.get('accepted')),
                          "{'date': u'time.struct_time(tm_year=2014, tm_mon=9, tm_mday=26, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=269, tm_isdst=0)', 'date_type': u'accepted'}")
         self.assertEqual(unicode(article_object.dates.get('pub')),
-                         "{'date': u'time.struct_time(tm_year=2014, tm_mon=10, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=2, tm_yday=274, tm_isdst=0)', 'date_type': u'pub'}")
+                         "{'date_type': u'pub', 'day': u'01', 'year': u'2014', 'date': u'time.struct_time(tm_year=2014, tm_mon=10, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=2, tm_yday=274, tm_isdst=0)', 'month': u'10', 'publication_format': u'electronic'}")
         # datasets - not parsed yet
         self.assertEqual(len(article_object.datasets), 0)
         # related_articles
@@ -83,8 +83,8 @@ class TestParseDeep(unittest.TestCase):
                          "{'date': u'time.struct_time(tm_year=2016, tm_mon=3, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=61, tm_isdst=0)', 'date_type': u'received'}")
         self.assertEqual(unicode(article_object.dates.get('accepted')),
                          "{'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=92, tm_isdst=0)', 'date_type': u'accepted'}")
-        self.assertEqual(unicode(article_object.dates.get('pub')),
-                         "{'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=25, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=116, tm_isdst=0)', 'date_type': u'pub'}")
+        self.assertEqual(unicode(article_object.dates.get('publication')),
+                         "{'date_type': u'publication', 'day': u'25', 'year': u'2016', 'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=25, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=116, tm_isdst=0)', 'month': u'04', 'publication_format': u'electronic'}")
         # datasets - not parsed yet
         self.assertEqual(len(article_object.datasets), 0)
         # related_articles
@@ -120,7 +120,7 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(unicode(article_object.dates.get('accepted')),
                          "{'date': u'time.struct_time(tm_year=2017, tm_mon=3, tm_mday=28, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=87, tm_isdst=0)', 'date_type': u'accepted'}")
         self.assertEqual(unicode(article_object.dates.get('pub')),
-                         "{'date': u'time.struct_time(tm_year=2017, tm_mon=7, tm_mday=4, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=185, tm_isdst=0)', 'date_type': u'pub'}")
+                         "{'date_type': u'pub', 'day': u'04', 'year': u'2017', 'date': u'time.struct_time(tm_year=2017, tm_mon=7, tm_mday=4, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=185, tm_isdst=0)', 'month': u'07', 'publication_format': u'electronic'}")
         # keywords
         self.assertEqual(len(article_object.author_keywords), 4)
         # refs

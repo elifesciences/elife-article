@@ -129,6 +129,14 @@ class ArticleDate(BaseObject):
     """
     A struct_time date and a date_type
     """
+    date_type = None
+    date = None
+    pub_type = None
+    publication_format = None
+    day = None
+    month = None
+    year = None
+
     def __new__(cls, date_type, date):
         new_instance = object.__new__(cls)
         new_instance.init(date_type, date)
