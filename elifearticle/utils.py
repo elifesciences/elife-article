@@ -29,16 +29,6 @@ def entity_to_unicode(string):
         string = re.sub(entity, replacement, string)
     return string
 
-def xml_escape_ampersand(string):
-    """
-    Quick convert unicode ampersand characters not associated with
-    a numbered entity or not starting with allowed characters to a plain &amp;
-    """
-    start_with_match = r"(\#x(....);|lt;|gt;|amp;)"
-    # The pattern below is match & that is not immediately followed by #
-    string = re.sub(r"&(?!" + start_with_match + ")", '&amp;', string)
-    return string
-
 def remove_tag(tag_name, string):
     """
     Remove open and close tags - the tags themselves only - using
@@ -59,56 +49,6 @@ def replace_tags(string, from_tag='i', to_tag='italic'):
     string = string.replace('<' + from_tag + '>', '<' + to_tag + '>')
     string = string.replace('</' + from_tag + '>', '</' + to_tag + '>')
     return string
-
-def allowed_tags():
-    "list of whitelisted tags"
-    return [
-        '<i>', '</i>',
-        '<italic>', '</italic>',
-        '<b>', '</b>',
-        '<bold>', '</bold>',
-        '<sup>', '</sup>',
-        '<sub>', '</sub>',
-        '<sc>', '</sc>',
-        '<u>', '</u>',
-        '<underline>', '</underline>',
-        '<b>', '</b>',
-        '<bold>', '</bold>',
-        '<p>', '</p>']
-
-def escape_unmatched_angle_brackets(string):
-    """
-    In order to make an XML string less malformed, escape
-    unmatched less than tags that are not part of an allowed tag
-    Note: Very, very basic, and do not try regex \1 style replacements
-      on unicode ever again! Instead this uses string replace
-    """
-
-    # Split string on tags
-    tags = re.split('(<.*?>)', string)
-    #print tags
-
-    for i, val in enumerate(tags):
-        # Use angle bracket character counts to find unmatched tags
-        #  as well as our allowed_tags list to ignore good tags
-
-        if val.count('<') == val.count('>') and val not in allowed_tags():
-            val = val.replace('<', '&lt;')
-            val = val.replace('>', '&gt;')
-        else:
-            # Count how many unmatched tags we have
-            while val.count('<') != val.count('>'):
-                if val.count('<') != val.count('>') and val.count('<') > 0:
-                    val = val.replace('<', '&lt;', 1)
-                elif val.count('<') != val.count('>') and val.count('>') > 0:
-                    val = val.replace('>', '&gt;', 1)
-            if val.count('<') == val.count('>') and val not in allowed_tags():
-                # Send it through again in case there are nested unmatched tags
-                val = escape_unmatched_angle_brackets(val)
-
-        tags[i] = val
-
-    return ''.join(tags)
 
 def set_attr_if_value(obj, attr_name, value):
     "shorthand method to set object values if the value is not none"
