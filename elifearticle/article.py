@@ -349,6 +349,7 @@ class Component(BaseObject):
 
     def init(self):
         self.id = None
+        self.type = None
         self.title = None
         self.subtitle = None
         self.mime_type = None

@@ -221,6 +221,9 @@ def build_components(components):
         # id
         component.id = comp.get('id')
 
+        # type
+        component.type = comp.get('type')
+
         # DOI and Resource URL
         if comp.get('doi'):
             component.doi = comp.get('doi')

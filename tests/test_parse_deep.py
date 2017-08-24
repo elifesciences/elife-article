@@ -102,6 +102,9 @@ class TestParseDeep(unittest.TestCase):
         # component id examples
         self.assertEqual(article_object.component_list[0].id, None)
         self.assertEqual(article_object.component_list[2].id, 'table1')
+        # component type examples
+        self.assertEqual(article_object.component_list[0].type, 'abstract')
+        self.assertEqual(article_object.component_list[2].type, 'table-wrap')
         # refs
         self.assertEqual(len(article_object.ref_list), 54)
 
