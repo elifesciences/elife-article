@@ -99,6 +99,9 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.research_organisms), 2)
         # components
         self.assertEqual(len(article_object.component_list), 39)
+        # component id examples
+        self.assertEqual(article_object.component_list[0].id, None)
+        self.assertEqual(article_object.component_list[2].id, 'table1')
         # refs
         self.assertEqual(len(article_object.ref_list), 54)
 

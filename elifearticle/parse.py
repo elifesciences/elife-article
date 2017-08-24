@@ -218,6 +218,9 @@ def build_components(components):
     for comp in components:
         component = ea.Component()
 
+        # id
+        component.id = comp.get('id')
+
         # DOI and Resource URL
         if comp.get('doi'):
             component.doi = comp.get('doi')

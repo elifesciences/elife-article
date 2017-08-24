@@ -348,6 +348,7 @@ class Component(BaseObject):
         return new_instance
 
     def init(self):
+        self.id = None
         self.title = None
         self.subtitle = None
         self.mime_type = None
