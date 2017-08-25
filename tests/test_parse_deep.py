@@ -105,6 +105,25 @@ class TestParseDeep(unittest.TestCase):
         # component type examples
         self.assertEqual(article_object.component_list[0].type, 'abstract')
         self.assertEqual(article_object.component_list[2].type, 'table-wrap')
+        self.assertEqual(article_object.component_list[5].type, 'supplementary-material')
+        self.assertEqual(article_object.component_list[9].type, 'fig')
+        self.assertEqual(article_object.component_list[13].type, 'media')
+        self.assertEqual(article_object.component_list[15].type, 'supplementary-material')
+        self.assertEqual(article_object.component_list[19].type, 'boxed-text')
+        self.assertEqual(article_object.component_list[22].type, 'supplementary-material')
+        self.assertEqual(article_object.component_list[34].type, 'sub-article')
+        self.assertEqual(article_object.component_list[35].type, 'sub-article')
+        # component asset examples
+        self.assertEqual(article_object.component_list[0].asset, None)
+        self.assertEqual(article_object.component_list[2].asset, None)
+        self.assertEqual(article_object.component_list[5].asset, 'data')
+        self.assertEqual(article_object.component_list[9].asset, 'figsupp')
+        self.assertEqual(article_object.component_list[13].asset, 'media')
+        self.assertEqual(article_object.component_list[15].asset, 'code')
+        self.assertEqual(article_object.component_list[19].asset, None)
+        self.assertEqual(article_object.component_list[22].asset, 'supp')
+        self.assertEqual(article_object.component_list[34].asset, 'dec')
+        self.assertEqual(article_object.component_list[35].asset, 'resp')
         # refs
         self.assertEqual(len(article_object.ref_list), 54)
 
