@@ -314,7 +314,21 @@ def clean_abstract(abstract):
     return abstract
 
 
-def build_article_from_xml(article_xml_filename, detail="brief"):
+def build_part_check(part, build_parts):
+    """
+    check if only specific parts were specified to be build when parsing
+    if the list build_parts is empty, then all parts will be parsed
+    """
+    if len(build_parts) == 0:
+        return True
+    else:
+        if part in build_parts:
+            return True
+        else:
+            return False
+
+
+def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[]):
     """
     Parse JATS XML with elifetools parser, and populate an
     eLifePOA article object
@@ -322,6 +336,7 @@ def build_article_from_xml(article_xml_filename, detail="brief"):
     detail="brief" is normally enough,
     detail="full" will populate all the contributor affiliations that are linked by xref tags
     """
+    build_part = lambda part: build_part_check(part, build_parts)
 
     error_count = 0
 
@@ -334,108 +349,128 @@ def build_article_from_xml(article_xml_filename, detail="brief"):
     article = ea.Article(doi, title=None)
 
     # journal title
-    article.journal_title = parser.journal_title(soup)
+    if build_part('basic'):
+        article.journal_title = parser.journal_title(soup)
 
     # issn
-    article.journal_issn = parser.journal_issn(soup, "electronic")
-    if article.journal_issn is None:
-        article.journal_issn = parser.journal_issn(soup)
+    if build_part('basic'):
+        article.journal_issn = parser.journal_issn(soup, "electronic")
+        if article.journal_issn is None:
+            article.journal_issn = parser.journal_issn(soup)
 
     # Related articles
-    article.related_articles = build_related_articles(parser.related_article(soup))
+    if build_part('related_articles'):
+        article.related_articles = build_related_articles(parser.related_article(soup))
 
     # Get publisher_id and set object manuscript value
-    publisher_id = parser.publisher_id(soup)
-    if not publisher_id and doi:
-        # try to get it from the DOI
-        publisher_id = doi.split('.')[-1]
-    article.manuscript = publisher_id
+    if build_part('basic'):
+        publisher_id = parser.publisher_id(soup)
+        if not publisher_id and doi:
+            # try to get it from the DOI
+            publisher_id = doi.split('.')[-1]
+        article.manuscript = publisher_id
 
     # Set the articleType
-    article_type = parser.article_type(soup)
-    if article_type:
-        article.articleType = article_type
+    if build_part('basic'):
+        article_type = parser.article_type(soup)
+        if article_type:
+            article.articleType = article_type
 
     # title
-    article.title = parser.full_title(soup)
+    if build_part('basic'):
+        article.title = parser.full_title(soup)
     #print article.title
 
     # abstract
-    article.abstract = clean_abstract(parser.full_abstract(soup))
+    if build_part('abstract'):
+        article.abstract = clean_abstract(parser.full_abstract(soup))
 
     # digest
-    article.digest = clean_abstract(parser.full_digest(soup))
+    if build_part('abstract'):
+        article.digest = clean_abstract(parser.full_digest(soup))
 
     # elocation-id
-    article.elocation_id = parser.elocation_id(soup)
+    if build_part('basic'):
+        article.elocation_id = parser.elocation_id(soup)
 
     # contributors
-    all_contributors = parser.contributors(soup, detail)
-    author_contributors = filter(lambda con: con.get('type')
-                                 in ['author', 'on-behalf-of'], all_contributors)
-    contrib_type = "author"
-    contributors = build_contributors(author_contributors, contrib_type)
-
-    contrib_type = "author non-byline"
-    authors = parser.authors_non_byline(soup, detail)
-    contributors_non_byline = build_contributors(authors, contrib_type)
-    article.contributors = contributors + contributors_non_byline
+    if build_part('contributors'):
+        all_contributors = parser.contributors(soup, detail)
+        author_contributors = filter(lambda con: con.get('type')
+                                     in ['author', 'on-behalf-of'], all_contributors)
+        contrib_type = "author"
+        contributors = build_contributors(author_contributors, contrib_type)
+    
+        contrib_type = "author non-byline"
+        authors = parser.authors_non_byline(soup, detail)
+        contributors_non_byline = build_contributors(authors, contrib_type)
+        article.contributors = contributors + contributors_non_byline
 
     # license href
-    license = ea.License()
-    license.href = parser.license_url(soup)
-    article.license = license
+    if build_part('license'):
+        license = ea.License()
+        license.href = parser.license_url(soup)
+        article.license = license
 
     # article_category
-    article.article_categories = parser.category(soup)
+    if build_part('categories'):
+        article.article_categories = parser.category(soup)
 
     # keywords
-    article.author_keywords = parser.keywords(soup)
+    if build_part('keywords'):
+        article.author_keywords = parser.keywords(soup)
 
     # research organisms
-    article.research_organisms = parser.research_organism(soup)
+    if build_part('research_organisms'):
+        article.research_organisms = parser.research_organism(soup)
 
     # funding awards
-    article.funding_awards = build_funding(parser.full_award_groups(soup))
+    if build_part('funding'):
+        article.funding_awards = build_funding(parser.full_award_groups(soup))
 
     # references or citations
-    article.ref_list = build_ref_list(parser.refs(soup))
+    if build_part('references'):
+        article.ref_list = build_ref_list(parser.refs(soup))
 
     # components with component DOI
-    article.component_list = build_components(parser.components(soup))
+    if build_part('components'):
+        article.component_list = build_components(parser.components(soup))
 
     # History dates
-    date_types = ["received", "accepted"]
-    for date_type in date_types:
-        history_date = parser.history_date(soup, date_type)
-        if history_date:
-            date_instance = ea.ArticleDate(date_type, history_date)
-            article.add_date(date_instance)
+    if build_part('history'):
+        date_types = ["received", "accepted"]
+        for date_type in date_types:
+            history_date = parser.history_date(soup, date_type)
+            if history_date:
+                date_instance = ea.ArticleDate(date_type, history_date)
+                article.add_date(date_instance)
 
     # Pub date
-    build_pub_dates(article, parser.pub_dates(soup))
+    if build_part('pub_dates'):
+        build_pub_dates(article, parser.pub_dates(soup))
 
     # Set the volume if present
-    volume = parser.volume(soup)
-    if volume:
-        article.volume = volume
+    if build_part('volume'):
+        volume = parser.volume(soup)
+        if volume:
+            article.volume = volume
 
-    article.is_poa = parser.is_poa(soup)
+    if build_part('is_poa'):
+        article.is_poa = parser.is_poa(soup)
 
     return article, error_count
 
 
-def build_articles_from_article_xmls(article_xmls):
+def build_articles_from_article_xmls(article_xmls, detail="full", build_parts=[]):
     """
     Given a list of article XML filenames, convert to article objects
     """
 
     poa_articles = []
-    detail = "full"
 
     for article_xml in article_xmls:
         print "working on ", article_xml
-        article, error_count = build_article_from_xml(article_xml, detail)
+        article, error_count = build_article_from_xml(article_xml, detail, build_parts)
         if error_count == 0:
             poa_articles.append(article)
 
