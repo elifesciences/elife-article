@@ -227,12 +227,8 @@ def build_components(components):
         # asset, if available
         component.asset = comp.get('asset')
 
-        # DOI and Resource URL
-        if comp.get('doi'):
-            component.doi = comp.get('doi')
-            # Based on lookup URL path logic
-            doi_resource = "http://elifesciences.org/lookup/doi/" + comp.get('doi')
-            component.doi_resource = doi_resource
+        # DOI
+        component.doi = comp.get('doi')
 
         if component_title(comp) != '':
             component.title = component_title(comp)
