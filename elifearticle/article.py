@@ -325,9 +325,24 @@ class Citation(BaseObject):
         self.lpage = None
         self.elocation_id = None
         self.doi = None
+        self.uri = None
+        self.pmid = None
+        self.isbn = None
         self.year = None
+        self.date_in_citation = None
+        self.publisher_loc = None
+        self.publisher_name = None
+        self.edition = None
+        self.version = None
+        self.comment = None
+        self.data_title = None
+        self.conf_name = None
+        # For patents
+        self.patent = None
+        self.country = None
         # For books
         self.volume_title = None
+        self.chapter_title = None
 
     def add_author(self, author):
         # Author is a dict of values

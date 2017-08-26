@@ -120,50 +120,56 @@ def build_ref_list(refs):
     Given parsed references build a list of ref objects
     """
     ref_list = []
-
     for reference in refs:
         ref = ea.Citation()
-
         # Publcation Type
-        if reference.get('publication-type'):
-            ref.publication_type = reference.get('publication-type')
-
+        utils.set_attr_if_value(ref, 'publication_type', reference.get('publication-type'))
         # Article title
-        if reference.get('full_article_title'):
-            ref.article_title = reference.get('full_article_title')
-
-        # Article title
-        if reference.get('source'):
-            ref.source = reference.get('source')
-
+        utils.set_attr_if_value(ref, 'article_title', reference.get('full_article_title'))
+        # Source
+        utils.set_attr_if_value(ref, 'source', reference.get('source'))
         # Volume
-        if reference.get('volume'):
-            ref.volume = reference.get('volume')
-
+        utils.set_attr_if_value(ref, 'volume', reference.get('volume'))
         # Issue
-        if reference.get('issue'):
-            ref.issue = reference.get('issue')
-
+        utils.set_attr_if_value(ref, 'issue', reference.get('issue'))
         # First page
-        if reference.get('fpage'):
-            ref.fpage = reference.get('fpage')
-
+        utils.set_attr_if_value(ref, 'fpage', reference.get('fpage'))
         # Last page
-        if reference.get('lpage'):
-            ref.lpage = reference.get('lpage')
-
+        utils.set_attr_if_value(ref, 'lpage', reference.get('lpage'))
         # DOI
-        if reference.get('reference_id'):
-            ref.doi = reference.get('reference_id')
-
+        utils.set_attr_if_value(ref, 'doi', reference.get('doi'))
         # Year
-        if reference.get('year'):
-            ref.year = reference.get('year')
-
+        utils.set_attr_if_value(ref, 'year', reference.get('year'))
+        # date-in-citation
+        utils.set_attr_if_value(ref, 'date_in_citation', reference.get('date-in-citation'))
         # elocation-id
-        if reference.get('elocation-id'):
-            ref.elocation_id = reference.get('elocation-id')
-
+        utils.set_attr_if_value(ref, 'elocation_id', reference.get('elocation-id'))
+        # uri
+        utils.set_attr_if_value(ref, 'uri', reference.get('uri'))
+        # pmid
+        utils.set_attr_if_value(ref, 'pmid', reference.get('pmid'))
+        # isbn
+        utils.set_attr_if_value(ref, 'isbn', reference.get('isbn'))
+        # patent
+        utils.set_attr_if_value(ref, 'patent', reference.get('patent'))
+        # patent country
+        utils.set_attr_if_value(ref, 'country', reference.get('country'))
+        # publisher-loc
+        utils.set_attr_if_value(ref, 'publisher_loc', reference.get('publisher_loc'))
+        # publisher-name
+        utils.set_attr_if_value(ref, 'publisher_name', reference.get('publisher_name'))
+        # edition
+        utils.set_attr_if_value(ref, 'edition', reference.get('edition'))
+        # version
+        utils.set_attr_if_value(ref, 'version', reference.get('version'))
+        # chapter-title
+        utils.set_attr_if_value(ref, 'chapter_title', reference.get('chapter-title'))
+        # comment
+        utils.set_attr_if_value(ref, 'comment', reference.get('comment'))
+        # data-title
+        utils.set_attr_if_value(ref, 'data_title', reference.get('data-title'))
+        # conf-name
+        utils.set_attr_if_value(ref, 'conf_name', reference.get('conf-name'))
         # Authors
         if reference.get('authors'):
             for author in reference.get('authors'):
@@ -172,12 +178,9 @@ def build_ref_list(refs):
                 eautils.set_if_value(ref_author, 'surname', author.get('surname'))
                 eautils.set_if_value(ref_author, 'given-names', author.get('given-names'))
                 eautils.set_if_value(ref_author, 'collab', author.get('collab'))
-
                 if len(ref_author) > 0:
                     ref.add_author(ref_author)
-
         ref_list.append(ref)
-
     return ref_list
 
 
