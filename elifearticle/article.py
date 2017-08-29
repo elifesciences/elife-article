@@ -329,6 +329,8 @@ class Citation(BaseObject):
         self.pmid = None
         self.isbn = None
         self.year = None
+        self.year_iso_8601_date = None
+        self.year_numeric = None
         self.date_in_citation = None
         self.publisher_loc = None
         self.publisher_name = None

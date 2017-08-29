@@ -54,3 +54,9 @@ def set_attr_if_value(obj, attr_name, value):
     "shorthand method to set object values if the value is not none"
     if value is not None:
         setattr(obj, attr_name, value)
+
+def is_year_numeric(value):
+    # True if all digits
+    if value and re.match("^[0-9]+$", value):
+        return True
+    return False
