@@ -61,6 +61,9 @@ class TestParseBuildRefList(unittest.TestCase):
         self.assertEqual(article.ref_list[31].country, 'United States')
         # ref bib37 details
         self.assertEqual(article.ref_list[36].comment, 'In press')
+        # ref bib40 details
+        self.assertEqual(article.ref_list[39].year_iso_8601_date, '1993-09-09')
+        self.assertEqual(article.ref_list[39].year_numeric, 1993)
         # ref bib46 author is a collab
         self.assertEqual(article.ref_list[45].authors[0].get('collab'),
                          'The <italic>Shigella</italic> Genome Sequencing Consortium')

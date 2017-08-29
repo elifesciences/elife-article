@@ -140,6 +140,16 @@ def build_ref_list(refs):
         utils.set_attr_if_value(ref, 'doi', reference.get('doi'))
         # Year
         utils.set_attr_if_value(ref, 'year', reference.get('year'))
+        # Year date in iso 8601 format
+        utils.set_attr_if_value(ref, 'year_iso_8601_date', reference.get('year-iso-8601-date'))
+        # Can set the year_numeric now
+        if ref.year_iso_8601_date is not None:
+            # First preference take it from the iso 8601 date, if available
+                ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
+        if ref.year_numeric is None:
+            # Second preference, use the year value if it is entirely numeric
+            if utils.is_year_numeric(ref.year):
+                ref.year_numeric = ref.year
         # date-in-citation
         utils.set_attr_if_value(ref, 'date_in_citation', reference.get('date-in-citation'))
         # elocation-id
