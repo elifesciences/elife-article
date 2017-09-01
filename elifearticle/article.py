@@ -315,6 +315,7 @@ class Citation(BaseObject):
 
     def init(self):
         self.publication_type = None
+        self.id = None
         self.authors = []
         # For journals
         self.article_title = None

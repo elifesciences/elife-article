@@ -20,6 +20,7 @@ class TestParseBuildRefList(unittest.TestCase):
 
         # Now check various details as desired
         # ref bib1 details
+        self.assertEqual(article.ref_list[0].id, 'bib1')
         self.assertEqual(article.ref_list[0].article_title, 'TIP47 is a key effector for Rab9 localization')
         self.assertEqual(article.ref_list[0].source, 'The Journal of Cell Biology')
         self.assertEqual(article.ref_list[0].volume, '173')

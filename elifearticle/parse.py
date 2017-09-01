@@ -124,6 +124,8 @@ def build_ref_list(refs):
         ref = ea.Citation()
         # Publcation Type
         utils.set_attr_if_value(ref, 'publication_type', reference.get('publication-type'))
+        # id
+        utils.set_attr_if_value(ref, 'id', reference.get('id'))
         # Article title
         utils.set_attr_if_value(ref, 'article_title', reference.get('full_article_title'))
         # Source
