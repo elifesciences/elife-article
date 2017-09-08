@@ -213,10 +213,16 @@ class Dataset(BaseObject):
     def init(self):
         self.dataset_type = None
         self.authors = []
+        # source_id is the uri in PoA generation
+        # todo: refactor PoA use the uri attribute then delete the source_id attribute here
         self.source_id = None
         self.year = None
         self.title = None
         self.license_info = None
+        self.accession_id = None
+        self.doi = None
+        self.uri = None
+        self.comment = None
 
     def add_author(self, author):
         self.authors.append(author)

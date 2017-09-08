@@ -56,7 +56,7 @@ class TestParseXml(unittest.TestCase):
         #second, set all the build parts and the result should be the same
         detail = 'full'
         build_parts = [
-            'abstract', 'basic', 'categories', 'components', 'contributors', 'funding',
+            'abstract', 'basic', 'categories', 'components', 'contributors', 'datasets', 'funding',
             'history', 'is_poa', 'keywords', 'license', 'pub_dates', 'references',
             'related_articles', 'research_organisms', 'volume']
         article_xmls = [os.path.join(XLS_PATH, 'elife-02043-v2.xml')]

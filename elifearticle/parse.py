@@ -115,6 +115,46 @@ def build_funding(award_groups):
     return funding_awards
 
 
+def build_datasets(dataset_json):
+    """
+    Given datasets in JSON format, build and return a list of dataset objects
+    """
+    if not dataset_json:
+        return []
+
+    datasets = []
+    dataset_type_map = {
+        'generated': 'datasets',
+        'used': 'prev_published_datasets'
+    }
+    for dataset_key, dataset_type in dataset_type_map.iteritems():
+        if dataset_json.get(dataset_key):
+            for dataset_values in dataset_json.get(dataset_key):
+                dataset = ea.Dataset()
+                utils.set_attr_if_value(dataset, 'dataset_type', dataset_type)
+                utils.set_attr_if_value(dataset, 'year', dataset_values.get('date'))
+                utils.set_attr_if_value(dataset, 'title', dataset_values.get('title'))
+                utils.set_attr_if_value(dataset, 'comment', dataset_values.get('details'))
+                utils.set_attr_if_value(dataset, 'doi', dataset_values.get('doi'))
+                utils.set_attr_if_value(dataset, 'uri', dataset_values.get('uri'))
+                utils.set_attr_if_value(dataset, 'accession_id', dataset_values.get('dataId'))
+                # authors
+                if dataset_values.get('authors'):
+                    # parse JSON format authors into author objects
+                    for author_json in dataset_values.get('authors'):
+                        author_name = None
+                        if author_json.get('type'):
+                            if author_json.get('type') == 'group' and author_json.get('name'):
+                                author_name = author_json.get('name')
+                            elif author_json.get('type') == 'person' and author_json.get('name'):
+                                if author_json.get('name').get('preferred'):
+                                    author_name = author_json.get('name').get('preferred')
+                        if author_name:
+                            dataset.add_author(author_name)
+                datasets.append(dataset)
+    return datasets
+
+
 def build_ref_list(refs):
     """
     Given parsed references build a list of ref objects
@@ -442,6 +482,10 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
     # funding awards
     if build_part('funding'):
         article.funding_awards = build_funding(parser.full_award_groups(soup))
+
+    # datasets
+    if build_part('datasets'):
+        article.datasets = build_datasets(parser.datasets_json(soup))
 
     # references or citations
     if build_part('references'):
