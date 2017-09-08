@@ -34,8 +34,9 @@ class TestParseDeep(unittest.TestCase):
                          "{'date': u'time.struct_time(tm_year=2014, tm_mon=9, tm_mday=26, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=269, tm_isdst=0)', 'date_type': u'accepted'}")
         self.assertEqual(unicode(article_object.dates.get('pub')),
                          "{'date_type': u'pub', 'day': u'01', 'year': u'2014', 'date': u'time.struct_time(tm_year=2014, tm_mon=10, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=2, tm_yday=274, tm_isdst=0)', 'month': u'10', 'publication_format': u'electronic'}")
-        # datasets - not parsed yet
-        self.assertEqual(len(article_object.datasets), 0)
+        # datasets
+        self.assertEqual(len(article_object.datasets), 2)
+        self.assertEqual(article_object.datasets[0].accession_id, 'EGAS00001000968')
         # related_articles
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
@@ -85,8 +86,17 @@ class TestParseDeep(unittest.TestCase):
                          "{'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=92, tm_isdst=0)', 'date_type': u'accepted'}")
         self.assertEqual(unicode(article_object.dates.get('publication')),
                          "{'date_type': u'publication', 'day': u'25', 'year': u'2016', 'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=25, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=116, tm_isdst=0)', 'month': u'04', 'publication_format': u'electronic'}")
-        # datasets - not parsed yet
-        self.assertEqual(len(article_object.datasets), 0)
+        # datasets
+        self.assertEqual(len(article_object.datasets), 3)
+        self.assertEqual(len(article_object.get_datasets('datasets')), 1)
+        self.assertEqual(len(article_object.get_datasets('prev_published_datasets')), 2)
+        self.assertEqual(len(article_object.datasets[0].authors), 2)
+        self.assertEqual(article_object.datasets[0].dataset_type, 'datasets')
+        self.assertEqual(article_object.datasets[0].year, '2016')
+        self.assertEqual(article_object.datasets[0].title, 'xml-mapping')
+        self.assertEqual(article_object.datasets[0].comment, 'Publicly available on GitHub')
+        self.assertEqual(article_object.datasets[0].uri, 'https://github.com/elifesciences/XML-mapping/blob/master/elife-00666.xml')
+        self.assertEqual(article_object.datasets[2].doi, '10.5061/dryad.cv323')
         # related_articles
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
