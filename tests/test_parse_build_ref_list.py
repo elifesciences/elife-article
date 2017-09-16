@@ -34,6 +34,8 @@ class TestParseBuildRefList(unittest.TestCase):
         self.assertEqual(article.ref_list[1].uri, 'https://cran.r-project.org/web/packages/lme4/index.html')
         self.assertEqual(article.ref_list[1].version, '1.1-12')
         self.assertEqual(article.ref_list[1].data_title, 'Lme4: Linear Mixed-Effects Models Using Eigen and S4')
+        # ref bib4 details
+        self.assertEqual(article.ref_list[3].accession, 'GSE44902')
         # ref bib7 details
         self.assertEqual(article.ref_list[6].publisher_loc, 'Cambridge, UK')
         self.assertEqual(article.ref_list[6].publisher_name, 'Global Phasing Ltd')
