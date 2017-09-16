@@ -202,6 +202,8 @@ def build_ref_list(refs):
         utils.set_attr_if_value(ref, 'pmid', reference.get('pmid'))
         # isbn
         utils.set_attr_if_value(ref, 'isbn', reference.get('isbn'))
+        # accession
+        utils.set_attr_if_value(ref, 'accession', reference.get('accession'))
         # patent
         utils.set_attr_if_value(ref, 'patent', reference.get('patent'))
         # patent country
