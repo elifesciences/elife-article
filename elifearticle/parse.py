@@ -358,6 +358,17 @@ def build_pub_dates(article, pub_dates):
         article.add_date(date_instance)
 
 
+def build_self_uri_list(self_uri_list):
+    "parse the self-uri tags, build Uri objects"
+    uri_list = []
+    for self_uri in self_uri_list:
+        uri = ea.Uri()
+        utils.set_attr_if_value(uri, 'xlink_href', self_uri.get('xlink_href'))
+        utils.set_attr_if_value(uri, 'content_type', self_uri.get('content-type'))
+        uri_list.append(uri)
+    return uri_list
+
+
 def clean_abstract(abstract):
     """
     Remove unwanted tags from abstract string,
@@ -449,6 +460,10 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
     # elocation-id
     if build_part('basic'):
         article.elocation_id = parser.elocation_id(soup)
+
+    # self-uri
+    if build_part('basic'):
+        article.self_uri_list = build_self_uri_list(parser.self_uri(soup))
 
     # contributors
     if build_part('contributors'):

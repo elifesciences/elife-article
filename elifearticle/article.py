@@ -59,6 +59,7 @@ class Article(BaseObject):
         self.funding_note = None
         self.journal_issn = None
         self.journal_title = None
+        self.self_uri_list = []
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
@@ -108,6 +109,16 @@ class Article(BaseObject):
 
     def add_funding_award(self, funding_award):
         self.funding_awards.append(funding_award)
+
+    def add_self_uri(self, uri):
+        self.self_uri_list.append(uri)
+
+    def get_self_uri(self, content_type):
+        "return the first self uri with the content_type"
+        try:
+            return [self_uri for self_uri in self.self_uri_list if self_uri.content_type == content_type][0]
+        except IndexError:
+            return None
 
     def pretty(self):
         "sort values and format output for viewing and comparing in test scenarios"
@@ -398,3 +409,14 @@ class RelatedArticle(BaseObject):
         self.xlink_href = None
         self.related_article_type = None
         self.ext_link_type = None
+
+class Uri(BaseObject):
+    "A URI, initially created for holding self-uri data"
+    def __new__(cls):
+        new_instance = object.__new__(cls)
+        new_instance.init()
+        return new_instance
+
+    def init(self):
+        self.xlink_href = None
+        self.content_type = None
