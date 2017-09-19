@@ -60,6 +60,7 @@ class Article(BaseObject):
         self.journal_issn = None
         self.journal_title = None
         self.self_uri_list = []
+        self.version = None
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
