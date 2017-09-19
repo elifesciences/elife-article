@@ -96,6 +96,22 @@ class TestArticle(unittest.TestCase):
         self.article.license = {}
         self.assertIsNotNone(unicode(self.article))
 
+    def test_add_self_uri(self):
+        uri = ea.Uri()
+        self.article.add_self_uri(uri)
+        self.assertEqual(len(self.article.self_uri_list), 1)
+
+    def test_get_self_uri(self):
+        uri = ea.Uri()
+        self.article.add_self_uri(uri)
+        uri2 = ea.Uri()
+        uri2.content_type = "pdf"
+        self.article.add_self_uri(uri2)
+        self.assertIsNotNone(self.article.get_self_uri(None))
+        self.assertIsNotNone(self.article.get_self_uri("pdf"))
+        self.assertIsNone(self.article.get_self_uri("not_a_valid_type"))
+
+
 class TestArticleDate(unittest.TestCase):
 
     def test_article_date_init(self):
