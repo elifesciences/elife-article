@@ -1,4 +1,5 @@
 import re
+import os
 
 def repl(match):
     "Convert hex to int to unicode character"
@@ -60,3 +61,17 @@ def is_year_numeric(value):
     if value and re.match("^[0-9]+$", value):
         return True
     return False
+
+def version_from_xml_filename(filename):
+    "extract the numeric version from the xml filename"
+    try:
+        filename_parts = filename.split(os.sep)[-1].split('-')
+    except AttributeError:
+        return None
+    if len(filename_parts) == 3:
+        try:
+            return int(filename_parts[-1].lstrip('v').rstrip('.xml'))
+        except ValueError:
+            return None
+    else:
+        return None

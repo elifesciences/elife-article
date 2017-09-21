@@ -26,7 +26,7 @@
     "research_organisms": [],
     "self_uri_list": [],
     "title": "Origins and functional consequences of somatic mitochondrial DNA mutations in human cancer", 
-    "version": null, 
+    "version": "2", 
     "volume": "3", 
     "was_ever_poa": null
 }
