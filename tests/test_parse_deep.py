@@ -55,6 +55,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.self_uri_list), 1)
         self.assertIsNotNone(article_object.get_self_uri('pdf'))
         self.assertEqual(article_object.get_self_uri('pdf').xlink_href, 'elife-02935-v2.pdf')
+        # version
+        self.assertEqual(article_object.version, 2)
 
 
     def test_parse_article_02935_compare_fixtures(self):

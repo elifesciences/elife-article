@@ -1,5 +1,6 @@
 import unittest
 import re
+import os
 from elifearticle import utils
 
 class TestUtils(unittest.TestCase):
@@ -30,6 +31,12 @@ class TestUtils(unittest.TestCase):
     def test_replace_tags(self):
         self.assertEqual(utils.replace_tags("<i>"), "<italic>")
 
+    def test_version_from_xml_filename(self):
+        self.assertEqual(utils.version_from_xml_filename(None), None)
+        self.assertEqual(utils.version_from_xml_filename("elife-00666.xml"), None)
+        self.assertEqual(utils.version_from_xml_filename("elife-02935-v2.xml"), 2)
+        self.assertEqual(utils.version_from_xml_filename(os.path.join("test-folder", "elife-02935-v2.xml")), 2)
+        self.assertEqual(utils.version_from_xml_filename("bmjopen-4-e003269.xml"), None)
 
 if __name__ == '__main__':
     unittest.main()

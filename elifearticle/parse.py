@@ -416,6 +416,10 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
     # Create the article object
     article = ea.Article(doi, title=None)
 
+    # article version from the filename if possible
+    utils.set_attr_if_value(article, 'version',
+                            utils.version_from_xml_filename(article_xml_filename))
+
     # journal title
     if build_part('basic'):
         article.journal_title = parser.journal_title(soup)
