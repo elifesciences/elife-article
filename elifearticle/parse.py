@@ -45,6 +45,8 @@ def build_contributors(authors, contrib_type):
         if surname or collab:
             contributor = ea.Contributor(author_contrib_type, surname, given_name, collab)
 
+        utils.set_attr_if_value(contributor, 'suffix', author.get('suffix'))
+
         contributor.group_author_key = author.get("group-author-key")
         contributor.orcid = author.get("orcid")
         if author.get("corresp"):

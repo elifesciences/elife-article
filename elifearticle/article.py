@@ -169,8 +169,12 @@ class Contributor(BaseObject):
     corresp = False
     equal_contrib = False
 
+    contrib_type = None
     auth_id = None
     orcid = None
+    surname = None
+    given_name = None
+    suffix = None
     collab = None
     conflict = None
     group_author_key = None
