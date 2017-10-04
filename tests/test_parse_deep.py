@@ -83,6 +83,8 @@ class TestParseDeep(unittest.TestCase):
                               if c.contrib_type == 'author non-byline']), 9)
         self.assertEqual(len([c for c in article_object.contributors
                               if c.collab is not None]), 3)
+        # first contributor has a suffix
+        self.assertEqual(article_object.contributors[0].suffix, 'Jnr')
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates
