@@ -1,6 +1,7 @@
 import unittest
 import re
 import os
+import time
 from elifearticle import utils
 
 class TestUtils(unittest.TestCase):
@@ -37,6 +38,15 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(utils.version_from_xml_filename("elife-02935-v2.xml"), 2)
         self.assertEqual(utils.version_from_xml_filename(os.path.join("test-folder", "elife-02935-v2.xml")), 2)
         self.assertEqual(utils.version_from_xml_filename("bmjopen-4-e003269.xml"), None)
+
+    def test_calculate_journal_volume(self):
+        "for test coverage"
+        self.assertEqual(utils.calculate_journal_volume(None, None), None)
+        pub_date = time.strptime("2017-01-01", "%Y-%m-%d")
+        self.assertEqual(utils.calculate_journal_volume(pub_date, 2017), "1")
+
+    def test_get_last_commit_to_master(self):
+        self.assertIsNotNone(utils.get_last_commit_to_master())
 
 if __name__ == '__main__':
     unittest.main()
