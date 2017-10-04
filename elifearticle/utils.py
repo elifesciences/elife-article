@@ -1,5 +1,6 @@
 import re
 import os
+from git import Repo
 
 def repl(match):
     "Convert hex to int to unicode character"
@@ -75,3 +76,29 @@ def version_from_xml_filename(filename):
             return None
     else:
         return None
+
+def get_last_commit_to_master():
+    """
+    returns the last commit on the master branch. It would be more ideal to get the commit
+    from the branch we are currently on, but as this is a check mostly to help
+    with production issues, returning the commit from master will be sufficient.
+    """
+    repo = Repo(".")
+    last_commit = None
+    try:
+        last_commit = repo.commits()[0]
+    except AttributeError:
+        # Optimised for version 0.3.2.RC1
+        last_commit = repo.head.commit
+    return str(last_commit)
+
+def calculate_journal_volume(pub_date, year):
+    """
+    volume value is based on the pub date year
+    pub_date is a python time object
+    """
+    try:
+        volume = str(pub_date.tm_year - year + 1)
+    except:
+        volume = None
+    return volume
