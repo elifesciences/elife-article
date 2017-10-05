@@ -448,7 +448,7 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
     if build_part('basic'):
         article_type = parser.article_type(soup)
         if article_type:
-            article.articleType = article_type
+            article.article_type = article_type
 
     # title
     if build_part('basic'):
