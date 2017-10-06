@@ -57,6 +57,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.get_self_uri('pdf').xlink_href, 'elife-02935-v2.pdf')
         # version
         self.assertEqual(article_object.version, 2)
+        # publisher_name
+        self.assertEqual(article_object.publisher_name, 'eLife Sciences Publications, Ltd')
 
 
     def test_parse_article_02935_compare_fixtures(self):
@@ -168,6 +170,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.author_keywords), 4)
         # refs
         self.assertEqual(len(article_object.ref_list), 36)
+        # publisher_name
+        self.assertEqual(article_object.publisher_name, 'Ubiquity Press')
 
     def test_parse_article_cstp77_compare_fixtures(self):
         "test by comparing data with test fixtures"
