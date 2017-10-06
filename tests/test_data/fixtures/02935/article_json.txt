@@ -20,6 +20,7 @@
     "journal_title": "eLife", 
     "license": "{'href': u'http://creativecommons.org/publicdomain/zero/1.0/'}", 
     "manuscript": "02935", 
+    "publisher_name": "eLife Sciences Publications, Ltd",
     "ref_list": [], 
     "related_articles": [], 
     "research_organisms": [],

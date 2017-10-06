@@ -455,6 +455,10 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
         article.title = parser.full_title(soup)
     #print article.title
 
+    # publisher_name
+    if build_part('basic'):
+        article.publisher_name = parser.publisher(soup)
+
     # abstract
     if build_part('abstract'):
         article.abstract = clean_abstract(parser.full_abstract(soup))
