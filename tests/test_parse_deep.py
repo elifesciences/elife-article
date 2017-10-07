@@ -59,6 +59,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.version, 2)
         # publisher_name
         self.assertEqual(article_object.publisher_name, 'eLife Sciences Publications, Ltd')
+        # issue
+        self.assertEqual(article_object.issue, None)
 
 
     def test_parse_article_02935_compare_fixtures(self):
@@ -172,6 +174,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.ref_list), 36)
         # publisher_name
         self.assertEqual(article_object.publisher_name, 'Ubiquity Press')
+        # issue
+        self.assertEqual(article_object.issue, '1')
 
     def test_parse_article_cstp77_compare_fixtures(self):
         "test by comparing data with test fixtures"

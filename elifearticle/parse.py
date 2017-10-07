@@ -471,6 +471,10 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
     if build_part('basic'):
         article.elocation_id = parser.elocation_id(soup)
 
+    # issue
+    if build_part('basic'):
+        article.issue = parser.issue(soup)
+
     # self-uri
     if build_part('basic'):
         article.self_uri_list = build_self_uri_list(parser.self_uri(soup))
