@@ -153,6 +153,10 @@ def build_datasets(dataset_json):
                                     author_name = author_json.get('name').get('preferred')
                         if author_name:
                             dataset.add_author(author_name)
+                # Try to populate the doi attribute if the uri is a doi
+                if not dataset.doi and dataset.uri:
+                    if dataset.uri != eautils.doi_uri_to_doi(dataset.uri):
+                        dataset.doi = eautils.doi_uri_to_doi(dataset.uri)
                 datasets.append(dataset)
     return datasets
 
@@ -236,6 +240,11 @@ def build_ref_list(refs):
                 eautils.set_if_value(ref_author, 'collab', author.get('collab'))
                 if len(ref_author) > 0:
                     ref.add_author(ref_author)
+        # Try to populate the doi attribute if the uri is a doi
+        if not ref.doi and ref.uri:
+            if ref.uri != eautils.doi_uri_to_doi(ref.uri):
+                ref.doi = eautils.doi_uri_to_doi(ref.uri)
+        # Append the reference to the list
         ref_list.append(ref)
     return ref_list
 

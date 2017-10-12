@@ -73,3 +73,11 @@ class TestParseBuildRefList(unittest.TestCase):
         # ref bib51 details
         self.assertEqual(article.ref_list[50].elocation_id, 'e149')
 
+class TestBuildRefList(unittest.TestCase):
+
+    def test_uri_to_doi(self):
+        "test converting a uri to doi value when applicable"
+        # test based on elife-20047-v2.xml bib14
+        refs = [{'uri': 'http://dx.doi.org/ 10.5061/dryad.r1072'}]
+        ref_list = parse.build_ref_list(refs)
+        self.assertEqual(ref_list[0].doi, ' 10.5061/dryad.r1072')
