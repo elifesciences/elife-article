@@ -49,10 +49,7 @@ def build_contributors(authors, contrib_type):
 
         contributor.group_author_key = author.get("group-author-key")
         contributor.orcid = author.get("orcid")
-        if author.get("corresp"):
-            contributor.corresp = True
-        else:
-            contributor.corresp = False
+        contributor.corresp = bool(author.get("corresp"))
 
         # Affiliations, compile text for each
         department = []
@@ -99,10 +96,10 @@ def build_funding(award_groups):
 
     funding_awards = []
 
-    for award_group in award_groups:
-        for id, award_group in award_group.iteritems():
+    for award_groups_item in award_groups:
+        for award_group_id, award_group in award_groups_item.iteritems():
             award = ea.FundingAward()
-
+            award.award_group_id = award_group_id
             if award_group.get('id-type') == "FundRef":
                 award.institution_id = award_group.get('id')
 
@@ -193,7 +190,7 @@ def build_ref_list(refs):
         # Can set the year_numeric now
         if ref.year_iso_8601_date is not None:
             # First preference take it from the iso 8601 date, if available
-                ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
+            ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
         if ref.year_numeric is None:
             # Second preference, use the year value if it is entirely numeric
             if utils.is_year_numeric(ref.year):
@@ -238,7 +235,7 @@ def build_ref_list(refs):
                 eautils.set_if_value(ref_author, 'surname', author.get('surname'))
                 eautils.set_if_value(ref_author, 'given-names', author.get('given-names'))
                 eautils.set_if_value(ref_author, 'collab', author.get('collab'))
-                if len(ref_author) > 0:
+                if ref_author:
                     ref.add_author(ref_author)
         # Try to populate the doi attribute if the uri is a doi
         if not ref.doi and ref.uri:
@@ -398,13 +395,9 @@ def build_part_check(part, build_parts):
     check if only specific parts were specified to be build when parsing
     if the list build_parts is empty, then all parts will be parsed
     """
-    if not build_parts or len(build_parts) == 0:
+    if not build_parts:
         return True
-    else:
-        if part in build_parts:
-            return True
-        else:
-            return False
+    return bool(part in build_parts)
 
 
 def build_article_from_xml(article_xml_filename, detail="brief", build_parts=None):
@@ -495,7 +488,7 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
                                      in ['author', 'on-behalf-of'], all_contributors)
         contrib_type = "author"
         contributors = build_contributors(author_contributors, contrib_type)
-    
+
         contrib_type = "author non-byline"
         authors = parser.authors_non_byline(soup, detail)
         contributors_non_byline = build_contributors(authors, contrib_type)
@@ -503,9 +496,9 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
 
     # license href
     if build_part('license'):
-        license = ea.License()
-        license.href = parser.license_url(soup)
-        article.license = license
+        license_object = ea.License()
+        license_object.href = parser.license_url(soup)
+        article.license = license_object
 
     # article_category
     if build_part('categories'):

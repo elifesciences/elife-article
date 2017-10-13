@@ -256,6 +256,7 @@ class FundingAward(BaseObject):
         return new_instance
 
     def init(self):
+        self.award_group_id = None
         self.award_ids = []
         self.institution_name = None
         self.institution_id = None
