@@ -398,7 +398,7 @@ def build_part_check(part, build_parts):
     check if only specific parts were specified to be build when parsing
     if the list build_parts is empty, then all parts will be parsed
     """
-    if len(build_parts) == 0:
+    if not build_parts or len(build_parts) == 0:
         return True
     else:
         if part in build_parts:
@@ -407,7 +407,7 @@ def build_part_check(part, build_parts):
             return False
 
 
-def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[]):
+def build_article_from_xml(article_xml_filename, detail="brief", build_parts=None):
     """
     Parse JATS XML with elifetools parser, and populate an
     eLifePOA article object
@@ -560,7 +560,7 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=[])
     return article, error_count
 
 
-def build_articles_from_article_xmls(article_xmls, detail="full", build_parts=[]):
+def build_articles_from_article_xmls(article_xmls, detail="full", build_parts=None):
     """
     Given a list of article XML filenames, convert to article objects
     """
