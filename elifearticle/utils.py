@@ -113,3 +113,13 @@ def author_name_from_json(author_json):
             if author_json.get('name').get('preferred'):
                 author_name = author_json.get('name').get('preferred')
     return author_name
+
+def text_from_affiliation_elements(department, institution, city, country):
+    "format an author affiliation from details"
+    text = ""
+    for element in (department, institution, city, country):
+        if text != "":
+            text += ", "
+        if element:
+            text += element
+    return text

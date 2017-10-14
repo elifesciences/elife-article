@@ -1,23 +1,11 @@
+"""
+Build article objects by parsing article XML
+"""
+
 from elifetools import parseJATS as parser
 from elifetools import utils as eautils
 from elifearticle import article as ea
 from elifearticle import utils
-
-
-def text_from_affiliation_elements(department, institution, city, country):
-    """
-    Given an author affiliation from
-    """
-    text = ""
-
-    for element in (department, institution, city, country):
-        if text != "":
-            text += ", "
-
-        if element:
-            text += element
-
-    return text
 
 
 def build_contributors(authors, contrib_type):
@@ -72,7 +60,7 @@ def build_contributors(authors, contrib_type):
             affiliation.city = city[index]
             affiliation.country = country[index]
 
-            affiliation.text = text_from_affiliation_elements(
+            affiliation.text = utils.text_from_affiliation_elements(
                 affiliation.department,
                 affiliation.institution,
                 affiliation.city,
@@ -347,6 +335,7 @@ def build_related_articles(related_articles):
 
 
 def build_pub_dates(article, pub_dates):
+    "convert pub_dates into ArticleDate objects and add them to article"
     for pub_date in pub_dates:
         # always want a date type, take it from pub-type if must
         if pub_date.get('date-type'):
