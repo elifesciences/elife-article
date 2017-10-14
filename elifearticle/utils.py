@@ -1,3 +1,7 @@
+"""
+Utility functions for converting content and some shared by other libraries
+"""
+
 import re
 import os
 from git import Repo
@@ -38,8 +42,8 @@ def remove_tag(tag_name, string):
     """
     if not string:
         return string
-    p = re.compile('</?' + tag_name + '.*?>')
-    string = p.sub('', string)
+    pattern = re.compile('</?' + tag_name + '.*?>')
+    string = pattern.sub('', string)
     return string
 
 def replace_tags(string, from_tag='i', to_tag='italic'):
@@ -58,7 +62,7 @@ def set_attr_if_value(obj, attr_name, value):
         setattr(obj, attr_name, value)
 
 def is_year_numeric(value):
-    # True if all digits
+    "True if value is all digits"
     if value and re.match("^[0-9]+$", value):
         return True
     return False
@@ -99,7 +103,9 @@ def calculate_journal_volume(pub_date, year):
     """
     try:
         volume = str(pub_date.tm_year - year + 1)
-    except:
+    except TypeError:
+        volume = None
+    except AttributeError:
         volume = None
     return volume
 
