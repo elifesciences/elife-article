@@ -1,23 +1,11 @@
+"""
+Build article objects by parsing article XML
+"""
+
 from elifetools import parseJATS as parser
 from elifetools import utils as eautils
 from elifearticle import article as ea
 from elifearticle import utils
-
-
-def text_from_affiliation_elements(department, institution, city, country):
-    """
-    Given an author affiliation from
-    """
-    text = ""
-
-    for element in (department, institution, city, country):
-        if text != "":
-            text += ", "
-
-        if element:
-            text += element
-
-    return text
 
 
 def build_contributors(authors, contrib_type):
@@ -49,10 +37,7 @@ def build_contributors(authors, contrib_type):
 
         contributor.group_author_key = author.get("group-author-key")
         contributor.orcid = author.get("orcid")
-        if author.get("corresp"):
-            contributor.corresp = True
-        else:
-            contributor.corresp = False
+        contributor.corresp = bool(author.get("corresp"))
 
         # Affiliations, compile text for each
         department = []
@@ -75,7 +60,7 @@ def build_contributors(authors, contrib_type):
             affiliation.city = city[index]
             affiliation.country = country[index]
 
-            affiliation.text = text_from_affiliation_elements(
+            affiliation.text = utils.text_from_affiliation_elements(
                 affiliation.department,
                 affiliation.institution,
                 affiliation.city,
@@ -99,10 +84,10 @@ def build_funding(award_groups):
 
     funding_awards = []
 
-    for award_group in award_groups:
-        for id, award_group in award_group.iteritems():
+    for award_groups_item in award_groups:
+        for award_group_id, award_group in award_groups_item.iteritems():
             award = ea.FundingAward()
-
+            award.award_group_id = award_group_id
             if award_group.get('id-type') == "FundRef":
                 award.institution_id = award_group.get('id')
 
@@ -129,35 +114,34 @@ def build_datasets(dataset_json):
         'generated': 'datasets',
         'used': 'prev_published_datasets'
     }
+    dataset_type_map_found = []
+    # First look for the types of datasets present
     for dataset_key, dataset_type in dataset_type_map.iteritems():
         if dataset_json.get(dataset_key):
-            for dataset_values in dataset_json.get(dataset_key):
-                dataset = ea.Dataset()
-                utils.set_attr_if_value(dataset, 'dataset_type', dataset_type)
-                utils.set_attr_if_value(dataset, 'year', dataset_values.get('date'))
-                utils.set_attr_if_value(dataset, 'title', dataset_values.get('title'))
-                utils.set_attr_if_value(dataset, 'comment', dataset_values.get('details'))
-                utils.set_attr_if_value(dataset, 'doi', dataset_values.get('doi'))
-                utils.set_attr_if_value(dataset, 'uri', dataset_values.get('uri'))
-                utils.set_attr_if_value(dataset, 'accession_id', dataset_values.get('dataId'))
-                # authors
-                if dataset_values.get('authors'):
-                    # parse JSON format authors into author objects
-                    for author_json in dataset_values.get('authors'):
-                        author_name = None
-                        if author_json.get('type'):
-                            if author_json.get('type') == 'group' and author_json.get('name'):
-                                author_name = author_json.get('name')
-                            elif author_json.get('type') == 'person' and author_json.get('name'):
-                                if author_json.get('name').get('preferred'):
-                                    author_name = author_json.get('name').get('preferred')
-                        if author_name:
-                            dataset.add_author(author_name)
-                # Try to populate the doi attribute if the uri is a doi
-                if not dataset.doi and dataset.uri:
-                    if dataset.uri != eautils.doi_uri_to_doi(dataset.uri):
-                        dataset.doi = eautils.doi_uri_to_doi(dataset.uri)
-                datasets.append(dataset)
+            dataset_type_map_found.append(dataset_key)
+    # Continue with the found dataset types
+    for dataset_key in dataset_type_map_found:
+        dataset_type = dataset_type_map.get(dataset_key)
+        for dataset_values in dataset_json.get(dataset_key):
+            dataset = ea.Dataset()
+            utils.set_attr_if_value(dataset, 'dataset_type', dataset_type)
+            utils.set_attr_if_value(dataset, 'year', dataset_values.get('date'))
+            utils.set_attr_if_value(dataset, 'title', dataset_values.get('title'))
+            utils.set_attr_if_value(dataset, 'comment', dataset_values.get('details'))
+            utils.set_attr_if_value(dataset, 'doi', dataset_values.get('doi'))
+            utils.set_attr_if_value(dataset, 'uri', dataset_values.get('uri'))
+            utils.set_attr_if_value(dataset, 'accession_id', dataset_values.get('dataId'))
+            # authors
+            if dataset_values.get('authors'):
+                # parse JSON format authors into author objects
+                for author_json in dataset_values.get('authors'):
+                    if utils.author_name_from_json(author_json):
+                        dataset.add_author(utils.author_name_from_json(author_json))
+            # Try to populate the doi attribute if the uri is a doi
+            if not dataset.doi and dataset.uri:
+                if dataset.uri != eautils.doi_uri_to_doi(dataset.uri):
+                    dataset.doi = eautils.doi_uri_to_doi(dataset.uri)
+            datasets.append(dataset)
     return datasets
 
 
@@ -193,7 +177,7 @@ def build_ref_list(refs):
         # Can set the year_numeric now
         if ref.year_iso_8601_date is not None:
             # First preference take it from the iso 8601 date, if available
-                ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
+            ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
         if ref.year_numeric is None:
             # Second preference, use the year value if it is entirely numeric
             if utils.is_year_numeric(ref.year):
@@ -238,7 +222,7 @@ def build_ref_list(refs):
                 eautils.set_if_value(ref_author, 'surname', author.get('surname'))
                 eautils.set_if_value(ref_author, 'given-names', author.get('given-names'))
                 eautils.set_if_value(ref_author, 'collab', author.get('collab'))
-                if len(ref_author) > 0:
+                if ref_author:
                     ref.add_author(ref_author)
         # Try to populate the doi attribute if the uri is a doi
         if not ref.doi and ref.uri:
@@ -351,6 +335,7 @@ def build_related_articles(related_articles):
 
 
 def build_pub_dates(article, pub_dates):
+    "convert pub_dates into ArticleDate objects and add them to article"
     for pub_date in pub_dates:
         # always want a date type, take it from pub-type if must
         if pub_date.get('date-type'):
@@ -398,13 +383,9 @@ def build_part_check(part, build_parts):
     check if only specific parts were specified to be build when parsing
     if the list build_parts is empty, then all parts will be parsed
     """
-    if not build_parts or len(build_parts) == 0:
+    if not build_parts:
         return True
-    else:
-        if part in build_parts:
-            return True
-        else:
-            return False
+    return bool(part in build_parts)
 
 
 def build_article_from_xml(article_xml_filename, detail="brief", build_parts=None):
@@ -491,11 +472,11 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
     # contributors
     if build_part('contributors'):
         all_contributors = parser.contributors(soup, detail)
-        author_contributors = filter(lambda con: con.get('type')
-                                     in ['author', 'on-behalf-of'], all_contributors)
+        author_contributors = [con for con in all_contributors
+                               if con.get('type') in ['author', 'on-behalf-of']]
         contrib_type = "author"
         contributors = build_contributors(author_contributors, contrib_type)
-    
+
         contrib_type = "author non-byline"
         authors = parser.authors_non_byline(soup, detail)
         contributors_non_byline = build_contributors(authors, contrib_type)
@@ -503,9 +484,9 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
 
     # license href
     if build_part('license'):
-        license = ea.License()
-        license.href = parser.license_url(soup)
-        article.license = license
+        license_object = ea.License()
+        license_object.href = parser.license_url(soup)
+        article.license = license_object
 
     # article_category
     if build_part('categories'):

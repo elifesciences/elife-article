@@ -1,3 +1,7 @@
+"""
+Article object definitions
+"""
+
 from collections import OrderedDict
 
 class BaseObject(object):
@@ -9,13 +13,13 @@ class BaseObject(object):
         for easier viewing and test case scenario writing
         """
         unicode_dict = {}
-        for k in self.__dict__:
-            if type(self.__dict__.get(k)) == list:
-                unicode_dict[k] = []
-            elif type(self.__dict__.get(k)) == dict:
-                unicode_dict[k] = {}
+        for key in self.__dict__:
+            if isinstance(self.__dict__.get(key), list):
+                unicode_dict[key] = []
+            elif isinstance(self.__dict__.get(key), dict):
+                unicode_dict[key] = {}
             else:
-                unicode_dict[k] = unicode(self.__dict__.get(k))
+                unicode_dict[key] = unicode(self.__dict__.get(key))
         return unicode(unicode_dict)
 
 class Article(BaseObject):
@@ -38,7 +42,7 @@ class Article(BaseObject):
         self.abstract = ""
         self.research_organisms = []
         self.manuscript = None
-        self.dates = None
+        self.dates = {}
         self.license = None
         self.article_categories = []
         self.conflict_default = None
@@ -71,18 +75,17 @@ class Article(BaseObject):
         self.research_organisms.append(research_organism)
 
     def add_date(self, date):
-        if not self.dates:
-            self.dates = {}
         self.dates[date.date_type] = date
 
     def get_date(self, date_type):
+        "get date by date type"
         try:
             return self.dates[date_type]
         except (KeyError, TypeError):
             return None
 
     def get_display_channel(self):
-        # display-channel string partly relates to the articleType
+        "display-channel string partly relates to the article_type"
         return self.display_channel
 
     def add_article_category(self, article_category):
@@ -107,8 +110,7 @@ class Article(BaseObject):
     def get_datasets(self, dataset_type=None):
         if dataset_type:
             return [d for d in self.datasets if d.dataset_type == dataset_type]
-        else:
-            return self.datasets
+        return self.datasets
 
     def add_funding_award(self, funding_award):
         self.funding_awards.append(funding_award)
@@ -119,24 +121,25 @@ class Article(BaseObject):
     def get_self_uri(self, content_type):
         "return the first self uri with the content_type"
         try:
-            return [self_uri for self_uri in self.self_uri_list if self_uri.content_type == content_type][0]
+            return [self_uri for self_uri in self.self_uri_list
+                    if self_uri.content_type == content_type][0]
         except IndexError:
             return None
 
     def pretty(self):
         "sort values and format output for viewing and comparing in test scenarios"
         pretty_obj = OrderedDict()
-        for k,v in sorted(self.__dict__.iteritems()):
-            if v is None:
-                pretty_obj[k] = None
-            elif type(v) in [str, unicode]:
-                pretty_obj[k] = self.__dict__.get(k)
-            elif type(v) in [list]:
-                pretty_obj[k] = []
-            elif type(v) in [dict]:
-                pretty_obj[k] = {}
+        for key, value in sorted(self.__dict__.iteritems()):
+            if value is None:
+                pretty_obj[key] = None
+            elif isinstance(value, (str, unicode)):
+                pretty_obj[key] = self.__dict__.get(key)
+            elif isinstance(value, list):
+                pretty_obj[key] = []
+            elif isinstance(value, dict):
+                pretty_obj[key] = {}
             else:
-                pretty_obj[k] = unicode(v)
+                pretty_obj[key] = unicode(value)
         return pretty_obj
 
 class ArticleDate(BaseObject):
@@ -256,6 +259,7 @@ class FundingAward(BaseObject):
         return new_instance
 
     def init(self):
+        self.award_group_id = None
         self.award_ids = []
         self.institution_name = None
         self.institution_id = None
@@ -265,18 +269,18 @@ class FundingAward(BaseObject):
         self.award_ids.append(award_id)
 
     def add_principal_award_recipient(self, contributor):
-        # Accepts an instance of Contributor
+        "Accepts an instance of Contributor"
         self.principal_award_recipients.append(contributor)
 
     def get_funder_identifier(self):
-        # Funder identifier is the unique id found in the institution_id DOI
+        "Funder identifier is the unique id found in the institution_id DOI"
         try:
             return self.institution_id.split('/')[-1]
-        except:
+        except AttributeError:
             return None
 
     def get_funder_name(self):
-        # Alias for institution_name parsed from the XML
+        "Alias for institution_name parsed from the XML"
         return self.institution_name
 
 
@@ -290,8 +294,8 @@ class License(BaseObject):
     copyright = False
     href = None
     name = None
-    p1 = None
-    p2 = None
+    paragraph1 = None
+    paragraph2 = None
 
     def __new__(cls, license_id=None):
         new_instance = object.__new__(cls)
@@ -312,20 +316,22 @@ class License(BaseObject):
             self.copyright = True
             self.href = "http://creativecommons.org/licenses/by/4.0/"
             self.name = "Creative Commons Attribution License"
-            self.p1 = "This article is distributed under the terms of the "
-            self.p2 = (" permitting unrestricted use and redistribution provided that the " +
-                       "original author and source are credited.")
+            self.paragraph1 = "This article is distributed under the terms of the "
+            self.paragraph2 = (
+                " permitting unrestricted use and redistribution provided that the " +
+                "original author and source are credited.")
         elif int(license_id) == 2:
             self.license_id = license_id
             self.license_type = "open-access"
             self.copyright = False
             self.href = "http://creativecommons.org/publicdomain/zero/1.0/"
             self.name = "Creative Commons CC0"
-            self.p1 = ("This is an open-access article, free of all copyright, and may be " +
-                       "freely reproduced, distributed, transmitted, modified, built upon, or " +
-                       "otherwise used by anyone for any lawful purpose. The work is made " +
-                       "available under the ")
-            self.p2 = " public domain dedication."
+            self.paragraph1 = (
+                "This is an open-access article, free of all copyright, and may be " +
+                "freely reproduced, distributed, transmitted, modified, built upon, or " +
+                "otherwise used by anyone for any lawful purpose. The work is made " +
+                "available under the ")
+            self.paragraph2 = " public domain dedication."
 
 
 class Citation(BaseObject):
@@ -374,11 +380,11 @@ class Citation(BaseObject):
         self.accession = None
 
     def add_author(self, author):
-        # Author is a dict of values
+        "Author is a dict of values"
         self.authors.append(author)
 
     def get_journal_title(self):
-        # Alias for source
+        "Alias for source"
         return self.source
 
 

@@ -44,6 +44,7 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(utils.calculate_journal_volume(None, None), None)
         pub_date = time.strptime("2017-01-01", "%Y-%m-%d")
         self.assertEqual(utils.calculate_journal_volume(pub_date, 2017), "1")
+        self.assertEqual(utils.calculate_journal_volume(pub_date, None), None)
 
     def test_get_last_commit_to_master(self):
         self.assertIsNotNone(utils.get_last_commit_to_master())
