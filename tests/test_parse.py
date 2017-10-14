@@ -82,7 +82,7 @@ class TestParseXml(unittest.TestCase):
         self.assertEqual(len(article.component_list), 0)
         self.assertEqual(len(article.contributors), 0)
         self.assertEqual(len(article.funding_awards), 0)
-        self.assertIsNone(article.dates)
+        self.assertEqual(article.dates, {})
         self.assertIsNone(article.get_date('received'))
         self.assertIsNone(article.is_poa)
         self.assertEqual(len(article.author_keywords), 0)
