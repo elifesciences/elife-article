@@ -484,8 +484,8 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
     # contributors
     if build_part('contributors'):
         all_contributors = parser.contributors(soup, detail)
-        author_contributors = filter(lambda con: con.get('type')
-                                     in ['author', 'on-behalf-of'], all_contributors)
+        author_contributors = [con for con in all_contributors
+                               if con.get('type') in ['author', 'on-behalf-of']]
         contrib_type = "author"
         contributors = build_contributors(author_contributors, contrib_type)
 
