@@ -126,35 +126,34 @@ def build_datasets(dataset_json):
         'generated': 'datasets',
         'used': 'prev_published_datasets'
     }
+    dataset_type_map_found = []
+    # First look for the types of datasets present
     for dataset_key, dataset_type in dataset_type_map.iteritems():
         if dataset_json.get(dataset_key):
-            for dataset_values in dataset_json.get(dataset_key):
-                dataset = ea.Dataset()
-                utils.set_attr_if_value(dataset, 'dataset_type', dataset_type)
-                utils.set_attr_if_value(dataset, 'year', dataset_values.get('date'))
-                utils.set_attr_if_value(dataset, 'title', dataset_values.get('title'))
-                utils.set_attr_if_value(dataset, 'comment', dataset_values.get('details'))
-                utils.set_attr_if_value(dataset, 'doi', dataset_values.get('doi'))
-                utils.set_attr_if_value(dataset, 'uri', dataset_values.get('uri'))
-                utils.set_attr_if_value(dataset, 'accession_id', dataset_values.get('dataId'))
-                # authors
-                if dataset_values.get('authors'):
-                    # parse JSON format authors into author objects
-                    for author_json in dataset_values.get('authors'):
-                        author_name = None
-                        if author_json.get('type'):
-                            if author_json.get('type') == 'group' and author_json.get('name'):
-                                author_name = author_json.get('name')
-                            elif author_json.get('type') == 'person' and author_json.get('name'):
-                                if author_json.get('name').get('preferred'):
-                                    author_name = author_json.get('name').get('preferred')
-                        if author_name:
-                            dataset.add_author(author_name)
-                # Try to populate the doi attribute if the uri is a doi
-                if not dataset.doi and dataset.uri:
-                    if dataset.uri != eautils.doi_uri_to_doi(dataset.uri):
-                        dataset.doi = eautils.doi_uri_to_doi(dataset.uri)
-                datasets.append(dataset)
+            dataset_type_map_found.append(dataset_key)
+    # Continue with the found dataset types
+    for dataset_key in dataset_type_map_found:
+        dataset_type = dataset_type_map.get(dataset_key)
+        for dataset_values in dataset_json.get(dataset_key):
+            dataset = ea.Dataset()
+            utils.set_attr_if_value(dataset, 'dataset_type', dataset_type)
+            utils.set_attr_if_value(dataset, 'year', dataset_values.get('date'))
+            utils.set_attr_if_value(dataset, 'title', dataset_values.get('title'))
+            utils.set_attr_if_value(dataset, 'comment', dataset_values.get('details'))
+            utils.set_attr_if_value(dataset, 'doi', dataset_values.get('doi'))
+            utils.set_attr_if_value(dataset, 'uri', dataset_values.get('uri'))
+            utils.set_attr_if_value(dataset, 'accession_id', dataset_values.get('dataId'))
+            # authors
+            if dataset_values.get('authors'):
+                # parse JSON format authors into author objects
+                for author_json in dataset_values.get('authors'):
+                    if utils.author_name_from_json(author_json):
+                        dataset.add_author(utils.author_name_from_json(author_json))
+            # Try to populate the doi attribute if the uri is a doi
+            if not dataset.doi and dataset.uri:
+                if dataset.uri != eautils.doi_uri_to_doi(dataset.uri):
+                    dataset.doi = eautils.doi_uri_to_doi(dataset.uri)
+            datasets.append(dataset)
     return datasets
 
 

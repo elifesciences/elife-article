@@ -102,3 +102,14 @@ def calculate_journal_volume(pub_date, year):
     except:
         volume = None
     return volume
+
+def author_name_from_json(author_json):
+    "concatenate an author name from json data"
+    author_name = None
+    if author_json.get('type'):
+        if author_json.get('type') == 'group' and author_json.get('name'):
+            author_name = author_json.get('name')
+        elif author_json.get('type') == 'person' and author_json.get('name'):
+            if author_json.get('name').get('preferred'):
+                author_name = author_json.get('name').get('preferred')
+    return author_name
