@@ -38,6 +38,8 @@ def build_contributors(authors, contrib_type):
         contributor.group_author_key = author.get("group-author-key")
         contributor.orcid = author.get("orcid")
         contributor.corresp = bool(author.get("corresp"))
+        if author.get("equal-contrib") == "yes":
+            contributor.equal_contrib = True
 
         # Affiliations, compile text for each
         department = []
