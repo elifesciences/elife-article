@@ -488,6 +488,7 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
     if build_part('license'):
         license_object = ea.License()
         license_object.href = parser.license_url(soup)
+        license_object.copyright_statement = parser.copyright_statement(soup)
         article.license = license_object
 
     # article_category

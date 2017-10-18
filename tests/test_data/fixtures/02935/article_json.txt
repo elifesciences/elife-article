@@ -19,7 +19,7 @@
     "issue": null,
     "journal_issn": "2050-084X", 
     "journal_title": "eLife", 
-    "license": "{'href': u'http://creativecommons.org/publicdomain/zero/1.0/'}", 
+    "license": "{'href': u'http://creativecommons.org/publicdomain/zero/1.0/', 'copyright_statement': u'None'}", 
     "manuscript": "02935", 
     "publisher_name": "eLife Sciences Publications, Ltd",
     "ref_list": [], 
