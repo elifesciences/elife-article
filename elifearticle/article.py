@@ -292,6 +292,7 @@ class License(BaseObject):
     license_id = None
     license_type = None
     copyright = False
+    copyright_statement = None
     href = None
     name = None
     paragraph1 = None

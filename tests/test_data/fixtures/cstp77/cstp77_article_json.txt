@@ -19,7 +19,7 @@
     "issue": "1",
     "journal_issn": "2057-4991",
     "journal_title": "Citizen Science: Theory and Practice", 
-    "license": "{'href': u'http://creativecommons.org/licenses/by/4.0/'}", 
+    "license": "{'href': u'http://creativecommons.org/licenses/by/4.0/', 'copyright_statement': u'Copyright: \\xa9 2017 The Author(s)'}", 
     "manuscript": "77", 
     "publisher_name": "Ubiquity Press",
     "ref_list": [], 

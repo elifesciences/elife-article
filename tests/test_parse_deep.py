@@ -65,6 +65,9 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.publisher_name, 'eLife Sciences Publications, Ltd')
         # issue
         self.assertEqual(article_object.issue, None)
+        # license
+        self.assertEqual(article_object.license.href, 'http://creativecommons.org/publicdomain/zero/1.0/')
+        self.assertEqual(article_object.license.copyright_statement, None)
 
 
     def test_parse_article_02935_compare_fixtures(self):
@@ -154,6 +157,9 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.component_list[35].asset, 'resp')
         # refs
         self.assertEqual(len(article_object.ref_list), 54)
+        # license
+        self.assertEqual(article_object.license.href, 'http://creativecommons.org/licenses/by/4.0/')
+        self.assertEqual(article_object.license.copyright_statement, u'\u00a9 2016, Harrison et al')
 
     def test_parse_article_cstp77_simple(self):
         "some simple comparisons and count list items"
