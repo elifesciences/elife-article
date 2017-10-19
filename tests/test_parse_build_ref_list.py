@@ -81,3 +81,13 @@ class TestBuildRefList(unittest.TestCase):
         refs = [{'uri': 'http://dx.doi.org/ 10.5061/dryad.r1072'}]
         ref_list = parse.build_ref_list(refs)
         self.assertEqual(ref_list[0].doi, ' 10.5061/dryad.r1072')
+
+    def test_bad_year_iso_8601_date(self):
+        """
+        based on elife 09771 v3 bib22 has a non-numeric year in the following attribute
+        <year iso-8601-date="2012, . 2011">2012, . 2011</year>
+        this test simulates the result when converted to a Citation object
+        """
+        refs = [{'year-iso-8601-date': '2012, . 2011'}]
+        ref_list = parse.build_ref_list(refs)
+        self.assertEqual(ref_list[0].year_numeric, None)
