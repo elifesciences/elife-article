@@ -179,7 +179,10 @@ def build_ref_list(refs):
         # Can set the year_numeric now
         if ref.year_iso_8601_date is not None:
             # First preference take it from the iso 8601 date, if available
-            ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
+            try:
+                ref.year_numeric = int(ref.year_iso_8601_date.split('-')[0])
+            except ValueError:
+                ref.year_numeric = None
         if ref.year_numeric is None:
             # Second preference, use the year value if it is entirely numeric
             if utils.is_year_numeric(ref.year):
