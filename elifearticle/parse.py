@@ -8,7 +8,7 @@ from elifearticle import article as ea
 from elifearticle import utils
 
 
-def build_contributors(authors, contrib_type):
+def build_contributors(authors, contrib_type, competing_interests=None):
     """
     Given a list of authors from the parser, instantiate contributors
     objects and build them
@@ -69,6 +69,15 @@ def build_contributors(authors, contrib_type):
                 affiliation.country)
 
             contributor.set_affiliation(affiliation)
+
+        # competing interests / conflicts
+        if (competing_interests and author.get("references")
+            and "competing-interest" in author.get("references")):
+            for ref_id in author["references"]["competing-interest"]:
+                for competing_interest in competing_interests:
+                    if competing_interest.get("text") and competing_interest.get("id") == ref_id:
+                        clean_text = utils.remove_tag('p', competing_interest.get("text"))
+                        contributor.set_conflict(clean_text)
 
         # Finally add the contributor to the list
         if contributor:
@@ -476,15 +485,17 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
 
     # contributors
     if build_part('contributors'):
+        # get the competing interests if available
+        competing_interests = parser.competing_interests(soup, None)
         all_contributors = parser.contributors(soup, detail)
         author_contributors = [con for con in all_contributors
                                if con.get('type') in ['author', 'on-behalf-of']]
         contrib_type = "author"
-        contributors = build_contributors(author_contributors, contrib_type)
+        contributors = build_contributors(author_contributors, contrib_type, competing_interests)
 
         contrib_type = "author non-byline"
         authors = parser.authors_non_byline(soup, detail)
-        contributors_non_byline = build_contributors(authors, contrib_type)
+        contributors_non_byline = build_contributors(authors, contrib_type, competing_interests)
         article.contributors = contributors + contributors_non_byline
 
     # license href

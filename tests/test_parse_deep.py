@@ -98,6 +98,9 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.contributors[0].suffix, 'Jnr')
         # first contributor contributed equally
         self.assertEqual(article_object.contributors[0].equal_contrib, True)
+        # first contributor has one conflict of interest
+        self.assertEqual(len(article_object.contributors[0].conflict), 1)
+        self.assertEqual(article_object.contributors[0].conflict, ['Chair of JATS4R'])
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates

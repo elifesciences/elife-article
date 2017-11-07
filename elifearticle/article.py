@@ -181,7 +181,7 @@ class Contributor(BaseObject):
     given_name = None
     suffix = None
     collab = None
-    conflict = None
+    conflict = []
     group_author_key = None
 
     def __new__(cls, contrib_type, surname, given_name, collab=None):
@@ -194,13 +194,14 @@ class Contributor(BaseObject):
         self.surname = surname
         self.given_name = given_name
         self.affiliations = []
+        self.conflict = []
         self.collab = collab
 
     def set_affiliation(self, affiliation):
         self.affiliations.append(affiliation)
 
     def set_conflict(self, conflict):
-        self.conflict = conflict
+        self.conflict.append(conflict)
 
 
 class Affiliation(BaseObject):
