@@ -135,7 +135,10 @@ class TestContributor(unittest.TestCase):
     def test_set_conflict(self):
         conflict = "A conflict"
         self.contributor.set_conflict(conflict)
-        self.assertEqual(self.contributor.conflict, conflict)
+        self.assertEqual(self.contributor.conflict, [conflict])
+        # add another one
+        self.contributor.set_conflict(conflict)
+        self.assertEqual(self.contributor.conflict, [conflict, conflict])
 
 
 class TestAffiliation(unittest.TestCase):
