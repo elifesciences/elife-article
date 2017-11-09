@@ -29,6 +29,10 @@ class TestUtils(unittest.TestCase):
             self.assertEqual(utils.entity_to_unicode(
                 string_input), string_output)
 
+    def test_remove_tag(self):
+        self.assertEqual(utils.remove_tag("i", "<i>test</i>"), "test")
+        self.assertEqual(utils.remove_tag("i", None), None)
+
     def test_replace_tags(self):
         self.assertEqual(utils.replace_tags("<i>"), "<italic>")
 
