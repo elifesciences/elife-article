@@ -379,16 +379,14 @@ def build_self_uri_list(self_uri_list):
     return uri_list
 
 
-def clean_abstract(abstract):
+def clean_abstract(abstract, remove_tags=['xref', 'ext-link', 'inline-formula', 'mml:*']):
     """
     Remove unwanted tags from abstract string,
     parsing it as HTML, then only keep the body paragraph contents
     """
-
-    remove_tags = ['xref', 'ext-link', 'inline-formula', 'mml:*']
-    for tag_name in remove_tags:
-        abstract = utils.remove_tag(tag_name, abstract)
-
+    if remove_tags:
+        for tag_name in remove_tags:
+            abstract = utils.remove_tag(tag_name, abstract)
     return abstract
 
 
@@ -402,7 +400,8 @@ def build_part_check(part, build_parts):
     return bool(part in build_parts)
 
 
-def build_article_from_xml(article_xml_filename, detail="brief", build_parts=None):
+def build_article_from_xml(article_xml_filename, detail="brief",
+                           build_parts=None, remove_tags=None):
     """
     Parse JATS XML with elifetools parser, and populate an
     eLifePOA article object
@@ -465,11 +464,11 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
 
     # abstract
     if build_part('abstract'):
-        article.abstract = clean_abstract(parser.full_abstract(soup))
+        article.abstract = clean_abstract(parser.full_abstract(soup), remove_tags)
 
     # digest
     if build_part('abstract'):
-        article.digest = clean_abstract(parser.full_digest(soup))
+        article.digest = clean_abstract(parser.full_digest(soup), remove_tags)
 
     # elocation-id
     if build_part('basic'):
@@ -558,7 +557,8 @@ def build_article_from_xml(article_xml_filename, detail="brief", build_parts=Non
     return article, error_count
 
 
-def build_articles_from_article_xmls(article_xmls, detail="full", build_parts=None):
+def build_articles_from_article_xmls(article_xmls, detail="full",
+                                     build_parts=None, remove_tags=None):
     """
     Given a list of article XML filenames, convert to article objects
     """
@@ -567,7 +567,8 @@ def build_articles_from_article_xmls(article_xmls, detail="full", build_parts=No
 
     for article_xml in article_xmls:
         print "working on ", article_xml
-        article, error_count = build_article_from_xml(article_xml, detail, build_parts)
+        article, error_count = build_article_from_xml(article_xml, detail,
+                                                      build_parts, remove_tags)
         if error_count == 0:
             poa_articles.append(article)
 
