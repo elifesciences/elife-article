@@ -21,6 +21,7 @@
     "journal_title": "Citizen Science: Theory and Practice", 
     "license": "{'href': u'http://creativecommons.org/licenses/by/4.0/', 'copyright_statement': u'Copyright: \\xa9 2017 The Author(s)'}", 
     "manuscript": "77", 
+    "pii": null,
     "publisher_name": "Ubiquity Press",
     "ref_list": [], 
     "related_articles": [], 
