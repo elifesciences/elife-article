@@ -68,6 +68,12 @@ class TestParseDeep(unittest.TestCase):
         # license
         self.assertEqual(article_object.license.href, 'http://creativecommons.org/publicdomain/zero/1.0/')
         self.assertEqual(article_object.license.copyright_statement, None)
+        # elocation_id
+        self.assertEqual(article_object.elocation_id, 'e02935')
+        # manuscript
+        self.assertEqual(article_object.manuscript, '02935')
+        # publisher_id pii
+        self.assertEqual(article_object.pii, '02935')
 
 
     def test_parse_article_02935_compare_fixtures(self):
@@ -163,6 +169,12 @@ class TestParseDeep(unittest.TestCase):
         # license
         self.assertEqual(article_object.license.href, 'http://creativecommons.org/licenses/by/4.0/')
         self.assertEqual(article_object.license.copyright_statement, u'\u00a9 2016, Harrison et al')
+        # elocation_id
+        self.assertEqual(article_object.elocation_id, 'e00666')
+        # manuscript
+        self.assertEqual(article_object.manuscript, '00666')
+        # publisher_id pii
+        self.assertEqual(article_object.pii, '00666')
 
     def test_parse_article_cstp77_simple(self):
         "some simple comparisons and count list items"
@@ -191,6 +203,12 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.publisher_name, 'Ubiquity Press')
         # issue
         self.assertEqual(article_object.issue, '1')
+        # elocation_id
+        self.assertEqual(article_object.elocation_id, '3')
+        # manuscript
+        self.assertEqual(article_object.manuscript, '77')
+        # publisher_id pii
+        self.assertEqual(article_object.pii, None)
 
     def test_parse_article_cstp77_compare_fixtures(self):
         "test by comparing data with test fixtures"

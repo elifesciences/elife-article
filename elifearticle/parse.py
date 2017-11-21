@@ -439,13 +439,17 @@ def build_article_from_xml(article_xml_filename, detail="brief",
     if build_part('related_articles'):
         article.related_articles = build_related_articles(parser.related_article(soup))
 
-    # Get publisher_id and set object manuscript value
+    # Get publisher_id pii
     if build_part('basic'):
-        publisher_id = parser.publisher_id(soup)
-        if not publisher_id and doi:
+        article.pii = parser.publisher_id(soup)
+
+    # set object manuscript value
+    if build_part('basic'):
+        manuscript = parser.publisher_id(soup)
+        if not manuscript and doi:
             # try to get it from the DOI
-            publisher_id = doi.split('.')[-1]
-        article.manuscript = publisher_id
+            manuscript = doi.split('.')[-1]
+        article.manuscript = manuscript
 
     # Set the articleType
     if build_part('basic'):

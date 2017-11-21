@@ -56,6 +56,7 @@ class Article(BaseObject):
         self.is_poa = None
         self.volume = None
         self.elocation_id = None
+        self.pii = None
         self.related_articles = []
         self.version = None
         self.datasets = []
