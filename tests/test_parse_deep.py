@@ -4,6 +4,7 @@ import re
 import json
 
 from elifearticle import parse
+from elifearticle.utils import unicode_value
 
 # Test settings to read in test data
 TEST_BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + os.sep
@@ -32,11 +33,11 @@ class TestParseDeep(unittest.TestCase):
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates
-        self.assertEqual(unicode(article_object.dates.get('received')),
+        self.assertEqual(unicode_value(article_object.dates.get('received')),
                          "{'date': u'time.struct_time(tm_year=2014, tm_mon=3, tm_mday=28, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=87, tm_isdst=0)', 'date_type': u'received'}")
-        self.assertEqual(unicode(article_object.dates.get('accepted')),
+        self.assertEqual(unicode_value(article_object.dates.get('accepted')),
                          "{'date': u'time.struct_time(tm_year=2014, tm_mon=9, tm_mday=26, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=269, tm_isdst=0)', 'date_type': u'accepted'}")
-        self.assertEqual(unicode(article_object.dates.get('pub')),
+        self.assertEqual(unicode_value(article_object.dates.get('pub')),
                          "{'date_type': u'pub', 'day': u'01', 'year': u'2014', 'date': u'time.struct_time(tm_year=2014, tm_mon=10, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=2, tm_yday=274, tm_isdst=0)', 'month': u'10', 'publication_format': u'electronic'}")
         # datasets
         self.assertEqual(len(article_object.datasets), 2)
@@ -79,9 +80,10 @@ class TestParseDeep(unittest.TestCase):
     def test_parse_article_02935_compare_fixtures(self):
         "test by comparing data with test fixtures"
         with open(os.path.join(XLS_PATH, 'fixtures', '02935', 'article_json.txt'), 'rb') as fp:
-            article_json = json.loads(fp.read())
+            article_json = json.loads(fp.read().decode('utf-8'))
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-02935-v2.xml')
-        self.assertEqual(article_object.pretty(), article_json)
+        pretty = article_object.pretty()
+        self.assertEqual(pretty, article_json)
 
 
     def test_parse_article_00666_simple(self):
@@ -110,11 +112,11 @@ class TestParseDeep(unittest.TestCase):
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates
-        self.assertEqual(unicode(article_object.dates.get('received')),
+        self.assertEqual(unicode_value(article_object.dates.get('received')),
                          "{'date': u'time.struct_time(tm_year=2016, tm_mon=3, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=61, tm_isdst=0)', 'date_type': u'received'}")
-        self.assertEqual(unicode(article_object.dates.get('accepted')),
+        self.assertEqual(unicode_value(article_object.dates.get('accepted')),
                          "{'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=1, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=4, tm_yday=92, tm_isdst=0)', 'date_type': u'accepted'}")
-        self.assertEqual(unicode(article_object.dates.get('publication')),
+        self.assertEqual(unicode_value(article_object.dates.get('publication')),
                          "{'date_type': u'publication', 'day': u'25', 'year': u'2016', 'date': u'time.struct_time(tm_year=2016, tm_mon=4, tm_mday=25, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=0, tm_yday=116, tm_isdst=0)', 'month': u'04', 'publication_format': u'electronic'}")
         # datasets
         self.assertEqual(len(article_object.datasets), 3)
@@ -189,11 +191,11 @@ class TestParseDeep(unittest.TestCase):
                               if c.contrib_type == 'author']), 4)
 
         # compare dates
-        self.assertEqual(unicode(article_object.dates.get('received')),
+        self.assertEqual(unicode_value(article_object.dates.get('received')),
                          "{'date': u'time.struct_time(tm_year=2016, tm_mon=8, tm_mday=11, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=3, tm_yday=224, tm_isdst=0)', 'date_type': u'received'}")
-        self.assertEqual(unicode(article_object.dates.get('accepted')),
+        self.assertEqual(unicode_value(article_object.dates.get('accepted')),
                          "{'date': u'time.struct_time(tm_year=2017, tm_mon=3, tm_mday=28, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=87, tm_isdst=0)', 'date_type': u'accepted'}")
-        self.assertEqual(unicode(article_object.dates.get('pub')),
+        self.assertEqual(unicode_value(article_object.dates.get('pub')),
                          "{'date_type': u'pub', 'day': u'04', 'year': u'2017', 'date': u'time.struct_time(tm_year=2017, tm_mon=7, tm_mday=4, tm_hour=0, tm_min=0, tm_sec=0, tm_wday=1, tm_yday=185, tm_isdst=0)', 'month': u'07', 'publication_format': u'electronic'}")
         # keywords
         self.assertEqual(len(article_object.author_keywords), 4)
@@ -213,6 +215,6 @@ class TestParseDeep(unittest.TestCase):
     def test_parse_article_cstp77_compare_fixtures(self):
         "test by comparing data with test fixtures"
         with open(os.path.join(XLS_PATH, 'fixtures', 'cstp77', 'cstp77_article_json.txt'), 'rb') as fp:
-            article_json = json.loads(fp.read())
+            article_json = json.loads(fp.read().decode('utf-8'))
         article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'cstp77-jats.xml')
         self.assertEqual(article_object.pretty(), article_json)

@@ -1,9 +1,12 @@
 import unittest
 import time
 from elifearticle import article as ea
+from elifearticle.utils import unicode_value
+
 
 def generate_date(date_string="2013-10-03", date_format="%Y-%m-%d"):
     return time.strptime(date_string, date_format)
+
 
 class TestArticle(unittest.TestCase):
 
@@ -94,7 +97,7 @@ class TestArticle(unittest.TestCase):
         "for test coverage of lists and dict"
         self.article.datasets = []
         self.article.license = {}
-        self.assertIsNotNone(unicode(self.article))
+        self.assertIsNotNone(unicode_value(self.article))
 
     def test_add_self_uri(self):
         uri = ea.Uri()
@@ -192,7 +195,22 @@ class TestFundingAward(unittest.TestCase):
         institution_id = 1
         self.funding_award.institution_id = institution_id
         self.assertEqual(self.funding_award.get_funder_identifier(), None)
+
+        # Original:
         self.assertRaises(ValueError, self.funding_award.get_funder_identifier())
+        # Failure - py27 TypeError: 'NoneType' object is not callable | py35 DeprecationWarning: callable is None
+        # due to the fact the second arg needs to be a callable, but None is being returned, Also from the looks
+        # of `get_funder_identifier` ValueError would never be raise? though maybe I am missing something.
+
+        # EDITED:
+        # self.assertRaises(AttributeError, self.funding_award.get_funder_identifier)
+        # Failure - AssertionError: AttributeError not raised
+        # This time it is happy as it has a callable, but the AttributeError is swallowed in the func
+        # and never re raised.
+        #
+        # Looking at the code currently in `get_funder_identifier` it looks sufficient to just run the first assert
+        # in this test and confirm `None` is being returned.
+
         # test success
         institution_id = "http://dx.doi.org/10.13039/100004440"
         self.funding_award.institution_id = institution_id
