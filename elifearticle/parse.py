@@ -3,6 +3,7 @@ Build article objects by parsing article XML
 """
 
 from __future__ import print_function
+from collections import OrderedDict
 from six import iteritems
 
 from elifetools import parseJATS as parser
@@ -125,10 +126,10 @@ def build_datasets(dataset_json):
         return []
 
     datasets = []
-    dataset_type_map = {
-        'generated': 'datasets',
-        'used': 'prev_published_datasets'
-    }
+    dataset_type_map = OrderedDict([
+        ('generated', 'datasets'),
+        ('used', 'prev_published_datasets')
+    ])
     dataset_type_map_found = []
     # First look for the types of datasets present
     for dataset_key, dataset_type in iteritems(dataset_type_map):
