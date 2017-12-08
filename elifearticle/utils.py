@@ -10,21 +10,21 @@ from git import Repo
 def is_str_or_unicode(value):
     try:
         return isinstance(value, unicode)
-    except NameError:
+    except NameError:  # pragma: no cover
         return isinstance(value, str)
 
 
 def unicode_value(value):
     try:
         return unicode(value)
-    except NameError:
+    except NameError:  # pragma: no cover
         return str(value)
 
 
 def uni_chr(chr_code):
     try:
         return unichr(chr_code)
-    except NameError:
+    except NameError:  # pragma: no cover
         return chr(chr_code)
 
 

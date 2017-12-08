@@ -10,6 +10,7 @@ from elifearticle.utils import is_str_or_unicode, unicode_value
 
 class BaseObject(object):
     "base object for shared functions"
+    # pragma: no cover
     def __unicode__(self):
         """
         Return unicode representation of the simple object properties,
