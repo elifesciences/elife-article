@@ -327,36 +327,9 @@ class License(BaseObject):
         new_instance.init(license_id)
         return new_instance
 
-    def init(self, license_id):
-        if license_id:
-            self.init_by_license_id(license_id)
+    def init(self, license_id=None):
+        self.license_id = license_id
 
-    def init_by_license_id(self, license_id):
-        """
-        For license_id value, set the license properties
-        """
-        if int(license_id) == 1:
-            self.license_id = license_id
-            self.license_type = "open-access"
-            self.copyright = True
-            self.href = "http://creativecommons.org/licenses/by/4.0/"
-            self.name = "Creative Commons Attribution License"
-            self.paragraph1 = "This article is distributed under the terms of the "
-            self.paragraph2 = (
-                " permitting unrestricted use and redistribution provided that the " +
-                "original author and source are credited.")
-        elif int(license_id) == 2:
-            self.license_id = license_id
-            self.license_type = "open-access"
-            self.copyright = False
-            self.href = "http://creativecommons.org/publicdomain/zero/1.0/"
-            self.name = "Creative Commons CC0"
-            self.paragraph1 = (
-                "This is an open-access article, free of all copyright, and may be " +
-                "freely reproduced, distributed, transmitted, modified, built upon, or " +
-                "otherwise used by anyone for any lawful purpose. The work is made " +
-                "available under the ")
-            self.paragraph2 = " public domain dedication."
 
 
 class Citation(BaseObject):
