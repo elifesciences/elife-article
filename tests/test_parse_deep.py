@@ -16,7 +16,8 @@ class TestParseDeep(unittest.TestCase):
 
     def test_parse_article_02935_simple(self):
         "some simple comparisons and count list items"
-        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-02935-v2.xml')
+        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-02935-v2.xml',
+                                                                   detail='full')
         # test pretty method for test coverage
         self.assertIsNotNone(article_object.pretty())
         # list of individual comparisons of interest
@@ -34,6 +35,10 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.contributors[0].suffix, None)
         # first contributor did not contribute equally
         self.assertEqual(article_object.contributors[0].equal_contrib, False)
+        # first contributor affiliation
+        self.assertEqual(
+            article_object.contributors[0].affiliations[0].text,
+            'Cancer Genome Project, Wellcome Trust Sanger Institute, Hinxton, United Kingdom')
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates
@@ -89,7 +94,8 @@ class TestParseDeep(unittest.TestCase):
 
     def test_parse_article_00666_simple(self):
         "some simple comparisons and count list items"
-        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-00666.xml')
+        article_object, error_count = parse.build_article_from_xml(XLS_PATH + 'elife-00666.xml',
+                                                                   detail='full')
         # list of individual comparisons of interest
         self.assertEqual(article_object.doi, '10.7554/eLife.00666')
         self.assertEqual(article_object.journal_issn, '2050-084X')
@@ -110,6 +116,10 @@ class TestParseDeep(unittest.TestCase):
         # first contributor has one conflict of interest
         self.assertEqual(len(article_object.contributors[0].conflict), 1)
         self.assertEqual(article_object.contributors[0].conflict, ['Chair of JATS4R'])
+        # first contributor affiliation
+        self.assertEqual(
+            article_object.contributors[0].affiliations[0].text,
+            'Department of Production, eLife, Cambridge, United Kingdom')
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates

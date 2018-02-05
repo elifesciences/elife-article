@@ -51,6 +51,7 @@ def build_contributors(authors, contrib_type, competing_interests=None):
         institution = []
         city = []
         country = []
+        text = []
 
         if author.get("affiliations"):
             for aff in author.get("affiliations"):
@@ -58,6 +59,7 @@ def build_contributors(authors, contrib_type, competing_interests=None):
                 institution.append(aff.get("institution"))
                 city.append(aff.get("city"))
                 country.append(aff.get("country"))
+                text.append(aff.get("text"))
 
         # Turn the set of lists into ContributorAffiliation
         for index in range(0, len(institution)):
@@ -72,6 +74,10 @@ def build_contributors(authors, contrib_type, competing_interests=None):
                 affiliation.institution,
                 affiliation.city,
                 affiliation.country)
+
+            # fall back if no other fields are set take the text content
+            if affiliation.text == '':
+                affiliation.text = text[index]
 
             contributor.set_affiliation(affiliation)
 
