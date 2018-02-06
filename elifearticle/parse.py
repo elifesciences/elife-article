@@ -46,33 +46,17 @@ def build_contributors(authors, contrib_type, competing_interests=None):
         if author.get("equal-contrib") == "yes":
             contributor.equal_contrib = True
 
-        # Affiliations, compile text for each
-        department = []
-        institution = []
-        city = []
-        country = []
-
-        if author.get("affiliations"):
-            for aff in author.get("affiliations"):
-                department.append(aff.get("dept"))
-                institution.append(aff.get("institution"))
-                city.append(aff.get("city"))
-                country.append(aff.get("country"))
-
-        # Turn the set of lists into ContributorAffiliation
-        for index in range(0, len(institution)):
+        # Add contributor affiliations
+        for aff in author.get("affiliations", []):
             affiliation = ea.Affiliation()
-            affiliation.department = department[index]
-            affiliation.institution = institution[index]
-            affiliation.city = city[index]
-            affiliation.country = country[index]
-
             affiliation.text = utils.text_from_affiliation_elements(
-                affiliation.department,
-                affiliation.institution,
-                affiliation.city,
-                affiliation.country)
-
+                aff.get("dept"),
+                aff.get("institution"),
+                aff.get("city"),
+                aff.get("country"))
+            # fall back if no other fields are set take the text content
+            if affiliation.text == '':
+                affiliation.text = aff.get("text")
             contributor.set_affiliation(affiliation)
 
         # competing interests / conflicts

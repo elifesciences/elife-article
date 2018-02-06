@@ -145,10 +145,4 @@ def author_name_from_json(author_json):
 
 def text_from_affiliation_elements(department, institution, city, country):
     "format an author affiliation from details"
-    text = ""
-    for element in (department, institution, city, country):
-        if text != "":
-            text += ", "
-        if element:
-            text += element
-    return text
+    return ', '.join(element for element in [department, institution, city, country] if element)

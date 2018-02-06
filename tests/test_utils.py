@@ -2,8 +2,10 @@ import unittest
 import re
 import os
 import time
+from ddt import ddt, data, unpack
 from elifearticle import utils
 
+@ddt
 class TestUtils(unittest.TestCase):
 
     def setUp(self):
@@ -52,6 +54,28 @@ class TestUtils(unittest.TestCase):
 
     def test_get_last_commit_to_master(self):
         self.assertIsNotNone(utils.get_last_commit_to_master())
+
+    @unpack
+    @data(
+        (None, None, None, None, ''),
+        ('', None, None, None, ''),
+        ('One', 'Two', 'Three', 'Four', 'One, Two, Three, Four'),
+        ('One', 'Two', None, 'Four', 'One, Two, Four'),
+        ('One', 'Two', '', 'Four', 'One, Two, Four')
+        )
+    def test_text_from_affiliation_elements(self, department, institution, city, country,
+                                            expected):
+        self.assertEqual(
+            utils.text_from_affiliation_elements(department, institution, city, country),
+            expected,
+            "{expected} not found testing {department}, {institution}, {city}, {country}".format(
+                expected=expected,
+                department=department,
+                institution=institution,
+                city=city,
+                country=country
+                )
+            )
 
 if __name__ == '__main__':
     unittest.main()
