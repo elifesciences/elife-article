@@ -47,18 +47,17 @@ def build_contributors(authors, contrib_type, competing_interests=None):
             contributor.equal_contrib = True
 
         # Add contributor affiliations
-        if author.get("affiliations"):
-            for aff in author.get("affiliations"):
-                affiliation = ea.Affiliation()
-                affiliation.text = utils.text_from_affiliation_elements(
-                    aff.get("dept"),
-                    aff.get("institution"),
-                    aff.get("city"),
-                    aff.get("country"))
-                # fall back if no other fields are set take the text content
-                if affiliation.text == '':
-                    affiliation.text = aff.get("text")
-                contributor.set_affiliation(affiliation)
+        for aff in author.get("affiliations", []):
+            affiliation = ea.Affiliation()
+            affiliation.text = utils.text_from_affiliation_elements(
+                aff.get("dept"),
+                aff.get("institution"),
+                aff.get("city"),
+                aff.get("country"))
+            # fall back if no other fields are set take the text content
+            if affiliation.text == '':
+                affiliation.text = aff.get("text")
+            contributor.set_affiliation(affiliation)
 
         # competing interests / conflicts
         if (competing_interests and author.get("references")
