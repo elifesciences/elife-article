@@ -2,3 +2,4 @@ git+https://github.com/elifesciences/elife-tools.git@3ebc42f10d6ec54724ecdd9cd8d
 coverage==3.7.1
 arrow==0.4.4
 GitPython==2.1.7
+ddt==1.1.0
