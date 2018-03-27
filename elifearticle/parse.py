@@ -150,12 +150,9 @@ def build_data_availability(datasets_json):
     Given datasets in JSON format, get the data availability from it if present
     """
     data_availability = None
-    if 'availability' in datasets_json:
+    if 'availability' in datasets_json and datasets_json.get('availability'):
         # only expect one paragraph of text
-        try:
-            data_availability = datasets_json.get('availability')[0].get('text')
-        except IndexError:
-            pass
+        data_availability = datasets_json.get('availability')[0].get('text')
     return data_availability
 
 
