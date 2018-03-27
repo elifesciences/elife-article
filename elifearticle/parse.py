@@ -102,11 +102,11 @@ def build_funding(award_groups):
     return funding_awards
 
 
-def build_datasets(dataset_json):
+def build_datasets(datasets_json):
     """
     Given datasets in JSON format, build and return a list of dataset objects
     """
-    if not dataset_json:
+    if not datasets_json:
         return []
 
     datasets = []
@@ -117,12 +117,12 @@ def build_datasets(dataset_json):
     dataset_type_map_found = []
     # First look for the types of datasets present
     for dataset_key, dataset_type in iteritems(dataset_type_map):
-        if dataset_json.get(dataset_key):
+        if datasets_json.get(dataset_key):
             dataset_type_map_found.append(dataset_key)
     # Continue with the found dataset types
     for dataset_key in dataset_type_map_found:
         dataset_type = dataset_type_map.get(dataset_key)
-        for dataset_values in dataset_json.get(dataset_key):
+        for dataset_values in datasets_json.get(dataset_key):
             dataset = ea.Dataset()
             utils.set_attr_if_value(dataset, 'dataset_type', dataset_type)
             utils.set_attr_if_value(dataset, 'year', dataset_values.get('date'))
@@ -143,6 +143,20 @@ def build_datasets(dataset_json):
                     dataset.doi = eautils.doi_uri_to_doi(dataset.uri)
             datasets.append(dataset)
     return datasets
+
+
+def build_data_availability(datasets_json):
+    """
+    Given datasets in JSON format, get the data availability from it if present
+    """
+    data_availability = None
+    if 'availability' in datasets_json:
+        # only expect one paragraph of text
+        try:
+            data_availability = datasets_json.get('availability')[0].get('text')
+        except IndexError:
+            pass
+    return data_availability
 
 
 def build_ref_list(refs):
@@ -515,7 +529,9 @@ def build_article_from_xml(article_xml_filename, detail="brief",
 
     # datasets
     if build_part('datasets'):
-        article.datasets = build_datasets(parser.datasets_json(soup))
+        datasets_json = parser.datasets_json(soup)
+        article.datasets = build_datasets(datasets_json)
+        article.data_availability = build_data_availability(datasets_json)
 
     # references or citations
     if build_part('references'):
