@@ -82,6 +82,7 @@ class Article(BaseObject):
         self.related_articles = []
         self.version = None
         self.datasets = []
+        self.data_availability = None
         self.funding_awards = []
         self.funding_note = None
         self.journal_issn = None
