@@ -202,6 +202,9 @@ def build_ref_list(refs):
         utils.set_attr_if_value(ref, 'elocation_id', reference.get('elocation-id'))
         # uri
         utils.set_attr_if_value(ref, 'uri', reference.get('uri'))
+        if not ref.uri:
+            # take uri value from uri_text
+            utils.set_attr_if_value(ref, 'uri', reference.get('uri_text'))
         # pmid
         utils.set_attr_if_value(ref, 'pmid', reference.get('pmid'))
         # isbn
