@@ -55,6 +55,13 @@ class TestUtils(unittest.TestCase):
     def test_get_last_commit_to_master(self):
         self.assertIsNotNone(utils.get_last_commit_to_master())
 
+    def test_get_last_commit_to_master_no_path(self):
+        git_path = 'not_a_path'
+        last_commit = ''
+        expected = 'None'
+        last_commit = utils.get_last_commit_to_master(git_path)
+        self.assertEqual(last_commit, expected)
+
     @unpack
     @data(
         (None, None, None, None, ''),
