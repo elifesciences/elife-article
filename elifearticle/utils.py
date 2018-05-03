@@ -4,7 +4,7 @@ Utility functions for converting content and some shared by other libraries
 
 import re
 import os
-from git import Repo
+from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 
 
 def is_str_or_unicode(value):
@@ -104,19 +104,24 @@ def version_from_xml_filename(filename):
     else:
         return None
 
-def get_last_commit_to_master():
+def get_last_commit_to_master(repo_path="."):
     """
     returns the last commit on the master branch. It would be more ideal to get the commit
     from the branch we are currently on, but as this is a check mostly to help
     with production issues, returning the commit from master will be sufficient.
     """
-    repo = Repo(".")
     last_commit = None
+    repo = None
     try:
-        last_commit = repo.commits()[0]
-    except AttributeError:
-        # Optimised for version 0.3.2.RC1
-        last_commit = repo.head.commit
+        repo = Repo(repo_path)
+    except (InvalidGitRepositoryError, NoSuchPathError):
+        repo = None
+    if repo:
+        try:
+            last_commit = repo.commits()[0]
+        except AttributeError:
+            # Optimised for version 0.3.2.RC1
+            last_commit = repo.head.commit
     return str(last_commit)
 
 def calculate_journal_volume(pub_date, year):
