@@ -131,6 +131,8 @@ def build_datasets(datasets_json):
             utils.set_attr_if_value(dataset, 'doi', dataset_values.get('doi'))
             utils.set_attr_if_value(dataset, 'uri', dataset_values.get('uri'))
             utils.set_attr_if_value(dataset, 'accession_id', dataset_values.get('dataId'))
+            utils.set_attr_if_value(dataset, 'assigning_authority', 
+                                    dataset_values.get('assigningAuthority'))
             # authors
             if dataset_values.get('authors'):
                 # parse JSON format authors into author objects

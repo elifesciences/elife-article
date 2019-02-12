@@ -266,6 +266,7 @@ class Dataset(BaseObject):
         self.title = None
         self.license_info = None
         self.accession_id = None
+        self.assigning_authority = None
         self.doi = None
         self.uri = None
         self.comment = None
