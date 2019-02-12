@@ -143,7 +143,10 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.datasets[0].title, 'xml-mapping')
         self.assertEqual(article_object.datasets[0].comment, 'Publicly available on GitHub')
         self.assertEqual(article_object.datasets[0].uri, 'https://github.com/elifesciences/XML-mapping/blob/master/elife-00666.xml')
+        self.assertEqual(article_object.datasets[0].assigning_authority, None)
         self.assertEqual(article_object.datasets[2].doi, '10.5061/dryad.cv323')
+        self.assertEqual(
+            article_object.datasets[2].assigning_authority, 'Dryad Digital Repository')
         # related_articles
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
