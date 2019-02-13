@@ -12,7 +12,8 @@ setup(name='elifearticle',
     packages=['elifearticle'],
     license = 'MIT',
     install_requires=[
-        "elifetools"
+        "elifetools",
+        "GitPython"
     ],
     url='https://github.com/elifesciences/elife-article',
     maintainer='eLife Sciences Publications Ltd.',
