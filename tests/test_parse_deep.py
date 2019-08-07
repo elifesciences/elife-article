@@ -55,6 +55,32 @@ class TestParseDeep(unittest.TestCase):
         # datasets
         self.assertEqual(len(article_object.datasets), 2)
         self.assertEqual(article_object.datasets[0].accession_id, 'EGAS00001000968')
+        # review_articles
+        self.assertEqual(len(article_object.review_articles), 2)
+        # review_article 1
+        self.assertEqual(article_object.review_articles[0].doi, '10.7554/eLife.02935.027')
+        self.assertEqual(article_object.review_articles[0].article_type, 'article-commentary')
+        self.assertEqual(article_object.review_articles[0].id, 'SA1')
+        self.assertEqual(article_object.review_articles[0].title, 'Decision letter')
+        self.assertEqual(
+            article_object.review_articles[0].license.href,
+            'http://creativecommons.org/publicdomain/zero/1.0/')
+        self.assertEqual(len(article_object.review_articles[0].contributors), 1)
+        self.assertEqual(article_object.review_articles[0].contributors[0].surname, "Golub")
+        self.assertEqual(article_object.review_articles[0].contributors[0].given_name, "Todd")
+        self.assertEqual(article_object.review_articles[0].contributors[0].contrib_type, "editor")
+        self.assertEqual(
+            article_object.review_articles[0].contributors[0].affiliations[0].text,
+            "Broad Institute, United States")
+        self.assertEqual(
+            article_object.review_articles[0].related_articles[0].doi, "10.7554/eLife.02935")
+        self.assertEqual(
+            article_object.review_articles[0].related_articles[0].article_type, "research-article")
+        # review_articles 2
+        self.assertEqual(article_object.review_articles[1].doi, '10.7554/eLife.02935.028')
+        self.assertEqual(article_object.review_articles[1].article_type, 'reply')
+        self.assertEqual(article_object.review_articles[1].id, 'SA2')
+        self.assertEqual(article_object.review_articles[1].title, 'Author response')
         # related_articles
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
@@ -147,6 +173,10 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.datasets[2].doi, '10.5061/dryad.cv323')
         self.assertEqual(
             article_object.datasets[2].assigning_authority, 'Dryad Digital Repository')
+        # review_articles
+        self.assertEqual(len(article_object.review_articles), 2)
+        self.assertEqual(article_object.review_articles[0].doi, '10.7554/eLife.00666.029')
+        self.assertEqual(article_object.review_articles[1].doi, '10.7554/eLife.00666.030')
         # related_articles
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
@@ -233,4 +263,5 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.manuscript, '77')
         # publisher_id pii
         self.assertEqual(article_object.pii, None)
-
+        # review_articles, should be empty
+        self.assertEqual(len(article_object.review_articles), 0)

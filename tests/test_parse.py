@@ -58,7 +58,7 @@ class TestParseXml(unittest.TestCase):
         build_parts = [
             'abstract', 'basic', 'categories', 'components', 'contributors', 'datasets', 'funding',
             'history', 'is_poa', 'keywords', 'license', 'pub_dates', 'references',
-            'related_articles', 'research_organisms', 'volume']
+            'related_articles', 'research_organisms', 'volume', 'sub_articles']
         article_xmls = [os.path.join(XLS_PATH, 'elife-02043-v2.xml')]
         article = parse.build_articles_from_article_xmls(article_xmls, detail, build_parts)[0]
         check_article(article)
