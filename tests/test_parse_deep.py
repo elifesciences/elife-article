@@ -177,6 +177,14 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.review_articles), 2)
         self.assertEqual(article_object.review_articles[0].doi, '10.7554/eLife.00666.029')
         self.assertEqual(article_object.review_articles[1].doi, '10.7554/eLife.00666.030')
+        # review_article 1
+        self.assertEqual(len(article_object.review_articles[0].contributors), 3)
+        self.assertEqual(article_object.review_articles[0].contributors[0].surname, 'Collings')
+        self.assertEqual(article_object.review_articles[0].contributors[0].contrib_type, 'editor')
+        self.assertEqual(article_object.review_articles[0].contributors[1].surname, 'Darian-Smith')
+        self.assertEqual(article_object.review_articles[0].contributors[1].contrib_type, 'reviewer')
+        self.assertEqual(article_object.review_articles[0].contributors[2].surname, 'Smith')
+        self.assertEqual(article_object.review_articles[0].contributors[2].contrib_type, 'reviewer')
         # related_articles
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
