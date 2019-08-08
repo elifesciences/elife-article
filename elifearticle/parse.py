@@ -332,6 +332,36 @@ def build_components(components):
     return component_list
 
 
+def build_review_articles(sub_articles):
+    """populate an article review_articles property with data from sub_articles"""
+    article_list = []
+    for sub_article in sub_articles:
+        article = ea.Article(sub_article.get("doi"), sub_article.get("article_title"))
+        utils.set_attr_if_value(article, 'article_type', sub_article.get('article_type'))
+        utils.set_attr_if_value(article, 'id', sub_article.get('id'))
+        # contributors
+        if sub_article.get("contributors"):
+            for contributor in sub_article.get("contributors"):
+                article.contributors += build_contributors([contributor], contributor.get("type"))
+        # use the parent article license as the sub article license
+        license_object = None
+        if sub_article.get("parent_license_url"):
+            license_object = ea.License()
+            license_object.href = sub_article.get("parent_license_url")
+            article.license = license_object
+        # make the parent article a related article, avoids circular references
+        related_article = ea.Article(
+            sub_article.get("parent_doi"), sub_article.get("parent_article_title"))
+        utils.set_attr_if_value(
+            related_article, 'article_type', sub_article.get('parent_article_type'))
+        if license_object:
+            related_article.license = license_object
+        article.related_articles.append(related_article)
+        # append article to the list of review articles
+        article_list.append(article)
+    return article_list
+
+
 def build_related_articles(related_articles):
     """
     Given parsed data build a list of related article objects
@@ -564,6 +594,10 @@ def build_article_from_xml(article_xml_filename, detail="brief",
 
     if build_part('is_poa'):
         article.is_poa = parser.is_poa(soup)
+
+    # peer review articles
+    if build_part('sub_articles'):
+        article.review_articles = build_review_articles(parser.sub_articles(soup))
 
     return article, error_count
 

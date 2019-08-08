@@ -4096,7 +4096,9 @@ UPDATE: article-type has been changed from article-commentary to decision-letter
                 <article-title>Decision letter</article-title>
             </title-group>
 <!-- NOTE: repetition of the reviewing editor in this section is required as it indicates that person is the author of this sub-article.
-UPDATE: punctuation between institution and country removed. -->     
+UPDATE: punctuation between institution and country removed.
+            NOTE: Where reveiwing editor and senior editor are the same person, on the website these 
+            will be consiolidated into one role: Senior and Reviewing Editor -->     
             <contrib-group>
                 <contrib contrib-type="editor">
                     <name>
@@ -4105,8 +4107,32 @@ UPDATE: punctuation between institution and country removed. -->
                     </name>
                     <role>Reviewing Editor</role>
                     <aff>
-                        <institution>eLife</institution>
-                        <country>United Kingdom</country>
+                        <institution>eLife Sciences</institution>
+                        <country country="GB">United Kingdom</country>
+                    </aff>
+                </contrib>
+            </contrib-group>
+            <contrib-group>
+                <contrib contrib-type="reviewer">
+                    <name>
+                        <surname>Darian-Smith</surname>
+                        <given-names>Corinna </given-names>
+                    </name>
+                    <role>Reviewer</role>
+                    <aff>
+                        <institution>Stanford University</institution>
+                        <country country="US">United States</country>
+                    </aff>
+                </contrib>
+                <contrib contrib-type="reviewer">
+                    <name>
+                        <surname>Smith</surname>
+                        <given-names>Alison M.</given-names>
+                    </name>
+                    <role>Reviewer</role>
+                    <aff>
+                        <institution>John Innes Centre</institution>
+                        <country country="GB">United Kingdom</country>
                     </aff>
                 </contrib>
             </contrib-group>

@@ -59,6 +59,7 @@ class Article(BaseObject):
         self.article_type = "research-article"
         self.display_channel = None
         self.doi = doi
+        self.id = None
         self.contributors = []
         self.title = title
         self.abstract = ""
@@ -91,6 +92,7 @@ class Article(BaseObject):
         self.version = None
         self.publisher_name = None
         self.issue = None
+        self.review_articles = []
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
