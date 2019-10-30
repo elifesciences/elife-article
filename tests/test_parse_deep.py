@@ -39,6 +39,15 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(
             article_object.contributors[0].affiliations[0].text,
             'Cancer Genome Project, Wellcome Trust Sanger Institute, Hinxton, United Kingdom')
+        # count editors
+        self.assertEqual(len(article_object.editors), 1)
+        # first editor
+        self.assertEqual(article_object.editors[0].contrib_type, 'editor')
+        self.assertEqual(article_object.editors[0].surname, 'Golub')
+        self.assertEqual(article_object.editors[0].given_name, 'Todd')
+        self.assertEqual(
+            article_object.editors[0].affiliations[0].text,
+            'Broad Institute, United States')
         # ethics - not parsed yet
         self.assertEqual(len(article_object.ethics), 0)
         # compare dates
