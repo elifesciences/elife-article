@@ -61,6 +61,7 @@ class Article(BaseObject):
         self.doi = doi
         self.id = None
         self.contributors = []
+        self.editors = []
         self.title = title
         self.abstract = ""
         self.research_organisms = []

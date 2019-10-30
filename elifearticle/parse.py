@@ -536,6 +536,13 @@ def build_article_from_xml(article_xml_filename, detail="brief",
         contributors_non_byline = build_contributors(authors, contrib_type, competing_interests)
         article.contributors = contributors + contributors_non_byline
 
+        # also populate the editors when contributors flag is being built
+        editor_contrib_types = ['editor', 'reviewer', 'senior_editor']
+        for contrib_type in editor_contrib_types:
+            editor_contributors = [
+                con for con in all_contributors if con.get('type') == contrib_type]
+            article.editors += build_contributors(editor_contributors, contrib_type)
+
     # license href
     if build_part('license'):
         license_object = ea.License()
