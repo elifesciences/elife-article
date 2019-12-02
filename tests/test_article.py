@@ -259,9 +259,20 @@ class TestRelatedArticle(unittest.TestCase):
         self.assertIsNotNone(self.related_article)
 
 
+class TestContentBlock(unittest.TestCase):
 
+    def test_content_block(self):
+        """test blank content block"""
+        content_block = ea.ContentBlock()
+        self.assertEqual(content_block.attr_names(), [])
 
-
+    def test_content_block_attr(self):
+        """test attributes function"""
+        content_block = ea.ContentBlock("disp-quote", None, {"content-type": "editor-comment"})
+        content_block.attr["escaped"] = "\""
+        self.assertEqual(sorted(content_block.attr_names()), ["content-type", "escaped"])
+        self.assertEqual(
+            content_block.attr_string(), ' content-type="editor-comment" escaped="&quot;"')
 
 
 if __name__ == '__main__':
