@@ -9,7 +9,6 @@ from elifetools import parseJATS as parser
 from elifetools import utils as eautils
 from elifearticle import article as ea
 from elifearticle import utils
-from elifearticle.utils import unicode_value
 
 
 def build_contributors(authors, contrib_type, competing_interests=None):
@@ -268,10 +267,10 @@ def component_title(component):
     if component.get('title'):
         title_text = component.get('title')
 
-    title = unicode_value(label_text)
+    title = str(label_text)
     if label_text != '' and title_text != '':
         title += ' '
-    title += unicode_value(title_text)
+    title += str(title_text)
 
     if component.get('type') == 'abstract' and title == '':
         title = 'Abstract'

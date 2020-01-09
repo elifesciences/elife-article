@@ -7,31 +7,10 @@ import os
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
 
 
-def is_str_or_unicode(value):
-    try:
-        return isinstance(value, unicode)
-    except NameError:  # pragma: no cover
-        return isinstance(value, str)
-
-
-def unicode_value(value):
-    try:
-        return unicode(value)
-    except NameError:  # pragma: no cover
-        return str(value)
-
-
-def uni_chr(chr_code):
-    try:
-        return unichr(chr_code)
-    except NameError:  # pragma: no cover
-        return chr(chr_code)
-
-
 def repl(match):
     "Convert hex to int to unicode character"
     chr_code = int(match.group(1), 16)
-    return uni_chr(chr_code)
+    return chr(chr_code)
 
 
 def entity_to_unicode(string):

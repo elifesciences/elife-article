@@ -1,7 +1,6 @@
 import unittest
 import time
 from elifearticle import article as ea
-from elifearticle.utils import unicode_value
 
 
 def generate_date(date_string="2013-10-03", date_format="%Y-%m-%d"):
@@ -97,7 +96,7 @@ class TestArticle(unittest.TestCase):
         "for test coverage of lists and dict"
         self.article.datasets = []
         self.article.license = {}
-        self.assertIsNotNone(unicode_value(self.article))
+        self.assertIsNotNone(str(self.article))
 
     def test_add_self_uri(self):
         uri = ea.Uri()

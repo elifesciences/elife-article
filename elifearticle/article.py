@@ -4,7 +4,6 @@ Article object definitions
 
 from collections import OrderedDict
 from elifetools import utils as etoolsutils
-from elifearticle.utils import is_str_or_unicode, unicode_value
 
 class BaseObject(object):
     "base object for shared functions"
@@ -157,14 +156,14 @@ class Article(BaseObject):
         for key, value in sorted(self.__dict__.items()):
             if value is None:
                 pretty_obj[key] = None
-            elif is_str_or_unicode(value):
+            elif isinstance(value, str):
                 pretty_obj[key] = self.__dict__.get(key)
             elif isinstance(value, list):
                 pretty_obj[key] = []
             elif isinstance(value, dict):
                 pretty_obj[key] = {}
             else:
-                pretty_obj[key] = unicode_value(value)
+                pretty_obj[key] = str(value)
         return pretty_obj
 
 class ArticleDate(BaseObject):
