@@ -2,8 +2,6 @@
 Article object definitions
 """
 
-from six import iteritems
-
 from collections import OrderedDict
 from elifetools import utils as etoolsutils
 from elifearticle.utils import is_str_or_unicode, unicode_value
@@ -156,7 +154,7 @@ class Article(BaseObject):
     def pretty(self):
         "sort values and format output for viewing and comparing in test scenarios"
         pretty_obj = OrderedDict()
-        for key, value in sorted(iteritems(self.__dict__)):
+        for key, value in sorted(self.__dict__.items()):
             if value is None:
                 pretty_obj[key] = None
             elif is_str_or_unicode(value):
