@@ -2,30 +2,11 @@
 Article object definitions
 """
 
-from six import iteritems
-
 from collections import OrderedDict
 from elifetools import utils as etoolsutils
-from elifearticle.utils import is_str_or_unicode, unicode_value
 
 class BaseObject(object):
     "base object for shared functions"
-
-    def __unicode__(self):  # pragma: no cover
-        """
-        Return unicode representation of the simple object properties,
-        if there is a list or dict just return an empty representation
-        for easier viewing and test case scenario writing
-        """
-        unicode_dict = {}
-        for key in self.__dict__:
-            if isinstance(self.__dict__.get(key), list):
-                unicode_dict[key] = []
-            elif isinstance(self.__dict__.get(key), dict):
-                unicode_dict[key] = {}
-            else:
-                unicode_dict[key] = unicode(self.__dict__.get(key))
-        return unicode(unicode_dict)
 
     def __str__(self):
         """
@@ -156,17 +137,17 @@ class Article(BaseObject):
     def pretty(self):
         "sort values and format output for viewing and comparing in test scenarios"
         pretty_obj = OrderedDict()
-        for key, value in sorted(iteritems(self.__dict__)):
+        for key, value in sorted(self.__dict__.items()):
             if value is None:
                 pretty_obj[key] = None
-            elif is_str_or_unicode(value):
+            elif isinstance(value, str):
                 pretty_obj[key] = self.__dict__.get(key)
             elif isinstance(value, list):
                 pretty_obj[key] = []
             elif isinstance(value, dict):
                 pretty_obj[key] = {}
             else:
-                pretty_obj[key] = unicode_value(value)
+                pretty_obj[key] = str(value)
         return pretty_obj
 
 class ArticleDate(BaseObject):

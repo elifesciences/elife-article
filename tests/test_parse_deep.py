@@ -5,7 +5,6 @@ import json
 import time
 
 from elifearticle import parse
-from elifearticle.utils import unicode_value
 from elifetools import utils as etoolsutils
 
 # Test settings to read in test data

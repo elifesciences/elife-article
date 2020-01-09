@@ -4,13 +4,11 @@ Build article objects by parsing article XML
 
 from __future__ import print_function
 from collections import OrderedDict
-from six import iteritems
 
 from elifetools import parseJATS as parser
 from elifetools import utils as eautils
 from elifearticle import article as ea
 from elifearticle import utils
-from elifearticle.utils import unicode_value
 
 
 def build_contributors(authors, contrib_type, competing_interests=None):
@@ -85,7 +83,7 @@ def build_funding(award_groups):
     funding_awards = []
 
     for award_groups_item in award_groups:
-        for award_group_id, award_group in iteritems(award_groups_item):
+        for award_group_id, award_group in award_groups_item.items():
             award = ea.FundingAward()
             award.award_group_id = award_group_id
             if award_group.get('id-type') == "FundRef":
@@ -116,7 +114,7 @@ def build_datasets(datasets_json):
     ])
     dataset_type_map_found = []
     # First look for the types of datasets present
-    for dataset_key, dataset_type in iteritems(dataset_type_map):
+    for dataset_key, dataset_type in dataset_type_map.items():
         if datasets_json.get(dataset_key):
             dataset_type_map_found.append(dataset_key)
     # Continue with the found dataset types
@@ -269,10 +267,10 @@ def component_title(component):
     if component.get('title'):
         title_text = component.get('title')
 
-    title = unicode_value(label_text)
+    title = str(label_text)
     if label_text != '' and title_text != '':
         title += ' '
-    title += unicode_value(title_text)
+    title += str(title_text)
 
     if component.get('type') == 'abstract' and title == '':
         title = 'Abstract'
