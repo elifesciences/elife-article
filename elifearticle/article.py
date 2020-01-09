@@ -8,22 +8,6 @@ from elifetools import utils as etoolsutils
 class BaseObject(object):
     "base object for shared functions"
 
-    def __unicode__(self):  # pragma: no cover
-        """
-        Return unicode representation of the simple object properties,
-        if there is a list or dict just return an empty representation
-        for easier viewing and test case scenario writing
-        """
-        unicode_dict = {}
-        for key in self.__dict__:
-            if isinstance(self.__dict__.get(key), list):
-                unicode_dict[key] = []
-            elif isinstance(self.__dict__.get(key), dict):
-                unicode_dict[key] = {}
-            else:
-                unicode_dict[key] = unicode(self.__dict__.get(key))
-        return unicode(unicode_dict)
-
     def __str__(self):
         """
         Return `str` representation of the simple object properties,
