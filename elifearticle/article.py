@@ -45,6 +45,7 @@ class Article(BaseObject):
         self.editors = []
         self.title = title
         self.abstract = ""
+        self.digest = None
         self.research_organisms = []
         self.manuscript = None
         self.dates = {}
