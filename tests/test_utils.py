@@ -84,5 +84,28 @@ class TestUtils(unittest.TestCase):
                 )
             )
 
+
+class TestUtilsAttr(unittest.TestCase):
+
+    def setUp(self):
+        self.attr_map = {
+            'foo': '& bar',
+            'more': '"complicated"'
+            }
+
+    def test_attr_names(self):
+        self.assertEqual(utils.attr_names(self.attr_map), ['foo', 'more'])
+
+    def test_attr_names_blank(self):
+        self.assertEqual(utils.attr_names(None), [])
+
+    def test_attr_string(self):
+        expected = ' foo="&amp; bar" more="&quot;complicated&quot;"'
+        self.assertEqual(utils.attr_string(self.attr_map), expected)
+
+    def test_attr_blank(self):
+        self.assertEqual(utils.attr_string(None), '')
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,8 @@ Article object definitions
 """
 
 from collections import OrderedDict
-from elifetools import utils as etoolsutils
+from elifearticle import utils
+
 
 class BaseObject(object):
     "base object for shared functions"
@@ -436,16 +437,8 @@ class ContentBlock(object):
 
     def attr_names(self):
         """list of tag attribute names"""
-        if self.attr:
-            return list(self.attr.keys())
-        return []
+        return utils.attr_names(self.attr)
 
     def attr_string(self):
         """tag attributes formatted as a string"""
-        string = ''
-        if self.attr:
-            for key, value in sorted(self.attr.items()):
-                attr = '%s="%s"' % (
-                    key, etoolsutils.escape_ampersand(value).replace('"', '&quot;'))
-                string = ' '.join([string, attr])
-        return string
+        return utils.attr_string(self.attr)

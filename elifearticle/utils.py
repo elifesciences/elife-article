@@ -5,6 +5,7 @@ Utility functions for converting content and some shared by other libraries
 import re
 import os
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
+from elifetools import utils as etoolsutils
 
 
 def repl(match):
@@ -57,6 +58,25 @@ def replace_tags(string, from_tag='i', to_tag='italic'):
     string = string.replace('<' + from_tag + '>', '<' + to_tag + '>')
     string = string.replace('</' + from_tag + '>', '</' + to_tag + '>')
     return string
+
+
+def attr_names(attr_map):
+    """return a list of attribute names from the map"""
+    if attr_map:
+        return list(attr_map.keys())
+    return []
+
+
+def attr_string(attr_map):
+    """string of tag attributes and values"""
+    string = ''
+    if attr_map:
+        for key, value in sorted(attr_map.items()):
+            attr = '%s="%s"' % (
+                key, etoolsutils.escape_ampersand(value).replace('"', '&quot;'))
+            string = ' '.join([string, attr])
+    return string
+
 
 def set_attr_if_value(obj, attr_name, value):
     "shorthand method to set object values if the value is not none"
