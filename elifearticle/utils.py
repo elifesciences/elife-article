@@ -63,7 +63,7 @@ def replace_tags(string, from_tag='i', to_tag='italic'):
 def attr_names(attr_map):
     """return a list of attribute names from the map"""
     if attr_map:
-        return list(attr_map.keys())
+        return list(sorted(attr_map.keys()))
     return []
 
 
