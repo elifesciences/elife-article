@@ -1,4 +1,4 @@
 git+https://github.com/elifesciences/elife-tools.git@eae816f0bd20d92209327ed72c7519eb428770a5#egg=elifetools
 coverage==3.7.1
-GitPython==2.1.7
+GitPython==3.1.2
 ddt==1.1.0
