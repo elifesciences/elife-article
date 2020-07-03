@@ -422,14 +422,9 @@ class Uri(BaseObject):
         self.content_type = None
 
 
-class ClinicalTrial(object):
+class ClinicalTrial(BaseObject):
 
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
-
-    def init(self):
+    def __init__(self):
         self.id = None
         self.content_type = None
         self.document_id = None
