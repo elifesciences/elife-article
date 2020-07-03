@@ -77,6 +77,7 @@ class Article(BaseObject):
         self.publisher_name = None
         self.issue = None
         self.review_articles = []
+        self.clinical_trials = []
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
@@ -419,6 +420,35 @@ class Uri(BaseObject):
     def init(self):
         self.xlink_href = None
         self.content_type = None
+
+
+class ClinicalTrial(BaseObject):
+
+    def __init__(self):
+        self.id = None
+        self.content_type = None
+        self.document_id = None
+        self.document_id_type = None
+        self.source_id = None
+        self.source_id_type = None
+        self.source_type = None
+        self.text = None
+        self.xlink_href = None
+        self.registry_doi = None
+
+    def get_registry_doi(self, registry_name_to_doi_map=None):
+        """return the DOI for the registry"""
+        if self.registry_doi:
+            return self.registry_doi
+        elif self.source_id_type and self.source_id and self.source_id_type == 'crossref-doi':
+            return self.source_id
+        elif (
+                registry_name_to_doi_map and self.source_id_type and
+                self.source_id and self.source_id_type == 'registry-name'):
+            # look for the DOI value in the name to DOI map
+            if self.source_id in registry_name_to_doi_map:
+                return registry_name_to_doi_map[self.source_id]
+        return None
 
 
 class ContentBlock(object):

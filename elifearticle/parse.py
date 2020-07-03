@@ -412,6 +412,27 @@ def build_self_uri_list(self_uri_list):
     return uri_list
 
 
+def build_clinical_trials(clinical_trials):
+    clinical_trial_list = []
+    for clinical_trial in clinical_trials:
+        clinical_trial_object = ea.ClinicalTrial()
+        attr_map = {
+            'id': 'id',
+            'content-type': 'content_type',
+            'document-id': 'document_id',
+            'document-id-type': 'document_id_type',
+            'source-id': 'source_id',
+            'source-id-type': 'source_id_type',
+            'source-type': 'source_type',
+            'text': 'text',
+            'xlink_href': 'xlink_href',
+        }
+        for dict_key, attr_name in attr_map.items():
+            utils.set_attr_if_value(clinical_trial_object, attr_name, clinical_trial.get(dict_key))
+        clinical_trial_list.append(clinical_trial_object)
+    return clinical_trial_list
+
+
 def clean_abstract(abstract, remove_tags=['xref', 'ext-link', 'inline-formula', 'mml:*']):
     """
     Remove unwanted tags from abstract string,
@@ -498,6 +519,10 @@ def build_article_from_xml(article_xml_filename, detail="brief",
     # publisher_name
     if build_part('basic'):
         article.publisher_name = parser.publisher(soup)
+
+    # publisher_name
+    if build_part('basic'):
+        article.clinical_trials = build_clinical_trials(parser.clinical_trials(soup))
 
     # abstract
     if build_part('abstract'):
