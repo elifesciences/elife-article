@@ -32,12 +32,7 @@ class Article(BaseObject):
     """
     contributors = []
 
-    def __new__(cls, doi=None, title=None):
-        new_instance = object.__new__(cls)
-        new_instance.init(doi, title)
-        return new_instance
-
-    def init(self, doi=None, title=None):
+    def __init__(self, doi=None, title=None):
         self.article_type = "research-article"
         self.display_channel = None
         self.doi = doi
@@ -153,6 +148,7 @@ class Article(BaseObject):
                 pretty_obj[key] = str(value)
         return pretty_obj
 
+
 class ArticleDate(BaseObject):
     """
     A struct_time date and a date_type
@@ -165,12 +161,7 @@ class ArticleDate(BaseObject):
     month = None
     year = None
 
-    def __new__(cls, date_type, date):
-        new_instance = object.__new__(cls)
-        new_instance.init(date_type, date)
-        return new_instance
-
-    def init(self, date_type, date):
+    def __init__(self, date_type, date):
         self.date_type = date_type
         # Date as a time.struct_time
         self.date = date
@@ -195,12 +186,7 @@ class Contributor(BaseObject):
     conflict = []
     group_author_key = None
 
-    def __new__(cls, contrib_type, surname, given_name, collab=None):
-        new_instance = object.__new__(cls)
-        new_instance.init(contrib_type, surname, given_name, collab)
-        return new_instance
-
-    def init(self, contrib_type, surname, given_name, collab=None):
+    def __init__(self, contrib_type, surname, given_name, collab=None):
         self.contrib_type = contrib_type
         self.surname = surname
         self.given_name = given_name
@@ -225,12 +211,7 @@ class Affiliation(BaseObject):
     country = None
     text = None
 
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
-
-    def init(self):
+    def __init__(self):
         pass
 
 
@@ -238,12 +219,8 @@ class Dataset(BaseObject):
     """
     Article component representing a dataset
     """
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
 
-    def init(self):
+    def __init__(self):
         self.dataset_type = None
         self.authors = []
         # source_id is the uri in PoA generation
@@ -266,12 +243,8 @@ class FundingAward(BaseObject):
     """
     An award group as part of a funding group
     """
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
 
-    def init(self):
+    def __init__(self):
         self.award_group_id = None
         self.award_ids = []
         self.institution_name = None
@@ -311,26 +284,16 @@ class License(BaseObject):
     paragraph1 = None
     paragraph2 = None
 
-    def __new__(cls, license_id=None):
-        new_instance = object.__new__(cls)
-        new_instance.init(license_id)
-        return new_instance
-
-    def init(self, license_id=None):
+    def __init__(self, license_id=None):
         self.license_id = license_id
-
 
 
 class Citation(BaseObject):
     """
     A ref or citation in the article to support crossref VOR deposits initially
     """
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
 
-    def init(self):
+    def __init__(self):
         self.publication_type = None
         self.id = None
         self.authors = []
@@ -379,12 +342,8 @@ class Component(BaseObject):
     """
     An article component with a component DOI, primarily for crossref VOR deposits
     """
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
 
-    def init(self):
+    def __init__(self):
         self.id = None
         self.type = None
         self.asset = None
@@ -400,24 +359,17 @@ class RelatedArticle(BaseObject):
     """
     Related article tag data as an object
     """
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
 
-    def init(self):
+    def __init__(self):
         self.xlink_href = None
         self.related_article_type = None
         self.ext_link_type = None
 
+
 class Uri(BaseObject):
     "A URI, initially created for holding self-uri data"
-    def __new__(cls):
-        new_instance = object.__new__(cls)
-        new_instance.init()
-        return new_instance
 
-    def init(self):
+    def __init__(self):
         self.xlink_href = None
         self.content_type = None
 
@@ -452,12 +404,8 @@ class ClinicalTrial(BaseObject):
 
 
 class ContentBlock(object):
-    def __new__(cls, block_type=None, content=None, attr=None):
-        new_instance = object.__new__(cls)
-        new_instance.init(block_type, content, attr)
-        return new_instance
 
-    def init(self, block_type=None, content=None, attr=None):
+    def __init__(self, block_type=None, content=None, attr=None):
         self.block_type = block_type
         self.content = content
         self.content_blocks = []
