@@ -41,6 +41,8 @@ class Article(BaseObject):
         self.editors = []
         self.title = title
         self.abstract = ""
+        self.abstract_json = None
+        self.abstract_xml = None
         self.digest = None
         self.research_organisms = []
         self.manuscript = None

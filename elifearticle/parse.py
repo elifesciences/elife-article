@@ -527,6 +527,8 @@ def build_article_from_xml(article_xml_filename, detail="brief",
     # abstract
     if build_part('abstract'):
         article.abstract = clean_abstract(parser.full_abstract(soup), remove_tags)
+        article.abstract_json = parser.abstract_json(soup)
+        article.abstract_xml = parser.abstract_xml(soup)
 
     # digest
     if build_part('abstract'):
