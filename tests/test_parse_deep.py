@@ -97,6 +97,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.author_keywords), 6)
         # categories
         self.assertEqual(len(article_object.article_categories), 1)
+        # display channel
+        self.assertEqual(article_object.display_channel, "Research Article")
         # research organism
         self.assertEqual(len(article_object.research_organisms), 1)
         # components
@@ -201,6 +203,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.author_keywords), 4)
         # categories
         self.assertEqual(len(article_object.article_categories), 2)
+        # display channel
+        self.assertEqual(article_object.display_channel, "Research Article")
         # research organism
         self.assertEqual(len(article_object.research_organisms), 2)
         # components

@@ -579,6 +579,10 @@ def build_article_from_xml(article_xml_filename, detail="brief",
     if build_part('categories'):
         article.article_categories = parser.category(soup)
 
+    # display channel
+    if build_part('categories'):
+        article.display_channel = eautils.firstnn(parser.display_channel(soup))
+
     # keywords
     if build_part('keywords'):
         article.author_keywords = parser.keywords(soup)
