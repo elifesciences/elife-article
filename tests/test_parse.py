@@ -79,6 +79,7 @@ class TestParseXml(unittest.TestCase):
         self.assertNotEqual(article.elocation_id, '')
         self.assertEqual(article.abstract, '')
         self.assertEqual(len(article.article_categories), 0)
+        self.assertIsNone(article.display_channel)
         self.assertEqual(len(article.component_list), 0)
         self.assertEqual(len(article.contributors), 0)
         self.assertEqual(len(article.funding_awards), 0)
