@@ -473,13 +473,13 @@ def build_clinical_trials(clinical_trials):
     return clinical_trial_list
 
 
-def clean_abstract(
-    abstract, remove_tags=["xref", "ext-link", "inline-formula", "mml:*"]
-):
+def clean_abstract(abstract, remove_tags=None):
     """
     Remove unwanted tags from abstract string,
     parsing it as HTML, then only keep the body paragraph contents
     """
+    if remove_tags is None:
+        remove_tags = ["xref", "ext-link", "inline-formula", "mml:*"]
     if remove_tags:
         for tag_name in remove_tags:
             abstract = utils.remove_tag(tag_name, abstract)
