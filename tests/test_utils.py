@@ -13,33 +13,41 @@ class TestUtils(unittest.TestCase):
 
     def test_repl(self):
         string = "&#x2022;"
-        m = re.match(r"&#x(....);", string)
-        self.assertEqual(utils.repl(m), u"\u2022")
+        matches = re.match(r"&#x(....);", string)
+        self.assertEqual(utils.repl(matches), u"\u2022")
 
     def test_entity_to_unicode(self):
-        self.passes = []
-        self.passes.append(
+        passes = []
+        passes.append(
             (
                 "N-terminal &#x03B1;-helix into the heterodimer interface",
                 u"N-terminal \u03b1-helix into the heterodimer interface",
             )
         )
 
-        self.passes.append(
+        passes.append(
             (
                 "N-terminal &alpha;-helix into the heterodimer interface",
                 u"N-terminal \u03b1-helix into the heterodimer interface",
             )
         )
 
-        self.passes.append(
+        passes.append(
             (
-                "&#x00A0; &#x00C5; &#x00D7; &#x00EF; &#x0394; &#x03B1; &#x03B2; &#x03B3; &#x03BA; &#x03BB; &#x2212; &#x223C; &alpha; &amp; &beta; &epsilon; &iuml; &ldquo; &ordm; &rdquo;",
-                u'\xa0 \xc5 \xd7 \xef \u0394 \u03b1 \u03b2 \u03b3 \u03ba \u03bb \u2212 \u223c \u03b1 &amp; \u03b2 \u03b5 \xcf " \xba "',
+                (
+                    "&#x00A0; &#x00C5; &#x00D7; &#x00EF; &#x0394; &#x03B1; &#x03B2; &#x03B3;"
+                    " &#x03BA; &#x03BB; &#x2212; &#x223C; &alpha; &amp; &beta; &epsilon; &iuml;"
+                    " &ldquo; &ordm; &rdquo;"
+                ),
+                (
+                    u"\xa0 \xc5 \xd7 \xef \u0394 \u03b1 \u03b2 \u03b3"
+                    u" \u03ba \u03bb \u2212 \u223c \u03b1 &amp; \u03b2 \u03b5 \xcf "
+                    u'" \xba "'
+                ),
             )
         )
 
-        for string_input, string_output in self.passes:
+        for string_input, string_output in passes:
             self.assertEqual(utils.entity_to_unicode(string_input), string_output)
 
     def test_remove_tag(self):

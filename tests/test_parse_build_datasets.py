@@ -1,6 +1,4 @@
 import unittest
-import os
-import re
 from collections import OrderedDict
 from elifearticle import parse
 
@@ -39,7 +37,6 @@ class TestParseBuildDatasets(unittest.TestCase):
 
     def test_build_data_availability_no_value(self):
         "test extracting data availability encountering an IndexError"
-        statement = "Availability statement"
         expected = None
         datasets_data = OrderedDict([("availability", "")])
         data_availability = parse.build_data_availability(datasets_data)

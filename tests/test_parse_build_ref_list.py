@@ -1,12 +1,8 @@
 import unittest
 import os
-import re
 
 from elifearticle import parse
-
-# Test settings to read in test data
-TEST_BASE_PATH = os.path.dirname(os.path.abspath(__file__)) + os.sep
-XLS_PATH = TEST_BASE_PATH + "test_data" + os.sep
+from tests import XLS_PATH
 
 
 class TestParseBuildRefList(unittest.TestCase):

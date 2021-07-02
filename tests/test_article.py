@@ -208,12 +208,12 @@ class TestLicense(unittest.TestCase):
         self.assertIsNotNone(self.license)
 
     def test_license_1(self):
-        license = ea.License(1)
-        self.assertIsNotNone(license)
+        license_object = ea.License(1)
+        self.assertIsNotNone(license_object)
 
     def test_license_2(self):
-        license = ea.License(2)
-        self.assertIsNotNone(license)
+        license_object = ea.License(2)
+        self.assertIsNotNone(license_object)
 
 
 class TestCitation(unittest.TestCase):
