@@ -38,6 +38,7 @@ def entity_to_unicode(string):
         string = re.sub(entity, replacement, string)
     return string
 
+
 def remove_tag(tag_name, string):
     """
     Remove open and close tags - the tags themselves only - using
@@ -45,18 +46,19 @@ def remove_tag(tag_name, string):
     """
     if not string:
         return string
-    pattern = re.compile('</?' + tag_name + '.*?>')
-    string = pattern.sub('', string)
+    pattern = re.compile("</?" + tag_name + ".*?>")
+    string = pattern.sub("", string)
     return string
 
-def replace_tags(string, from_tag='i', to_tag='italic'):
+
+def replace_tags(string, from_tag="i", to_tag="italic"):
     """
     Replace tags such as <i> to <italic>
     <sup> and <sub> are allowed and do not need to be replaced
     This does not validate markup
     """
-    string = string.replace('<' + from_tag + '>', '<' + to_tag + '>')
-    string = string.replace('</' + from_tag + '>', '</' + to_tag + '>')
+    string = string.replace("<" + from_tag + ">", "<" + to_tag + ">")
+    string = string.replace("</" + from_tag + ">", "</" + to_tag + ">")
     return string
 
 
@@ -69,12 +71,14 @@ def attr_names(attr_map):
 
 def attr_string(attr_map):
     """string of tag attributes and values"""
-    string = ''
+    string = ""
     if attr_map:
         for key, value in sorted(attr_map.items()):
             attr = '%s="%s"' % (
-                key, etoolsutils.escape_ampersand(value).replace('"', '&quot;'))
-            string = ' '.join([string, attr])
+                key,
+                etoolsutils.escape_ampersand(value).replace('"', "&quot;"),
+            )
+            string = " ".join([string, attr])
     return string
 
 
@@ -83,25 +87,28 @@ def set_attr_if_value(obj, attr_name, value):
     if value is not None:
         setattr(obj, attr_name, value)
 
+
 def is_year_numeric(value):
     "True if value is all digits"
     if value and re.match("^[0-9]+$", value):
         return True
     return False
 
+
 def version_from_xml_filename(filename):
     "extract the numeric version from the xml filename"
     try:
-        filename_parts = filename.split(os.sep)[-1].split('-')
+        filename_parts = filename.split(os.sep)[-1].split("-")
     except AttributeError:
         return None
     if len(filename_parts) == 3:
         try:
-            return int(filename_parts[-1].lstrip('v').rstrip('.xml'))
+            return int(filename_parts[-1].lstrip("v").rstrip(".xml"))
         except ValueError:
             return None
     else:
         return None
+
 
 def get_last_commit_to_master(repo_path="."):
     """
@@ -123,6 +130,7 @@ def get_last_commit_to_master(repo_path="."):
             last_commit = repo.head.commit
     return str(last_commit)
 
+
 def calculate_journal_volume(pub_date, year):
     """
     volume value is based on the pub date year
@@ -136,17 +144,21 @@ def calculate_journal_volume(pub_date, year):
         volume = None
     return volume
 
+
 def author_name_from_json(author_json):
     "concatenate an author name from json data"
     author_name = None
-    if author_json.get('type'):
-        if author_json.get('type') == 'group' and author_json.get('name'):
-            author_name = author_json.get('name')
-        elif author_json.get('type') == 'person' and author_json.get('name'):
-            if author_json.get('name').get('preferred'):
-                author_name = author_json.get('name').get('preferred')
+    if author_json.get("type"):
+        if author_json.get("type") == "group" and author_json.get("name"):
+            author_name = author_json.get("name")
+        elif author_json.get("type") == "person" and author_json.get("name"):
+            if author_json.get("name").get("preferred"):
+                author_name = author_json.get("name").get("preferred")
     return author_name
+
 
 def text_from_affiliation_elements(department, institution, city, country):
     "format an author affiliation from details"
-    return ', '.join(element for element in [department, institution, city, country] if element)
+    return ", ".join(
+        element for element in [department, institution, city, country] if element
+    )

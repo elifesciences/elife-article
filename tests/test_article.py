@@ -8,7 +8,6 @@ def generate_date(date_string="2013-10-03", date_format="%Y-%m-%d"):
 
 
 class TestArticle(unittest.TestCase):
-
     def setUp(self):
         self.article = ea.Article()
 
@@ -27,7 +26,7 @@ class TestArticle(unittest.TestCase):
             self.article.add_dataset(dataset)
 
     def test_article_init(self):
-        self.assertEqual(self.article.article_type, 'research-article')
+        self.assertEqual(self.article.article_type, "research-article")
 
     def test_add_contributor(self):
         contributor = None
@@ -115,14 +114,12 @@ class TestArticle(unittest.TestCase):
 
 
 class TestArticleDate(unittest.TestCase):
-
     def test_article_date_init(self):
         article_date = ea.ArticleDate("test", generate_date())
         self.assertEqual(article_date.date_type, "test")
 
 
 class TestContributor(unittest.TestCase):
-
     def setUp(self):
         self.contributor = ea.Contributor("author", "Insect", "Amber")
 
@@ -144,7 +141,6 @@ class TestContributor(unittest.TestCase):
 
 
 class TestAffiliation(unittest.TestCase):
-
     def setUp(self):
         self.affiliation = ea.Affiliation()
 
@@ -153,7 +149,6 @@ class TestAffiliation(unittest.TestCase):
 
 
 class TestDataset(unittest.TestCase):
-
     def setUp(self):
         self.dataset = ea.Dataset()
 
@@ -167,7 +162,6 @@ class TestDataset(unittest.TestCase):
 
 
 class TestFundingAward(unittest.TestCase):
-
     def setUp(self):
         self.funding_award = ea.FundingAward()
 
@@ -207,7 +201,6 @@ class TestFundingAward(unittest.TestCase):
 
 
 class TestLicense(unittest.TestCase):
-
     def setUp(self):
         self.license = ea.License()
 
@@ -215,15 +208,15 @@ class TestLicense(unittest.TestCase):
         self.assertIsNotNone(self.license)
 
     def test_license_1(self):
-        license = ea.License(1)
-        self.assertIsNotNone(license)
+        license_object = ea.License(1)
+        self.assertIsNotNone(license_object)
 
     def test_license_2(self):
-        license = ea.License(2)
-        self.assertIsNotNone(license)
+        license_object = ea.License(2)
+        self.assertIsNotNone(license_object)
+
 
 class TestCitation(unittest.TestCase):
-
     def setUp(self):
         self.citation = ea.Citation()
 
@@ -242,15 +235,14 @@ class TestCitation(unittest.TestCase):
 
 
 class TestComponent(unittest.TestCase):
-
     def setUp(self):
         self.component = ea.Component()
 
     def test_component_init(self):
         self.assertIsNotNone(self.component)
 
-class TestRelatedArticle(unittest.TestCase):
 
+class TestRelatedArticle(unittest.TestCase):
     def setUp(self):
         self.related_article = ea.RelatedArticle()
 
@@ -259,7 +251,6 @@ class TestRelatedArticle(unittest.TestCase):
 
 
 class TestContentBlock(unittest.TestCase):
-
     def test_content_block(self):
         """test blank content block"""
         content_block = ea.ContentBlock()
@@ -267,12 +258,18 @@ class TestContentBlock(unittest.TestCase):
 
     def test_content_block_attr(self):
         """test attributes function"""
-        content_block = ea.ContentBlock("disp-quote", None, {"content-type": "editor-comment"})
-        content_block.attr["escaped"] = "\""
-        self.assertEqual(sorted(content_block.attr_names()), ["content-type", "escaped"])
+        content_block = ea.ContentBlock(
+            "disp-quote", None, {"content-type": "editor-comment"}
+        )
+        content_block.attr["escaped"] = '"'
         self.assertEqual(
-            content_block.attr_string(), ' content-type="editor-comment" escaped="&quot;"')
+            sorted(content_block.attr_names()), ["content-type", "escaped"]
+        )
+        self.assertEqual(
+            content_block.attr_string(),
+            ' content-type="editor-comment" escaped="&quot;"',
+        )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
