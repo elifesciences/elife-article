@@ -5,9 +5,9 @@ import time
 from ddt import ddt, data, unpack
 from elifearticle import utils
 
+
 @ddt
 class TestUtils(unittest.TestCase):
-
     def setUp(self):
         pass
 
@@ -18,18 +18,29 @@ class TestUtils(unittest.TestCase):
 
     def test_entity_to_unicode(self):
         self.passes = []
-        self.passes.append(('N-terminal &#x03B1;-helix into the heterodimer interface',
-                           u'N-terminal \u03b1-helix into the heterodimer interface'))
+        self.passes.append(
+            (
+                "N-terminal &#x03B1;-helix into the heterodimer interface",
+                u"N-terminal \u03b1-helix into the heterodimer interface",
+            )
+        )
 
-        self.passes.append(('N-terminal &alpha;-helix into the heterodimer interface',
-                           u'N-terminal \u03b1-helix into the heterodimer interface'))
+        self.passes.append(
+            (
+                "N-terminal &alpha;-helix into the heterodimer interface",
+                u"N-terminal \u03b1-helix into the heterodimer interface",
+            )
+        )
 
-        self.passes.append(('&#x00A0; &#x00C5; &#x00D7; &#x00EF; &#x0394; &#x03B1; &#x03B2; &#x03B3; &#x03BA; &#x03BB; &#x2212; &#x223C; &alpha; &amp; &beta; &epsilon; &iuml; &ldquo; &ordm; &rdquo;',
-                           u'\xa0 \xc5 \xd7 \xef \u0394 \u03b1 \u03b2 \u03b3 \u03ba \u03bb \u2212 \u223c \u03b1 &amp; \u03b2 \u03b5 \xcf " \xba "'))
+        self.passes.append(
+            (
+                "&#x00A0; &#x00C5; &#x00D7; &#x00EF; &#x0394; &#x03B1; &#x03B2; &#x03B3; &#x03BA; &#x03BB; &#x2212; &#x223C; &alpha; &amp; &beta; &epsilon; &iuml; &ldquo; &ordm; &rdquo;",
+                u'\xa0 \xc5 \xd7 \xef \u0394 \u03b1 \u03b2 \u03b3 \u03ba \u03bb \u2212 \u223c \u03b1 &amp; \u03b2 \u03b5 \xcf " \xba "',
+            )
+        )
 
         for string_input, string_output in self.passes:
-            self.assertEqual(utils.entity_to_unicode(
-                string_input), string_output)
+            self.assertEqual(utils.entity_to_unicode(string_input), string_output)
 
     def test_remove_tag(self):
         self.assertEqual(utils.remove_tag("i", "<i>test</i>"), "test")
@@ -42,7 +53,12 @@ class TestUtils(unittest.TestCase):
         self.assertEqual(utils.version_from_xml_filename(None), None)
         self.assertEqual(utils.version_from_xml_filename("elife-00666.xml"), None)
         self.assertEqual(utils.version_from_xml_filename("elife-02935-v2.xml"), 2)
-        self.assertEqual(utils.version_from_xml_filename(os.path.join("test-folder", "elife-02935-v2.xml")), 2)
+        self.assertEqual(
+            utils.version_from_xml_filename(
+                os.path.join("test-folder", "elife-02935-v2.xml")
+            ),
+            2,
+        )
         self.assertEqual(utils.version_from_xml_filename("bmjopen-4-e003269.xml"), None)
 
     def test_calculate_journal_volume(self):
@@ -56,45 +72,44 @@ class TestUtils(unittest.TestCase):
         self.assertIsNotNone(utils.get_last_commit_to_master())
 
     def test_get_last_commit_to_master_no_path(self):
-        git_path = 'not_a_path'
-        last_commit = ''
-        expected = 'None'
+        git_path = "not_a_path"
+        last_commit = ""
+        expected = "None"
         last_commit = utils.get_last_commit_to_master(git_path)
         self.assertEqual(last_commit, expected)
 
     @unpack
     @data(
-        (None, None, None, None, ''),
-        ('', None, None, None, ''),
-        ('One', 'Two', 'Three', 'Four', 'One, Two, Three, Four'),
-        ('One', 'Two', None, 'Four', 'One, Two, Four'),
-        ('One', 'Two', '', 'Four', 'One, Two, Four')
-        )
-    def test_text_from_affiliation_elements(self, department, institution, city, country,
-                                            expected):
+        (None, None, None, None, ""),
+        ("", None, None, None, ""),
+        ("One", "Two", "Three", "Four", "One, Two, Three, Four"),
+        ("One", "Two", None, "Four", "One, Two, Four"),
+        ("One", "Two", "", "Four", "One, Two, Four"),
+    )
+    def test_text_from_affiliation_elements(
+        self, department, institution, city, country, expected
+    ):
         self.assertEqual(
-            utils.text_from_affiliation_elements(department, institution, city, country),
+            utils.text_from_affiliation_elements(
+                department, institution, city, country
+            ),
             expected,
             "{expected} not found testing {department}, {institution}, {city}, {country}".format(
                 expected=expected,
                 department=department,
                 institution=institution,
                 city=city,
-                country=country
-                )
-            )
+                country=country,
+            ),
+        )
 
 
 class TestUtilsAttr(unittest.TestCase):
-
     def setUp(self):
-        self.attr_map = {
-            'foo': '& bar',
-            'more': '"complicated"'
-            }
+        self.attr_map = {"foo": "& bar", "more": '"complicated"'}
 
     def test_attr_names(self):
-        self.assertEqual(utils.attr_names(self.attr_map), ['foo', 'more'])
+        self.assertEqual(utils.attr_names(self.attr_map), ["foo", "more"])
 
     def test_attr_names_blank(self):
         self.assertEqual(utils.attr_names(None), [])
@@ -104,8 +119,8 @@ class TestUtilsAttr(unittest.TestCase):
         self.assertEqual(utils.attr_string(self.attr_map), expected)
 
     def test_attr_blank(self):
-        self.assertEqual(utils.attr_string(None), '')
+        self.assertEqual(utils.attr_string(None), "")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

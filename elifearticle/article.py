@@ -30,6 +30,7 @@ class Article(BaseObject):
     """
     We include some boiler plate in the init, namely article_type
     """
+
     contributors = []
 
     def __init__(self, doi=None, title=None):
@@ -129,8 +130,11 @@ class Article(BaseObject):
     def get_self_uri(self, content_type):
         "return the first self uri with the content_type"
         try:
-            return [self_uri for self_uri in self.self_uri_list
-                    if self_uri.content_type == content_type][0]
+            return [
+                self_uri
+                for self_uri in self.self_uri_list
+                if self_uri.content_type == content_type
+            ][0]
         except IndexError:
             return None
 
@@ -155,6 +159,7 @@ class ArticleDate(BaseObject):
     """
     A struct_time date and a date_type
     """
+
     date_type = None
     date = None
     pub_type = None
@@ -263,7 +268,7 @@ class FundingAward(BaseObject):
     def get_funder_identifier(self):
         "Funder identifier is the unique id found in the institution_id DOI"
         try:
-            return self.institution_id.split('/')[-1]
+            return self.institution_id.split("/")[-1]
         except AttributeError:
             return None
 
@@ -377,7 +382,6 @@ class Uri(BaseObject):
 
 
 class ClinicalTrial(BaseObject):
-
     def __init__(self):
         self.id = None
         self.content_type = None
@@ -394,11 +398,18 @@ class ClinicalTrial(BaseObject):
         """return the DOI for the registry"""
         if self.registry_doi:
             return self.registry_doi
-        elif self.source_id_type and self.source_id and self.source_id_type == 'crossref-doi':
+        elif (
+            self.source_id_type
+            and self.source_id
+            and self.source_id_type == "crossref-doi"
+        ):
             return self.source_id
         elif (
-                registry_name_to_doi_map and self.source_id_type and
-                self.source_id and self.source_id_type == 'registry-name'):
+            registry_name_to_doi_map
+            and self.source_id_type
+            and self.source_id
+            and self.source_id_type == "registry-name"
+        ):
             # look for the DOI value in the name to DOI map
             if self.source_id in registry_name_to_doi_map:
                 return registry_name_to_doi_map[self.source_id]
@@ -406,7 +417,6 @@ class ClinicalTrial(BaseObject):
 
 
 class ContentBlock(object):
-
     def __init__(self, block_type=None, content=None, attr=None):
         self.block_type = block_type
         self.content = content
