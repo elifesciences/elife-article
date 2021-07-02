@@ -6,7 +6,7 @@ from collections import OrderedDict
 from elifearticle import utils
 
 
-class BaseObject(object):
+class BaseObject:
     "base object for shared functions"
 
     def __str__(self):
@@ -398,13 +398,13 @@ class ClinicalTrial(BaseObject):
         """return the DOI for the registry"""
         if self.registry_doi:
             return self.registry_doi
-        elif (
+        if (
             self.source_id_type
             and self.source_id
             and self.source_id_type == "crossref-doi"
         ):
             return self.source_id
-        elif (
+        if (
             registry_name_to_doi_map
             and self.source_id_type
             and self.source_id
@@ -416,7 +416,7 @@ class ClinicalTrial(BaseObject):
         return None
 
 
-class ContentBlock(object):
+class ContentBlock:
     def __init__(self, block_type=None, content=None, attr=None):
         self.block_type = block_type
         self.content = content

@@ -506,7 +506,9 @@ def build_article_from_xml(
     detail="brief" is normally enough,
     detail="full" will populate all the contributor affiliations that are linked by xref tags
     """
-    build_part = lambda part: build_part_check(part, build_parts)
+
+    def build_part(part):
+        return build_part_check(part, build_parts)
 
     error_count = 0
 
