@@ -1,7 +1,9 @@
 import unittest
 import os
+from collections import OrderedDict
 
 from elifearticle import parse
+from elifearticle.article import Preprint
 from tests import XLS_PATH
 
 
@@ -111,3 +113,48 @@ class TestParseXml(unittest.TestCase):
             article_xmls, detail, build_parts
         )[0]
         self.assertEqual(len(article.related_articles), 0)
+
+
+class TestBuildPreprint(unittest.TestCase):
+    def test_build_preprint_no_events(self):
+        events = []
+        self.assertIsNone(parse.build_preprint(events))
+
+    def test_build_preprint_no_event_type(self):
+        events = [OrderedDict([("uri", "https://not-a-print.example.org")])]
+        self.assertIsNone(parse.build_preprint(events))
+
+    def test_build_preprint_not_preprint(self):
+        events = [
+            OrderedDict(
+                [
+                    ("event_type", "not_a_preprint"),
+                    ("uri", "https://not-a-print.example.org"),
+                ]
+            )
+        ]
+        self.assertIsNone(parse.build_preprint(events))
+
+    def test_build_preprint_uri(self):
+        uri = "https://example.org/preprint/"
+        events = [OrderedDict([("event_type", "preprint"), ("uri", uri)])]
+        expected = Preprint(uri=uri)
+        self.assertEqual(str(parse.build_preprint(events)), str(expected))
+
+    def test_build_preprint_doi(self):
+        "use an eLife article DOI as the preprint doi for testing purposes"
+        doi = "10.7554/eLife.00666"
+        uri = "https://doi.org/%s" % doi
+        events = [OrderedDict([("event_type", "preprint"), ("uri", uri)])]
+        expected = Preprint(uri=uri, doi=doi)
+        self.assertEqual(str(parse.build_preprint(events)), str(expected))
+
+    def test_build_preprint_two_preprints(self):
+        uri_one = "https://example.org/preprint_one/"
+        uri_two = "https://example.org/preprint_one/"
+        events = [
+            OrderedDict([("event_type", "preprint"), ("uri", uri_one)]),
+            OrderedDict([("event_type", "preprint"), ("uri", uri_two)]),
+        ]
+        expected = Preprint(uri=uri_one)
+        self.assertEqual(str(parse.build_preprint(events)), str(expected))
