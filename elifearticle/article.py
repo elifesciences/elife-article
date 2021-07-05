@@ -76,6 +76,7 @@ class Article(BaseObject):
         self.issue = None
         self.review_articles = []
         self.clinical_trials = []
+        self.preprint = None
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
@@ -414,6 +415,12 @@ class ClinicalTrial(BaseObject):
             if self.source_id in registry_name_to_doi_map:
                 return registry_name_to_doi_map[self.source_id]
         return None
+
+
+class Preprint(BaseObject):
+    def __init__(self, uri=None, doi=None):
+        self.uri = uri
+        self.doi = doi
 
 
 class ContentBlock:
