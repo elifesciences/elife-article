@@ -450,6 +450,20 @@ def build_self_uri_list(self_uri_list):
     return uri_list
 
 
+def build_preprint(pub_history_events):
+    preprint = ea.Preprint()
+    for event in pub_history_events:
+        if event.get("event_type") == "preprint":
+            preprint.uri = event.get("uri")
+            # Try to populate the doi attribute if the uri is a doi
+            if preprint.uri and preprint.uri != eautils.doi_uri_to_doi(preprint.uri):
+                preprint.doi = eautils.doi_uri_to_doi(preprint.uri)
+            break
+    if preprint.uri or preprint.doi:
+        return preprint
+    return None
+
+
 def build_clinical_trials(clinical_trials):
     clinical_trial_list = []
     for clinical_trial in clinical_trials:
@@ -591,6 +605,10 @@ def build_article_from_xml(
     # self-uri
     if build_part("basic"):
         article.self_uri_list = build_self_uri_list(parser.self_uri(soup))
+
+    # preprint
+    if build_part("basic"):
+        article.preprint = build_preprint(parser.pub_history(soup))
 
     # contributors
     if build_part("contributors"):
