@@ -77,6 +77,7 @@ class Article(BaseObject):
         self.review_articles = []
         self.clinical_trials = []
         self.preprint = None
+        self.related_objects = []
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
@@ -380,6 +381,12 @@ class Uri(BaseObject):
     def __init__(self):
         self.xlink_href = None
         self.content_type = None
+
+
+class RelatedObject(BaseObject):
+    def __init__(self):
+        self.xlink_href = None
+        self.link_type = None
 
 
 class ClinicalTrial(BaseObject):
