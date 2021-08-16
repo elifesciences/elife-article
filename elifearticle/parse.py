@@ -374,6 +374,20 @@ def build_review_articles(sub_articles):
                 article.contributors += build_contributors(
                     [contributor], contributor.get("type")
                 )
+        # related objects
+        if sub_article.get("related_objects"):
+            for related_object in sub_article.get("related_objects"):
+                related_object_object = ea.RelatedObject()
+                utils.set_attr_if_value(
+                    related_object_object, "link_type", related_object.get("link_type")
+                )
+                utils.set_attr_if_value(
+                    related_object_object,
+                    "xlink_href",
+                    related_object.get("xlink_href"),
+                )
+                article.related_objects.append(related_object_object)
+
         # use the parent article license as the sub article license
         license_object = None
         if sub_article.get("parent_license_url"):
