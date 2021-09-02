@@ -38,7 +38,8 @@ class TestParseBuildReviewArticles(unittest.TestCase):
                         [
                             OrderedDict(
                                 [
-                                    ("link_type", "hasRelatedMaterial"),
+                                    ("id", "ro1"),
+                                    ("link_type", "continued-by"),
                                     (
                                         "xlink_href",
                                         "https://sciety.org/articles/activity/10.1101/2020.11.21.391326",
@@ -76,8 +77,9 @@ class TestParseBuildReviewArticles(unittest.TestCase):
             "http://creativecommons.org/licenses/by/4.0/",
         )
         # related objects
+        self.assertEqual(review_articles[0].related_objects[0].id, "ro1")
         self.assertEqual(
-            review_articles[0].related_objects[0].link_type, "hasRelatedMaterial"
+            review_articles[0].related_objects[0].link_type, "continued-by"
         )
         self.assertEqual(
             review_articles[0].related_objects[0].xlink_href,

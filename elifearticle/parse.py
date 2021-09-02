@@ -379,6 +379,9 @@ def build_review_articles(sub_articles):
             for related_object in sub_article.get("related_objects"):
                 related_object_object = ea.RelatedObject()
                 utils.set_attr_if_value(
+                    related_object_object, "id", related_object.get("id")
+                )
+                utils.set_attr_if_value(
                     related_object_object, "link_type", related_object.get("link_type")
                 )
                 utils.set_attr_if_value(

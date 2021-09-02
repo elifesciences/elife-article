@@ -385,6 +385,7 @@ class Uri(BaseObject):
 
 class RelatedObject(BaseObject):
     def __init__(self):
+        self.id = None
         self.xlink_href = None
         self.link_type = None
 
