@@ -37,6 +37,9 @@ def build_contributors(authors, contrib_type, competing_interests=None):
             contributor = ea.Contributor(
                 author_contrib_type, surname, given_name, collab
             )
+        else:
+            # if no surname then do not add the contributor
+            continue
 
         utils.set_attr_if_value(contributor, "suffix", author.get("suffix"))
 
