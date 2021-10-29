@@ -115,6 +115,14 @@ class TestParseXml(unittest.TestCase):
         self.assertEqual(len(article.related_articles), 0)
 
 
+class TestBuildContributors(unittest.TestCase):
+    def test_build_contributors(self):
+        "test for when a contributor has no surname"
+        authors = [{"given-name": "Foo"}]
+        contrib_type = "author"
+        self.assertEqual(parse.build_contributors(authors, contrib_type), [])
+
+
 class TestBuildPreprint(unittest.TestCase):
     def test_build_preprint_no_events(self):
         events = []
