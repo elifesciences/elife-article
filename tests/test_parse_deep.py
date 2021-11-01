@@ -209,6 +209,26 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.contributors[0].conflict, ["Chair of JATS4R"])
         # first contributor affiliation
         self.assertEqual(
+            article_object.contributors[0].affiliations[0].department,
+            "Department of Production",
+        )
+        self.assertEqual(
+            article_object.contributors[0].affiliations[0].institution,
+            "eLife",
+        )
+        self.assertEqual(
+            article_object.contributors[0].affiliations[0].city,
+            "Cambridge",
+        )
+        self.assertEqual(
+            article_object.contributors[0].affiliations[0].country,
+            "United Kingdom",
+        )
+        self.assertEqual(
+            article_object.contributors[0].affiliations[0].ror,
+            None,
+        )
+        self.assertEqual(
             article_object.contributors[0].affiliations[0].text,
             "Department of Production, eLife, Cambridge, United Kingdom",
         )
