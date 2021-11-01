@@ -52,6 +52,13 @@ def build_contributors(authors, contrib_type, competing_interests=None):
         # Add contributor affiliations
         for aff in author.get("affiliations", []):
             affiliation = ea.Affiliation()
+            # set individual attributes
+            utils.set_attr_if_value(affiliation, "city", aff.get("city"))
+            utils.set_attr_if_value(affiliation, "country", aff.get("country"))
+            utils.set_attr_if_value(affiliation, "department", aff.get("dept"))
+            utils.set_attr_if_value(affiliation, "institution", aff.get("institution"))
+            utils.set_attr_if_value(affiliation, "ror", aff.get("ror"))
+            # generate text value
             affiliation.text = utils.text_from_affiliation_elements(
                 aff.get("dept"),
                 aff.get("institution"),

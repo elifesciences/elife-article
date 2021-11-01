@@ -218,6 +218,7 @@ class Affiliation(BaseObject):
     institution = None
     city = None
     country = None
+    ror = None
     text = None
 
     def __init__(self):

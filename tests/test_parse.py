@@ -122,6 +122,42 @@ class TestBuildContributors(unittest.TestCase):
         contrib_type = "author"
         self.assertEqual(parse.build_contributors(authors, contrib_type), [])
 
+    def test_build_contributors_affiliations(self):
+        "test for contributor with affiliations"
+        aff = {
+            "dept": "A Test Department",
+            "institution": "School of Biological Sciences, University of Bristol",
+            "city": "Bristol",
+            "country": "United Kingdom",
+            "ror": "https://ror.org/0524sp257",
+        }
+        authors = [
+            {
+                "surname": "Bar",
+                "affiliations": [aff],
+            }
+        ]
+        contrib_type = "author"
+        contributors = parse.build_contributors(authors, contrib_type)
+        affiliation_object = contributors[0].affiliations[0]
+        self.assertEqual(getattr(affiliation_object, "department"), aff.get("dept"))
+        self.assertEqual(
+            getattr(affiliation_object, "institution"), aff.get("institution")
+        )
+        self.assertEqual(getattr(affiliation_object, "city"), aff.get("city"))
+        self.assertEqual(getattr(affiliation_object, "country"), aff.get("country"))
+        self.assertEqual(getattr(affiliation_object, "ror"), aff.get("ror"))
+        self.assertEqual(
+            getattr(affiliation_object, "text"),
+            "%s, %s, %s, %s"
+            % (
+                aff.get("dept"),
+                aff.get("institution"),
+                aff.get("city"),
+                aff.get("country"),
+            ),
+        )
+
 
 class TestBuildPreprint(unittest.TestCase):
     def test_build_preprint_no_events(self):
