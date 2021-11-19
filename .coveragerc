@@ -2,7 +2,6 @@
 omit =
     */virtualenv/*
     */venv/*
-    */.tox/*
 exclude_lines =
     pragma: no cover
     if __name__ == .__main__.:
