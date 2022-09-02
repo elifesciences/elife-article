@@ -188,6 +188,7 @@ class Contributor(BaseObject):
     contrib_type = None
     auth_id = None
     orcid = None
+    orcid_authenticated = None  # True or False for ORCID authenticated status
     surname = None
     given_name = None
     suffix = None
