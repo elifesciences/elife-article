@@ -78,6 +78,8 @@ class Article(BaseObject):
         self.clinical_trials = []
         self.preprint = None
         self.related_objects = []
+        # group_title for use in posted_content Crossref deposits of preprints
+        self.group_title = None
 
     def add_contributor(self, contributor):
         self.contributors.append(contributor)
