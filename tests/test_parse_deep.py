@@ -353,7 +353,7 @@ class TestParseDeep(unittest.TestCase):
             article_object.license.href, "http://creativecommons.org/licenses/by/4.0/"
         )
         self.assertEqual(
-            article_object.license.copyright_statement, u"\u00a9 2016, Harrison et al"
+            article_object.license.copyright_statement, "\u00a9 2016, Harrison et al"
         )
         # elocation_id
         self.assertEqual(article_object.elocation_id, "e00666")
