@@ -197,6 +197,7 @@ class Contributor(BaseObject):
     collab = None
     conflict = []
     group_author_key = None
+    anonymous = None
 
     def __init__(self, contrib_type, surname, given_name, collab=None):
         self.contrib_type = contrib_type

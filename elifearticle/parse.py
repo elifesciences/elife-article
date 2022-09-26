@@ -290,10 +290,10 @@ def component_title(component):
     Title may contain italic tag, etc.
     """
 
-    title = u""
+    title = ""
 
-    label_text = u""
-    title_text = u""
+    label_text = ""
+    title_text = ""
     if component.get("label"):
         label_text = component.get("label")
 
