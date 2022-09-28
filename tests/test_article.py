@@ -148,6 +148,15 @@ class TestAffiliation(unittest.TestCase):
         self.assertIsNotNone(self.affiliation)
 
 
+class TestRole(unittest.TestCase):
+    def test_role_init(self):
+        text = "Reviewing Editor"
+        specific_use = "editor"
+        role = ea.Role(text, specific_use)
+        expected = {"text": text, "specific_use": specific_use}
+        self.assertEqual(str(role), str(expected))
+
+
 class TestDataset(unittest.TestCase):
     def setUp(self):
         self.dataset = ea.Dataset()
