@@ -198,6 +198,7 @@ class Contributor(BaseObject):
     conflict = []
     group_author_key = None
     anonymous = None
+    roles = []
 
     def __init__(self, contrib_type, surname, given_name, collab=None):
         self.contrib_type = contrib_type
@@ -227,6 +228,12 @@ class Affiliation(BaseObject):
 
     def __init__(self):
         pass
+
+
+class Role(BaseObject):
+    def __init__(self, text=None, specific_use=None):
+        self.text = text
+        self.specific_use = specific_use
 
 
 class Dataset(BaseObject):
