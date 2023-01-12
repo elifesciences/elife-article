@@ -14,6 +14,7 @@ class TestParseDeep(unittest.TestCase):
         self.assertIsNotNone(article_object.pretty())
         # list of individual comparisons of interest
         self.assertEqual(article_object.doi, "10.7554/eLife.02935")
+        self.assertEqual(article_object.version_doi, None)
         self.assertEqual(article_object.journal_issn, "2050-084X")
         # count contributors
         self.assertEqual(len(article_object.contributors), 180)
