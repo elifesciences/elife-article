@@ -37,6 +37,7 @@ class Article(BaseObject):
         self.article_type = "research-article"
         self.display_channel = None
         self.doi = doi
+        self.version_doi = None
         self.id = None
         self.contributors = []
         self.editors = []
