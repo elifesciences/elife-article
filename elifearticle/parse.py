@@ -566,6 +566,10 @@ def build_article_from_xml(
         article, "version", utils.version_from_xml_filename(article_xml_filename)
     )
 
+    # version doi
+    if build_part("basic"):
+        article.version_doi = parser.version_doi(soup)
+
     # journal title
     if build_part("basic"):
         article.journal_title = parser.journal_title(soup)
