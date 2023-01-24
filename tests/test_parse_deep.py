@@ -44,6 +44,8 @@ class TestParseDeep(unittest.TestCase):
             article_object.contributors[0].affiliations[0].text,
             "Cancer Genome Project, Wellcome Trust Sanger Institute, Hinxton, United Kingdom",
         )
+        # anonymous value
+        self.assertEqual(article_object.contributors[0].anonymous, None)
         # count editors
         self.assertEqual(len(article_object.editors), 1)
         # first editor
