@@ -158,6 +158,15 @@ class TestBuildContributors(unittest.TestCase):
             ),
         )
 
+    def test_build_anonymous_contributor(self):
+        "test for an anonymous contributor"
+        authors = [{"anonymous": True, "role": "Reviewer", "type": "author"}]
+        contrib_type = "author"
+        contributors = parse.build_contributors(authors, contrib_type)
+        self.assertEqual(contributors[0].anonymous, True)
+        self.assertEqual(contributors[0].surname, None)
+        self.assertEqual(contributors[0].roles, [])
+
 
 class TestBuildPreprint(unittest.TestCase):
     def test_build_preprint_no_events(self):
