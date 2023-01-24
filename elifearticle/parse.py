@@ -33,10 +33,11 @@ def build_contributors(authors, contrib_type, competing_interests=None):
             collab = author.get("on-behalf-of")
             author_contrib_type = "on-behalf-of"
 
-        if surname or collab:
+        if surname or collab or author.get("anonymous"):
             contributor = ea.Contributor(
                 author_contrib_type, surname, given_name, collab
             )
+            contributor.anonymous = author.get("anonymous")
         else:
             # if no surname then do not add the contributor
             continue
