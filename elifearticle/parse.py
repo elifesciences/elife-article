@@ -492,6 +492,25 @@ def build_preprint(pub_history_events):
     return None
 
 
+def build_publication_history(pub_history_events):
+    event_list = []
+    for event in pub_history_events:
+        event_object = ea.Event()
+        event_object.uri = event.get("uri")
+        # Try to populate the doi attribute if the uri is a doi
+        if event_object.uri and event_object.uri != eautils.doi_uri_to_doi(
+            event_object.uri
+        ):
+            event_object.doi = eautils.doi_uri_to_doi(event_object.uri)
+        # more Event properties
+        event_object.event_type = event.get("event_type")
+        event_object.event_desc = event.get("event_desc")
+        event_object.date = event.get("date")
+        # add to the list of events
+        event_list.append(event_object)
+    return event_list
+
+
 def build_clinical_trials(clinical_trials):
     clinical_trial_list = []
     for clinical_trial in clinical_trials:
@@ -641,6 +660,12 @@ def build_article_from_xml(
     # preprint
     if build_part("basic"):
         article.preprint = build_preprint(parser.pub_history(soup))
+
+    # publication history events
+    if build_part("basic"):
+        article.publication_history = build_publication_history(
+            parser.pub_history(soup)
+        )
 
     # contributors
     if build_part("contributors"):
