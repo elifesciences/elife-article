@@ -417,3 +417,90 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(article_object.pii, None)
         # review_articles, should be empty
         self.assertEqual(len(article_object.review_articles), 0)
+
+    def test_parse_article_1234567890_simple(self):
+        "some simple comparisons and count list items"
+        article_object, error_count = parse.build_article_from_xml(
+            XLS_PATH + "elife-1234567890-v2.xml", detail="full"
+        )
+        # list of individual comparisons of interest
+        self.assertEqual(article_object.doi, "10.7554/eLife.1234567890")
+        self.assertEqual(article_object.journal_issn, "2050-084X")
+        self.assertEqual(article_object.journal_title, "eLife")
+        # count contributors
+        self.assertEqual(len(article_object.contributors), 7)
+        self.assertEqual(
+            len([c for c in article_object.contributors if c.contrib_type == "author"]),
+            6,
+        )
+
+        # compare dates
+        self.assertEqual(
+            article_object.dates.get("received"),
+            None,
+        )
+        self.assertEqual(
+            article_object.dates.get("accepted"),
+            None,
+        )
+        self.assertEqual(
+            article_object.dates.get("publication").date,
+            etoolsutils.date_struct(2023, 10, 22),
+        )
+        self.assertEqual(article_object.dates.get("publication").day, "22")
+        self.assertEqual(article_object.dates.get("publication").month, "10")
+        self.assertEqual(article_object.dates.get("publication").year, "2023")
+        self.assertEqual(
+            article_object.dates.get("publication").publication_format, "electronic"
+        )
+        # keywords
+        self.assertEqual(len(article_object.author_keywords), 6)
+        # refs
+        self.assertEqual(len(article_object.ref_list), 18)
+        # publisher_name
+        self.assertEqual(
+            article_object.publisher_name, "eLife Sciences Publications, Ltd"
+        )
+        # issue
+        self.assertEqual(article_object.issue, None)
+        # elocation_id
+        self.assertEqual(article_object.elocation_id, "RP1234567890")
+        # manuscript
+        self.assertEqual(article_object.manuscript, "1234567890")
+        # publisher_id pii
+        self.assertEqual(article_object.pii, "1234567890")
+        # review_articles
+        self.assertEqual(len(article_object.review_articles), 8)
+        # preprint
+        self.assertIsNotNone(article_object.preprint)
+        self.assertEqual(
+            article_object.preprint.uri, "https://doi.org/10.1101/2021.11.09.467796"
+        )
+        self.assertEqual(article_object.preprint.doi, "10.1101/2021.11.09.467796")
+        # publication history events
+        self.assertEqual(len(article_object.publication_history), 4)
+        self.assertEqual(
+            article_object.publication_history[0].uri,
+            "https://doi.org/10.1101/2021.11.09.467796",
+        )
+        self.assertEqual(
+            article_object.publication_history[0].doi, "10.1101/2021.11.09.467796"
+        )
+        self.assertEqual(
+            article_object.publication_history[1].uri,
+            "https://doi.org/10.7554/eLife.1234567890.1",
+        )
+        self.assertEqual(
+            article_object.publication_history[1].doi, "10.7554/eLife.1234567890.1"
+        )
+        self.assertEqual(
+            article_object.publication_history[1].event_type, "reviewed-preprint"
+        )
+        self.assertEqual(
+            article_object.publication_history[1].event_desc,
+            "This manuscript was published as a reviewed preprint.",
+        )
+        self.assertEqual(
+            article_object.publication_history[1].date,
+            etoolsutils.date_struct(2023, 4, 15),
+        )

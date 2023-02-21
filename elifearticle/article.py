@@ -79,6 +79,7 @@ class Article(BaseObject):
         self.clinical_trials = []
         self.preprint = None
         self.related_objects = []
+        self.publication_history = []
         # group_title for use in posted_content Crossref deposits of preprints
         self.group_title = None
 
@@ -442,6 +443,15 @@ class Preprint(BaseObject):
     def __init__(self, uri=None, doi=None):
         self.uri = uri
         self.doi = doi
+
+
+class Event(BaseObject):
+    def __init__(self):
+        self.uri = None
+        self.doi = None
+        self.event_type = None
+        self.event_desc = None
+        self.date = None
 
 
 class ContentBlock:
