@@ -690,7 +690,7 @@ def build_article_from_xml(
         article.contributors = contributors + contributors_non_byline
 
         # also populate the editors when contributors flag is being built
-        editor_contrib_types = ["editor", "reviewer", "senior_editor"]
+        editor_contrib_types = ["assoc_ed", "editor", "reviewer", "senior_editor"]
         for contrib_type in editor_contrib_types:
             editor_contributors = [
                 con for con in all_contributors if con.get("type") == contrib_type
