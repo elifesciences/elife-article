@@ -3,6 +3,7 @@ Article object definitions
 """
 
 from collections import OrderedDict
+import warnings
 from elifearticle import utils
 
 
@@ -262,6 +263,14 @@ class Dataset(BaseObject):
         self.authors.append(author)
 
 
+class Award(BaseObject):
+    "an Award, part of a FundingAward"
+
+    def __init__(self):
+        self.award_id = None
+        self.award_id_type = None
+
+
 class FundingAward(BaseObject):
     """
     An award group as part of a funding group
@@ -273,9 +282,14 @@ class FundingAward(BaseObject):
         self.institution_name = None
         self.institution_id = None
         self.principal_award_recipients = []
+        self.awards = []
 
     def add_award_id(self, award_id):
+        warnings.warn("Deprecated, please use add_award()", DeprecationWarning)
         self.award_ids.append(award_id)
+
+    def add_award(self, award):
+        self.awards.append(award)
 
     def add_principal_award_recipient(self, contributor):
         "Accepts an instance of Contributor"
