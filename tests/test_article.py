@@ -1,4 +1,5 @@
 import unittest
+import warnings
 import time
 from elifearticle import article as ea
 
@@ -170,6 +171,14 @@ class TestDataset(unittest.TestCase):
         self.assertEqual(len(self.dataset.authors), 1)
 
 
+class TestAward(unittest.TestCase):
+    def setUp(self):
+        self.award = ea.Award()
+
+    def test_award_init(self):
+        self.assertIsNotNone(self.award)
+
+
 class TestFundingAward(unittest.TestCase):
     def setUp(self):
         self.funding_award = ea.FundingAward()
@@ -179,8 +188,11 @@ class TestFundingAward(unittest.TestCase):
 
     def test_add_award_id(self):
         award_id = None
-        self.funding_award.add_award_id(award_id)
-        self.assertEqual(len(self.funding_award.award_ids), 1)
+        # ignore the deprecation warnings when running tests
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            self.funding_award.add_award_id(award_id)
+            self.assertEqual(len(self.funding_award.award_ids), 1)
 
     def test_add_principal_award_recipient(self):
         principal_award_recipient = None
