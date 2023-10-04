@@ -127,6 +127,10 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
         self.assertEqual(len(article_object.funding_awards), 16)
+        # award
+        self.assertEqual(
+            article_object.funding_awards[5].awards[0].award_id, "ALTF 1203_2012"
+        )
         # keywords
         self.assertEqual(len(article_object.author_keywords), 6)
         # categories
