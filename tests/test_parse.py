@@ -1,7 +1,6 @@
 import unittest
 import os
 from collections import OrderedDict
-
 from elifearticle import parse
 from elifearticle.article import Preprint
 from tests import XLS_PATH

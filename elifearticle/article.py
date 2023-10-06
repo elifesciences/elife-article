@@ -3,7 +3,6 @@ Article object definitions
 """
 
 from collections import OrderedDict
-import warnings
 from elifearticle import utils
 
 
@@ -278,15 +277,10 @@ class FundingAward(BaseObject):
 
     def __init__(self):
         self.award_group_id = None
-        self.award_ids = []
         self.institution_name = None
         self.institution_id = None
         self.principal_award_recipients = []
         self.awards = []
-
-    def add_award_id(self, award_id):
-        warnings.warn("Deprecated, please use add_award()", DeprecationWarning)
-        self.award_ids.append(award_id)
 
     def add_award(self, award):
         self.awards.append(award)
