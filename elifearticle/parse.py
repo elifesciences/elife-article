@@ -115,8 +115,6 @@ def build_funding(award_groups):
 
             # TODO !!! Check for multiple award_id, if exists
             if award_group.get("award-id"):
-                # support deprecated function for now for backward compatibility
-                award.add_award_id(award_group.get("award-id"))
                 # new Award logic
                 award_object = ea.Award()
                 award_object.award_id = award_group.get("award-id")
