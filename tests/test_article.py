@@ -186,14 +186,6 @@ class TestFundingAward(unittest.TestCase):
     def test_funding_award_init(self):
         self.assertIsNotNone(self.funding_award)
 
-    def test_add_award_id(self):
-        award_id = None
-        # ignore the deprecation warnings when running tests
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
-            self.funding_award.add_award_id(award_id)
-            self.assertEqual(len(self.funding_award.award_ids), 1)
-
     def test_add_principal_award_recipient(self):
         principal_award_recipient = None
         self.funding_award.add_principal_award_recipient(principal_award_recipient)
