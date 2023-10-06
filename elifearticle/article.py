@@ -3,7 +3,6 @@ Article object definitions
 """
 
 from collections import OrderedDict
-import warnings
 from elifearticle import utils
 
 
