@@ -68,6 +68,9 @@ class TestUtils(unittest.TestCase):
             2,
         )
         self.assertEqual(utils.version_from_xml_filename("bmjopen-4-e003269.xml"), None)
+        self.assertEqual(
+            utils.version_from_xml_filename("elife-preprint-84364-v2.xml"), 2
+        )
 
     def test_calculate_journal_volume(self):
         "for test coverage"

@@ -101,7 +101,9 @@ def version_from_xml_filename(filename):
         filename_parts = filename.split(os.sep)[-1].split("-")
     except AttributeError:
         return None
-    if len(filename_parts) == 3:
+    if len(filename_parts) == 3 or (
+        len(filename_parts) == 4 and filename_parts[1] == "preprint"
+    ):
         try:
             return int(filename_parts[-1].lstrip("v").rstrip(".xml"))
         except ValueError:
