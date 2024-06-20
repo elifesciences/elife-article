@@ -744,7 +744,7 @@ def build_article_from_xml(
 
     # History dates
     if build_part("history"):
-        date_types = ["received", "accepted"]
+        date_types = ["received", "accepted", "sent-for-review"]
         for date_type in date_types:
             history_date = parser.history_date(soup, date_type)
             if history_date:
