@@ -1,4 +1,5 @@
 import unittest
+from collections import OrderedDict
 import re
 import os
 import time
@@ -133,5 +134,29 @@ class TestUtilsAttr(unittest.TestCase):
         self.assertEqual(utils.attr_string(None), "")
 
 
-if __name__ == "__main__":
-    unittest.main()
+class TestLicenseDataByUrl(unittest.TestCase):
+    "tests for license_data_by_url()"
+
+    def test_cc_by(self):
+        "test CC-BY URL to get license data"
+        license_url = "http://creativecommons.org/licenses/by/4.0/"
+        # invoke
+        result = utils.license_data_by_url(license_url)
+        # assert
+        self.assertEqual(result.get("href"), license_url)
+
+    def test_cc_0(self):
+        "test CC-0 URL to get license data"
+        license_url = "http://creativecommons.org/publicdomain/zero/1.0/"
+        # invoke
+        result = utils.license_data_by_url(license_url)
+        # assert
+        self.assertEqual(result.get("href"), license_url)
+
+    def test_no_match(self):
+        "test if the license_url is not supported"
+        self.assertEqual(utils.license_data_by_url("https://example.org/"), OrderedDict())
+
+    def test_none(self):
+        "test if the license_url is None"
+        self.assertEqual(utils.license_data_by_url(None), OrderedDict())

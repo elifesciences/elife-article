@@ -2,6 +2,7 @@
 Utility functions for converting content and some shared by other libraries
 """
 
+from collections import OrderedDict
 import re
 import os
 from git import Repo, InvalidGitRepositoryError, NoSuchPathError
@@ -164,3 +165,44 @@ def text_from_affiliation_elements(department, institution, city, country):
     return ", ".join(
         element for element in [department, institution, city, country] if element
     )
+
+
+def license_data_by_url(license_url):
+    "boilerplate data to populate license XML"
+    if license_url == "http://creativecommons.org/licenses/by/4.0/":
+        return license_data(1)
+    elif license_url == "http://creativecommons.org/publicdomain/zero/1.0/":
+        return license_data(2)
+    return license_data(None)
+
+
+def license_data(license_id):
+    "boilerplate data to populate a license object keyed on the license_id"
+    data = OrderedDict()
+    if not license_id:
+        return data
+    if int(license_id) == 1:
+        data["license_id"] = 1
+        data["license_type"] = "open-access"
+        data["copyright"] = True
+        data["href"] = "http://creativecommons.org/licenses/by/4.0/"
+        data["name"] = "Creative Commons Attribution License"
+        data["paragraph1"] = "This article is distributed under the terms of the "
+        data["paragraph2"] = (
+            ", which permits unrestricted use and redistribution provided that the"
+            " original author and source are credited."
+        )
+    elif int(license_id) == 2:
+        data["license_id"] = 2
+        data["license_type"] = "open-access"
+        data["copyright"] = False
+        data["href"] = "http://creativecommons.org/publicdomain/zero/1.0/"
+        data["name"] = "Creative Commons CC0 public domain dedication"
+        data["paragraph1"] = (
+            "This is an open-access article, free of all copyright, and may be"
+            " freely reproduced, distributed, transmitted, modified, built upon, or"
+            " otherwise used by anyone for any lawful purpose. The work is made"
+            " available under the "
+        )
+        data["paragraph2"] = "."
+    return data
