@@ -145,6 +145,15 @@ class TestLicenseDataByUrl(unittest.TestCase):
         # assert
         self.assertEqual(result.get("href"), license_url)
 
+    def test_cc_by_https(self):
+        "test CC-BY HTTPS URL to get license data"
+        license_url = "https://creativecommons.org/licenses/by/4.0/"
+        expected = "http://creativecommons.org/licenses/by/4.0/"
+        # invoke
+        result = utils.license_data_by_url(license_url)
+        # assert
+        self.assertEqual(result.get("href"), expected)
+
     def test_cc_0(self):
         "test CC-0 URL to get license data"
         license_url = "http://creativecommons.org/publicdomain/zero/1.0/"
@@ -153,9 +162,20 @@ class TestLicenseDataByUrl(unittest.TestCase):
         # assert
         self.assertEqual(result.get("href"), license_url)
 
+    def test_cc_0_https(self):
+        "test CC-0 HTTPS URL to get license data"
+        license_url = "https://creativecommons.org/publicdomain/zero/1.0/"
+        expected = "http://creativecommons.org/publicdomain/zero/1.0/"
+        # invoke
+        result = utils.license_data_by_url(license_url)
+        # assert
+        self.assertEqual(result.get("href"), expected)
+
     def test_no_match(self):
         "test if the license_url is not supported"
-        self.assertEqual(utils.license_data_by_url("https://example.org/"), OrderedDict())
+        self.assertEqual(
+            utils.license_data_by_url("https://example.org/"), OrderedDict()
+        )
 
     def test_none(self):
         "test if the license_url is None"
