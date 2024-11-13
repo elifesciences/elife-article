@@ -169,9 +169,13 @@ def text_from_affiliation_elements(department, institution, city, country):
 
 def license_data_by_url(license_url):
     "boilerplate data to populate license XML"
-    if license_url == "http://creativecommons.org/licenses/by/4.0/":
+    if license_url and re.match(
+        r"^(http|https)://creativecommons.org/licenses/by/4.0/$", license_url
+    ):
         return license_data(1)
-    elif license_url == "http://creativecommons.org/publicdomain/zero/1.0/":
+    elif license_url and re.match(
+        r"^(http|https)://creativecommons.org/publicdomain/zero/1.0/$", license_url
+    ):
         return license_data(2)
     return license_data(None)
 
