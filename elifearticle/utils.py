@@ -189,7 +189,7 @@ def license_data(license_id):
         data["license_id"] = 1
         data["license_type"] = "open-access"
         data["copyright"] = True
-        data["href"] = "http://creativecommons.org/licenses/by/4.0/"
+        data["href"] = "https://creativecommons.org/licenses/by/4.0/"
         data["name"] = "Creative Commons Attribution License"
         data["paragraph1"] = "This article is distributed under the terms of the "
         data["paragraph2"] = (
@@ -200,7 +200,7 @@ def license_data(license_id):
         data["license_id"] = 2
         data["license_type"] = "open-access"
         data["copyright"] = False
-        data["href"] = "http://creativecommons.org/publicdomain/zero/1.0/"
+        data["href"] = "https://creativecommons.org/publicdomain/zero/1.0/"
         data["name"] = "Creative Commons CC0 public domain dedication"
         data["paragraph1"] = (
             "This is an open-access article, free of all copyright, and may be"
