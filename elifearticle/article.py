@@ -35,6 +35,7 @@ class Article(BaseObject):
 
     def __init__(self, doi=None, title=None):
         self.article_type = "research-article"
+        self.publication_state = None
         self.display_channel = None
         self.doi = doi
         self.version_doi = None

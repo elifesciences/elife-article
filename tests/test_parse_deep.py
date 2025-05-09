@@ -88,6 +88,9 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(
             article_object.review_articles[0].article_type, "article-commentary"
         )
+        self.assertEqual(
+            article_object.review_articles[0].publication_state, None
+        )
         self.assertEqual(article_object.review_articles[0].id, "SA1")
         self.assertEqual(article_object.review_articles[0].title, "Decision letter")
         self.assertEqual(
