@@ -626,6 +626,10 @@ def build_article_from_xml(
         if article_type:
             article.article_type = article_type
 
+    # Set the publication_state
+    if build_part("basic"):
+        article.publication_state = parser.publication_state(soup)
+
     # title
     if build_part("basic"):
         article.title = parser.full_title(soup)
