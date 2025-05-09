@@ -28,6 +28,7 @@ class TestArticle(unittest.TestCase):
 
     def test_article_init(self):
         self.assertEqual(self.article.article_type, "research-article")
+        self.assertEqual(self.article.publication_state, None)
 
     def test_add_contributor(self):
         contributor = None
