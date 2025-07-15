@@ -108,8 +108,8 @@ def build_funding(award_groups):
         for award_group_id, award_group in award_groups_item.items():
             award = ea.FundingAward()
             award.award_group_id = award_group_id
-            if award_group.get("id-type") == "FundRef":
-                award.institution_id = award_group.get("id")
+            award.institution_id = award_group.get("id")
+            award.institution_id_type = award_group.get("id-type")
 
             award.institution_name = award_group.get("institution")
 
