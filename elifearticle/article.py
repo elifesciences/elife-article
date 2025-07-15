@@ -280,6 +280,7 @@ class FundingAward(BaseObject):
         self.award_group_id = None
         self.institution_name = None
         self.institution_id = None
+        self.institution_id_type = None
         self.principal_award_recipients = []
         self.awards = []
 
