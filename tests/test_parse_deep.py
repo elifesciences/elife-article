@@ -315,6 +315,17 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.related_articles), 0)
         # funding
         self.assertEqual(len(article_object.funding_awards), 2)
+        self.assertEqual(
+            article_object.funding_awards[0].institution_name,
+            "Howard Hughes Medical Institute",
+        )
+        self.assertEqual(
+            article_object.funding_awards[0].institution_id,
+            "https://dx.doi.org/10.13039/100000011",
+        )
+        self.assertEqual(
+            article_object.funding_awards[0].institution_id_type, "FundRef"
+        )
         # keywords
         self.assertEqual(len(article_object.author_keywords), 4)
         # categories
