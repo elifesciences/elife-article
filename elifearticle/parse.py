@@ -366,6 +366,8 @@ def build_components(components):
                 component.mime_type = (
                     comp.get("mimetype") + "/" + comp.get("mime-subtype")
                 )
+            elif comp.get("mimetype") and "/" in comp.get("mimetype"):
+                component.mime_type = comp.get("mimetype")
 
         # Permissions
         component.permissions = comp.get("permissions")

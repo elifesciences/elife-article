@@ -346,6 +346,7 @@ class TestParseDeep(unittest.TestCase):
             article_object.component_list[5].type, "supplementary-material"
         )
         self.assertEqual(article_object.component_list[9].type, "fig")
+        self.assertEqual(article_object.component_list[9].mime_type, "image/tiff")
         self.assertEqual(article_object.component_list[13].type, "media")
         self.assertEqual(
             article_object.component_list[15].type, "supplementary-material"
