@@ -167,6 +167,43 @@ class TestBuildContributors(unittest.TestCase):
         self.assertEqual(contributors[0].roles, [])
 
 
+class TestBuildComponents(unittest.TestCase):
+    "tests for build_components()"
+
+    def test_build_components(self):
+        "component mimetype tests"
+        components = []
+        # multiple mimetype field example
+        components.append(
+            {
+                "doi": "10.7554/eLife.00666.007",
+                "mimetype": "image",
+                "mime-subtype": "tiff",
+                "type": "media",
+            }
+        )
+        # single mimetype field example
+        components.append(
+            {
+                "doi": "10.7554/eLife.00666.007",
+                "mimetype": "image/tiff",
+                "type": "media",
+            }
+        )
+        # incomplete mimetype example
+        components.append(
+            {"doi": "10.7554/eLife.00666.007", "mimetype": "image", "type": "media"}
+        )
+
+        # invoke
+        result = parse.build_components(components)
+
+        # assert
+        self.assertEqual(result[0].mime_type, "image/tiff")
+        self.assertEqual(result[1].mime_type, "image/tiff")
+        self.assertEqual(result[2].mime_type, None)
+
+
 class TestBuildPreprint(unittest.TestCase):
     def test_build_preprint_no_events(self):
         events = []
