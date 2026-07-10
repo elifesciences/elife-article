@@ -476,6 +476,8 @@ class TestParseDeep(unittest.TestCase):
         self.assertEqual(len(article_object.author_keywords), 6)
         # refs
         self.assertEqual(len(article_object.ref_list), 18)
+        self.assertEqual(article_object.ref_list[7].publication_type, "data")
+        self.assertEqual(article_object.ref_list[7].specific_use, "analyzed")
         # publisher_name
         self.assertEqual(
             article_object.publisher_name, "eLife Sciences Publications, Ltd"

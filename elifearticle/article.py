@@ -362,6 +362,7 @@ class Citation(BaseObject):
         self.chapter_title = None
         # For data
         self.accession = None
+        self.specific_use = None
 
     def add_author(self, author):
         "Author is a dict of values"
