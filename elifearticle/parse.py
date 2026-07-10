@@ -285,6 +285,8 @@ def build_ref_list(refs):
         if not ref.doi and ref.uri:
             if ref.uri != eautils.doi_uri_to_doi(ref.uri):
                 ref.doi = eautils.doi_uri_to_doi(ref.uri)
+        # specific-use
+        utils.set_attr_if_value(ref, "specific_use", reference.get("specific-use"))
         # Append the reference to the list
         ref_list.append(ref)
     return ref_list
