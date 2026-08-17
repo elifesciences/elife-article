@@ -8,10 +8,12 @@ from collections import OrderedDict
 from elifetools import parseJATS as parser
 from elifetools import utils as eautils
 from elifearticle import article as ea
-from elifearticle import utils
+from elifearticle import credit, utils
 
 
-def build_contributors(authors, contrib_type, competing_interests=None):
+def build_contributors(
+    authors, contrib_type, competing_interests=None, contributions=None
+):
     """
     Given a list of authors from the parser, instantiate contributors
     objects and build them
@@ -87,6 +89,24 @@ def build_contributors(authors, contrib_type, competing_interests=None):
                             "p", competing_interest.get("text")
                         )
                         contributor.set_conflict(clean_text)
+
+        # contributions
+        if (
+            contributions
+            and author.get("references")
+            and "contribution" in author.get("references")
+        ):
+            for ref_id in author["references"]["contribution"]:
+                for contribution in contributions:
+                    if contribution.get("text") and contribution.get("id") == ref_id:
+                        clean_text = utils.remove_tag("p", contribution.get("text"))
+                        contributor.contributions.append(clean_text)
+
+        # collect CRediT roles from contribution text
+        for contribution in contributor.contributions:
+            credit_roles = credit.parse_credit_roles(contribution)
+            if credit_roles:
+                contributor.credit_roles = credit_roles.union(contributor.credit_roles)
 
         # Finally add the contributor to the list
         if contributor:
@@ -685,6 +705,7 @@ def build_article_from_xml(
     if build_part("contributors"):
         # get the competing interests if available
         competing_interests = parser.competing_interests(soup, None)
+        contributions = parser.author_contributions(soup, None)
         all_contributors = parser.contributors(soup, detail)
         author_contributors = [
             con
@@ -693,13 +714,13 @@ def build_article_from_xml(
         ]
         contrib_type = "author"
         contributors = build_contributors(
-            author_contributors, contrib_type, competing_interests
+            author_contributors, contrib_type, competing_interests, contributions
         )
 
         contrib_type = "author non-byline"
         authors = parser.authors_non_byline(soup, detail)
         contributors_non_byline = build_contributors(
-            authors, contrib_type, competing_interests
+            authors, contrib_type, competing_interests, contributions
         )
         article.contributors = contributors + contributors_non_byline
 
