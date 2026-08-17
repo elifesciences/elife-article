@@ -46,6 +46,18 @@ class TestParseDeep(unittest.TestCase):
         )
         # anonymous value
         self.assertEqual(article_object.contributors[0].anonymous, None)
+        # contributions value
+        self.assertEqual(
+            article_object.contributors[0].contributions,
+            [
+                "YSJ, Conception and design, Acquisition of data, Analysis and"
+                " interpretation of data, Drafting or revising the article"
+            ],
+        )
+        self.assertSetEqual(
+            article_object.contributors[0].credit_roles,
+            set(),
+        )
         # count editors
         self.assertEqual(len(article_object.editors), 1)
         # first editor
@@ -452,7 +464,29 @@ class TestParseDeep(unittest.TestCase):
             len([c for c in article_object.contributors if c.contrib_type == "author"]),
             6,
         )
-
+        # contributions value
+        self.assertEqual(
+            article_object.contributors[0].contributions,
+            [
+                "Conceptualization, Data curation, Formal analysis, Validation,"
+                " Investigation, Visualization, Methodology, Writing - original draft"
+            ],
+        )
+        self.assertSetEqual(
+            article_object.contributors[0].credit_roles,
+            set(
+                {
+                    "Conceptualization",
+                    "Data curation",
+                    "Formal analysis",
+                    "Validation",
+                    "Investigation",
+                    "Visualization",
+                    "Methodology",
+                    "Writing - original draft",
+                }
+            ),
+        )
         # compare dates
         self.assertEqual(
             article_object.dates.get("received"),
