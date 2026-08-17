@@ -203,6 +203,8 @@ class Contributor(BaseObject):
     group_author_key = None
     anonymous = None
     roles = []
+    contributions = []
+    credit_roles = None
 
     def __init__(self, contrib_type, surname, given_name, collab=None):
         self.contrib_type = contrib_type
@@ -211,6 +213,8 @@ class Contributor(BaseObject):
         self.affiliations = []
         self.conflict = []
         self.collab = collab
+        self.contributions = []
+        self.credit_roles = set()
 
     def set_affiliation(self, affiliation):
         self.affiliations.append(affiliation)
